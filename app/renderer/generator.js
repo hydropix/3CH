@@ -111,14 +111,31 @@
     }, 1n);
   }
 
+  // A list entry is a string, or { text, weight } with a positive number weight.
+  function validEntry(entry) {
+    if (typeof entry === 'string') return true;
+    if (!entry || typeof entry.text !== 'string') return false;
+    const w = entry.weight;
+    return w === undefined || (typeof w === 'number' && Number.isFinite(w) && w > 0);
+  }
+
+  // Themes can be hand-written JSON: check everything roll() and render() rely on.
   function validateTheme(theme) {
-    if (!theme || !Array.isArray(theme.structure) || typeof theme.lists !== 'object') {
+    if (!theme || !Array.isArray(theme.structure) || !theme.lists || typeof theme.lists !== 'object') {
       return 'missing "structure" or "lists"';
+    }
+    if (!theme.structure.length) return '"structure" is empty';
+    for (const key of ['id', 'name']) {
+      if (theme[key] !== undefined && typeof theme[key] !== 'string') return `"${key}" must be a string`;
     }
     for (const item of theme.structure) {
       if (typeof item === 'string') {
-        const list = theme.lists[item];
+        const list = Object.hasOwn(theme.lists, item) ? theme.lists[item] : undefined;
         if (!Array.isArray(list) || list.length === 0) return `list "${item}" is missing or empty`;
+        const bad = list.findIndex((e) => !validEntry(e));
+        if (bad !== -1) {
+          return `list "${item}", entry ${bad + 1}: expected a string or { "text", "weight" } with a weight above 0`;
+        }
       } else if (!item || typeof item.text !== 'string') {
         return 'literal structure items need a "text" field';
       }

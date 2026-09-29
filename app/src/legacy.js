@@ -109,13 +109,25 @@ function convertLegacyTheme(dir) {
   };
 }
 
-function findLegacyThemes(root) {
+// Theme folders sit a level or two below the folder the user picks. The depth
+// limit keeps a scan of a whole drive short, and unreadable folders (access
+// denied, broken links) are skipped and passed to `onSkip`.
+const MAX_SCAN_DEPTH = 4;
+const SKIP_DIRS = new Set(['node_modules']);
+
+function findLegacyThemes(root, { maxDepth = MAX_SCAN_DEPTH, onSkip = () => {} } = {}) {
   if (isLegacyThemeDir(root)) return [root];
-  return fs
-    .readdirSync(root, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => path.join(root, d.name))
-    .flatMap((d) => (isLegacyThemeDir(d) ? [d] : findLegacyThemes(d)));
+  if (maxDepth <= 0) return [];
+  let entries;
+  try {
+    entries = fs.readdirSync(root, { withFileTypes: true });
+  } catch (err) {
+    onSkip(root, err);
+    return [];
+  }
+  return entries
+    .filter((d) => d.isDirectory() && !d.name.startsWith('.') && !SKIP_DIRS.has(d.name))
+    .flatMap((d) => findLegacyThemes(path.join(root, d.name), { maxDepth: maxDepth - 1, onSkip }));
 }
 
 module.exports = { convertLegacyTheme, findLegacyThemes, parseList, slugify };

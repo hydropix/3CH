@@ -58,22 +58,28 @@ ipcMain.handle('themes:importLegacy', async () => {
 
   const imported = [];
   const errors = [];
-  const dirs = findLegacyThemes(filePaths[0]);
-  if (!dirs.length) errors.push('No folder with a structure.txt was found.');
-  fs.mkdirSync(userThemesDir(), { recursive: true });
-  for (const dir of dirs) {
-    try {
-      const theme = convertLegacyTheme(dir);
-      theme.source = 'legacy-import';
-      fs.writeFileSync(
-        path.join(userThemesDir(), `${theme.id}.json`),
-        JSON.stringify(theme, null, 2) + '\n',
-        'utf8'
-      );
-      imported.push(theme.id);
-    } catch (err) {
-      errors.push(err.message);
+  let skipped = 0;
+  try {
+    const dirs = findLegacyThemes(filePaths[0], { onSkip: () => skipped++ });
+    if (!dirs.length) errors.push('No folder with a structure.txt was found.');
+    if (skipped) errors.push(`Skipped ${skipped} unreadable folder${skipped > 1 ? 's' : ''}.`);
+    if (dirs.length) fs.mkdirSync(userThemesDir(), { recursive: true });
+    for (const dir of dirs) {
+      try {
+        const theme = convertLegacyTheme(dir);
+        theme.source = 'legacy-import';
+        fs.writeFileSync(
+          path.join(userThemesDir(), `${theme.id}.json`),
+          JSON.stringify(theme, null, 2) + '\n',
+          'utf8'
+        );
+        imported.push(theme.id);
+      } catch (err) {
+        errors.push(err.message);
+      }
     }
+  } catch (err) {
+    errors.push(`Import failed: ${err.message}`);
   }
   return { imported, errors };
 });
@@ -144,8 +150,17 @@ ipcMain.handle('clipboard:write', (_e, content) => clipboard.writeText(String(co
 
 app.setAppUserModelId('com.hydropix.3ch');
 
+// macOS takes Cmd+Q, Cmd+W and copy/paste from the menu roles: keep a minimal
+// menu there. Windows and Linux get no menu bar at all.
+function setMenu() {
+  if (process.platform !== 'darwin') return Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(
+    Menu.buildFromTemplate([{ role: 'appMenu' }, { role: 'fileMenu' }, { role: 'editMenu' }, { role: 'windowMenu' }])
+  );
+}
+
 app.whenReady().then(() => {
-  Menu.setApplicationMenu(null);
+  setMenu();
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

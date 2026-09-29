@@ -20,7 +20,7 @@ app, which is kept byte for byte in `Legacy/`.
 ```bash
 npm install
 npm start
-npm test                 # node:test: generator, timer, legacy parser (14 tests)
+npm test                 # node:test: generator, timer, themes, legacy parser (17 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # regenerate app/themes/*.json from ../Legacy

@@ -2,6 +2,20 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [Unreleased]
+
+### Fixed
+- macOS: Cmd+Q, Cmd+W and copy/paste work again. The app had no menu, and
+  macOS takes these shortcuts from it.
+- A hand-written theme with a bad entry (`null`, a number, a weight written as
+  text, or a weight of 0 or less) is now reported when the themes load, instead
+  of breaking the Generate button or skewing the odds. One invalid file no
+  longer hides the other themes.
+- Importing a legacy theme from a large folder no longer fails silently when a
+  subfolder cannot be read: unreadable folders are skipped and counted. The
+  scan stops four levels down, and errors are no longer hidden by the success
+  message.
+
 ## [2.1.0] - 2026-09-29
 
 ### Changed

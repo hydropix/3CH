@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { parseList } = require('../src/legacy');
+const path = require('path');
+const { parseList, findLegacyThemes } = require('../src/legacy');
 
 test('splits entries missing their comma or using a semicolon', () => {
   assert.deepStrictEqual(parseList('in a pool \non a highway,\nguy with a shotgun;\nsexy woman,'), [
@@ -21,4 +22,15 @@ test('duplicates become weights and stray brackets are cleaned', () => {
     { text: 'herbivorous', weight: 2 },
     '(in black and white)',
   ]);
+});
+
+test('finds the legacy themes, skips unreadable folders and stops at the depth limit', () => {
+  const legacy = path.join(__dirname, '..', '..', 'Legacy');
+  assert.strictEqual(findLegacyThemes(legacy).length, 5);
+  assert.strictEqual(findLegacyThemes(legacy, { maxDepth: 1 }).length, 0);
+
+  const skipped = [];
+  const missing = path.join(legacy, 'no-such-folder');
+  assert.deepStrictEqual(findLegacyThemes(missing, { onSkip: (dir) => skipped.push(dir) }), []);
+  assert.deepStrictEqual(skipped, [missing]);
 });

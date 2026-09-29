@@ -26,8 +26,9 @@ A theme is a JSON file:
 - `structure`: the words of the sentence, in order. A string names a list, and
   `{ "text": ... }` is a fixed word. A list can be used several times, and one
   subject never draws the same word twice.
-- An entry is a string, or `{ "text", "weight" }` to make it more likely. An
-  empty `text` means "nothing here", which is useful for optional words.
+- An entry is a string, or `{ "text", "weight" }` (a number above 0) to make it
+  more likely. An empty `text` means "nothing here", which is useful for
+  optional words.
 - `a` / `an` agree with the next word automatically, and the sentence gets a
   capital letter and a full stop.
 - `labels` (optional) sets the small caption shown under each word.
@@ -41,7 +42,8 @@ same `id` as a bundled one replaces it.
 
 **Import legacy theme** converts a v1 folder (`structure.txt` plus one
 comma-separated `.txt` per slot). You can pick a single theme folder or a parent
-holding several. The bundled themes were generated from `../Legacy` with:
+holding several, up to four levels down (unreadable folders are skipped). The
+bundled themes were generated from `../Legacy` with:
 
 ```bash
 npm run convert-legacy
@@ -56,7 +58,7 @@ empty entries. Duplicate entries become weights.
 ```bash
 npm install
 npm start          # run the app
-npm test           # unit tests (generator, timer, legacy conversion)
+npm test           # unit tests (generator, timer, themes, legacy conversion)
 npm run dist:win   # Windows installer + portable exe in dist/
 npm run dist:mac   # universal macOS .dmg in dist/ (on a Mac)
 npm run icon       # regenerate build/icon.png, build/icon.ico, renderer/logo.png

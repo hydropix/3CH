@@ -372,12 +372,18 @@ $('clearHistoryBtn').addEventListener('click', () => {
   renderHistory();
 });
 $('importBtn').addEventListener('click', async () => {
-  const { imported, errors } = await window.ch3.importLegacy();
-  if (errors.length) toast(errors.join(' · '), true);
-  if (imported.length) {
-    await refreshThemes(imported[0]);
-    toast(`Imported ${imported.length} theme${imported.length > 1 ? 's' : ''}`);
+  let result;
+  try {
+    result = await window.ch3.importLegacy();
+  } catch (err) {
+    return toast(`Import failed: ${err.message}`, true);
   }
+  const { imported, errors } = result;
+  if (imported.length) await refreshThemes(imported[0]);
+  // One toast: a success message would otherwise hide the errors.
+  const done = imported.length ? `Imported ${imported.length} theme${imported.length > 1 ? 's' : ''}` : '';
+  if (errors.length) toast([done, ...errors].filter(Boolean).join(' · '), true);
+  else if (done) toast(done);
 });
 $('folderBtn').addEventListener('click', () => window.ch3.openThemesFolder());
 

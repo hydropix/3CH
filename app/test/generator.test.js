@@ -67,3 +67,17 @@ test('a subject never repeats a word drawn from the same list', () => {
   const next = G.rerollSlot(theme, parts, 0);
   assert.strictEqual(next[0].raw, parts[0].raw, 'only one free word left: it must stay unique');
 });
+
+test('theme validation rejects entries that would break a roll', () => {
+  const theme = (lists, extra = {}) => ({ structure: ['a'], lists, ...extra });
+  assert.strictEqual(G.validateTheme(theme({ a: ['x', { text: 'y', weight: 2 }, { text: '' }] })), null);
+  assert.match(G.validateTheme(theme({ a: ['x', null] })), /entry 2/);
+  assert.match(G.validateTheme(theme({ a: [42] })), /entry 1/);
+  assert.match(G.validateTheme(theme({ a: [{ text: 'x', weight: '3' }] })), /weight/);
+  assert.match(G.validateTheme(theme({ a: [{ text: 'x', weight: 0 }] })), /weight/);
+  assert.match(G.validateTheme(theme({ a: [{ text: 'x', weight: -1 }] })), /weight/);
+  assert.match(G.validateTheme({ structure: ['constructor'], lists: {} }), /missing or empty/);
+  assert.match(G.validateTheme({ structure: [], lists: {} }), /empty/);
+  assert.match(G.validateTheme(theme({ a: ['x'] }, { name: 3 })), /"name"/);
+  assert.match(G.validateTheme({ structure: ['a'], lists: null }), /missing/);
+});
