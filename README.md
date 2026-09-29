@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="app/build/icon.png" width="112" alt="3CH icon">
-</p>
-
-<h1 align="center">3CH</h1>
+<h1 align="center">
+  <img src="docs/logo.gif" width="640" alt="3CH">
+</h1>
 
 <p align="center">
   <b>Random subject generator for concept art and speed painting</b><br>

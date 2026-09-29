@@ -2,6 +2,13 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [Unreleased]
+
+### Changed
+- New logo and icon: the old die is now a neon mascot on a hot pink paint splat.
+- The interface is dark only and matches the logo: black, hot pink accents and
+  a neon glow.
+
 ## [2.0.1] - 2026-09-29
 
 ### Added

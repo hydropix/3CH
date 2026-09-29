@@ -24,7 +24,8 @@ npm test                 # node:test: generator, timer, legacy parser (14 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # regenerate app/themes/*.json from ../Legacy
-npm run icon             # regenerate build/icon.png
+npm run icon             # build/icon.png + icon.ico + renderer/logo.png (Python)
+npm run logo             # same, plus docs/logo.gif (needs ffmpeg)
 ```
 
 ## Releasing
@@ -56,6 +57,9 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
 - `backgroundThrottling: false` keeps the timer exact while the window is hidden.
 - On Windows, the mini window's always-on-top flag was once lost; `main.js`
   re-asserts it on `blur` and `always-on-top-changed`.
+- The UI is dark only, matched to the logo (black, hot pink `#FF2E7A`, neon
+  glow). `scripts/make-logo.py` draws the mascot; `build/icon.ico` uses a
+  simplified face for 16-48 px, since the full mascot is unreadable there.
 - Builds are unsigned (Windows) and ad-hoc signed (macOS, `identity: "-"`). The
   README explains the SmartScreen and Gatekeeper steps. The macOS build has
   never been run on a real Mac.

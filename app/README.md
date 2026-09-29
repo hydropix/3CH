@@ -59,7 +59,8 @@ npm start          # run the app
 npm test           # unit tests (generator, timer, legacy conversion)
 npm run dist:win   # Windows installer + portable exe in dist/
 npm run dist:mac   # universal macOS .dmg in dist/ (on a Mac)
-npm run icon       # regenerate build/icon.png
+npm run icon       # regenerate build/icon.png, build/icon.ico, renderer/logo.png
+npm run logo       # same, plus the README header ../docs/logo.gif
 ```
 
 CI (`.github/workflows/build.yml`) runs the tests and builds both platforms on
@@ -74,4 +75,6 @@ every push. A `v*` tag also publishes a GitHub Release, with the matching
 - `renderer/timer.js`: speed painting countdown, shared with the tests
 - `src/legacy.js`: v1 → v2 theme conversion
 - `src/themes.js`: loads bundled and user themes
-- `scripts/`: legacy conversion and icon generation
+- `scripts/`: legacy conversion, and `make-logo.py` for the logo, the icons and
+  the README GIF (Python 3 with numpy and Pillow, the Windows fonts Impact and
+  Ink Free, and ffmpeg for the GIF)

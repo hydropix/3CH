@@ -1,45 +1,29 @@
+/* Dark only, matched to the logo: black, hot pink #FF2E7A and a neon glow. */
 :root {
-  --bg: #0f1013;
-  --bg-2: #15171b;
-  --surface: #1b1d22;
-  --surface-2: #23262c;
-  --border: #2d3037;
-  --border-strong: #3a3e47;
-  --text: #ecebe8;
-  --text-2: #a7a9b0;
-  --text-3: #6f727b;
-  --accent: #f0a04b;
-  --accent-strong: #ffb766;
-  --accent-ink: #1a1206;
-  --accent-soft: rgba(240, 160, 75, 0.14);
-  --danger: #e2685f;
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px rgba(0, 0, 0, 0.35);
+  --bg: #070608;
+  --bg-2: #0d0b0e;
+  --surface: #141115;
+  --surface-2: #1c171d;
+  --border: #282128;
+  --border-strong: #3b2f39;
+  --text: #f4eef1;
+  --text-2: #b3a8ae;
+  --text-3: #75696f;
+  --accent: #ff2e7a;
+  --accent-strong: #ff5b97;
+  --accent-ink: #0a0206;
+  --accent-soft: rgba(255, 46, 122, 0.12);
+  --glow: 0 0 18px rgba(255, 46, 122, 0.45);
+  --glow-text: 0 0 12px rgba(255, 46, 122, 0.55);
+  --danger: #ff8a3d;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px rgba(0, 0, 0, 0.5);
   --radius: 12px;
   --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-logo: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  --font-hand: "Ink Free", "Segoe Print", "Bradley Hand", "Marker Felt", cursive;
   --mono: "Cascadia Mono", Consolas, ui-monospace, monospace;
   color-scheme: dark;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f4f2ee;
-    --bg-2: #ebe8e2;
-    --surface: #ffffff;
-    --surface-2: #f3f1ec;
-    --border: #e0dcd4;
-    --border-strong: #cbc6bc;
-    --text: #1d1c1a;
-    --text-2: #5d5b56;
-    --text-3: #908d86;
-    --accent: #c46a12;
-    --accent-strong: #a9580a;
-    --accent-ink: #ffffff;
-    --accent-soft: rgba(196, 106, 18, 0.11);
-    --danger: #c0443b;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.06);
-    color-scheme: light;
-  }
 }
 
 * { box-sizing: border-box; }
@@ -77,13 +61,21 @@ kbd {
   justify-content: space-between;
   padding: 16px 28px 12px;
 }
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand-mark { width: 34px; height: 34px; stroke: none; }
-.brand-mark rect { fill: var(--accent); }
-.brand-mark circle { fill: var(--accent-ink); }
-.brand h1 { margin: 0; font: 700 20px/1 var(--font-display); letter-spacing: 0.02em; }
-.brand p { margin: 3px 0 0; color: var(--text-3); font-size: 12px; letter-spacing: 0.04em; }
-.version { color: var(--accent); font-weight: 600; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark { width: 54px; height: 54px; margin: -8px -2px -8px -8px; }
+.brand:hover .brand-mark { animation: flicker 0.9s steps(1, end); }
+.brand h1 {
+  margin: 0;
+  font: 400 30px/1 var(--font-logo);
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  text-shadow: var(--glow-text);
+  transform: rotate(-3deg);
+}
+.brand p { margin: 2px 0 0; color: var(--text-3); font: 15px/1 var(--font-hand); }
+.version { color: var(--accent); font-weight: 700; }
+
+@keyframes flicker { 10%, 30% { opacity: 0.35; } 20%, 40% { opacity: 1; } 60% { opacity: 0.6; } 70% { opacity: 1; } }
 .topbar-actions { display: flex; gap: 8px; }
 
 /* Buttons */
@@ -110,8 +102,8 @@ kbd {
 }
 .btn.ghost { background: transparent; border-color: transparent; color: var(--text-2); }
 .btn.ghost:hover { color: var(--text); }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
-.btn.primary:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--accent-strong); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; box-shadow: var(--glow); }
+.btn.primary:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--accent-strong); box-shadow: 0 0 26px rgba(255, 46, 122, 0.6); }
 .btn.primary kbd { background: rgba(0, 0, 0, 0.12); border-color: rgba(0, 0, 0, 0.2); color: inherit; }
 .btn.small { height: 28px; padding: 0 10px; font-size: 12px; border-radius: 7px; }
 .btn.danger:hover:not(:disabled) { color: var(--danger); border-color: var(--danger); }
@@ -138,7 +130,7 @@ kbd {
   transition: all 0.15s;
 }
 .theme-tab:hover { color: var(--text); border-color: var(--border-strong); }
-.theme-tab[aria-selected="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.theme-tab[aria-selected="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px rgba(255, 46, 122, 0.25); }
 .theme-tab .badge { margin-left: 6px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
 .combos { color: var(--text-3); font-size: 12px; white-space: nowrap; }
 .combos strong { color: var(--text-2); font-weight: 600; }
@@ -161,7 +153,7 @@ main {
   overflow: hidden;
   border: 1px solid var(--border);
   background:
-    radial-gradient(120% 140% at 50% 0%, var(--accent-soft), transparent 60%),
+    radial-gradient(90% 120% at 50% -10%, rgba(255, 46, 122, 0.16), transparent 60%),
     var(--bg-2);
   box-shadow: var(--shadow);
 }
@@ -205,8 +197,9 @@ main {
 }
 .chip:hover { background: var(--surface); border-color: var(--border); }
 .chip:hover .label { color: var(--text-2); }
-.chip.locked { border-color: var(--accent); background: var(--accent-soft); }
+.chip.locked { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 14px rgba(255, 46, 122, 0.3); }
 .chip.locked .word, .chip.locked .label { color: var(--accent); }
+.chip.locked .word { text-shadow: var(--glow-text); }
 .chip.empty .word { color: var(--text-3); font-weight: 400; font-style: italic; }
 .chip .lock {
   position: absolute;
@@ -294,8 +287,8 @@ main {
 }
 .timer[data-status="running"] .timer-clock { color: var(--text); }
 .timer[data-status="paused"] .timer-clock { animation: breathe 1.6s ease-in-out infinite; }
-.timer.ending .timer-clock { color: var(--accent); }
-.timer[data-status="done"] .timer-clock { color: var(--accent); animation: blink 1s steps(1, end) infinite; }
+.timer.ending .timer-clock { color: var(--accent); text-shadow: var(--glow-text); }
+.timer[data-status="done"] .timer-clock { color: var(--accent); text-shadow: var(--glow-text); animation: blink 1s steps(1, end) infinite; }
 .timer-controls { display: flex; justify-content: flex-end; gap: 6px; }
 .timer-start { min-width: 112px; justify-content: center; border-color: var(--accent); color: var(--accent); }
 .timer-start:hover:not(:disabled) { border-color: var(--accent-strong); color: var(--accent-strong); }
@@ -308,6 +301,7 @@ main {
 .timer-bar {
   height: 100%;
   background: var(--accent);
+  box-shadow: 0 0 10px rgba(255, 46, 122, 0.8);
   transform-origin: left center;
   transform: scaleX(var(--p, 0));
   transition: transform 0.25s linear;

@@ -16,7 +16,8 @@
     "start": "electron .",
     "convert-legacy": "node scripts/convert-legacy.js",
     "test": "node --test test/*.test.js",
-    "icon": "electron scripts/make-icon.js",
+    "icon": "python scripts/make-logo.py",
+    "logo": "python scripts/make-logo.py gif",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac"

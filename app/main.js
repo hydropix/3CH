@@ -20,7 +20,7 @@ function createWindow() {
     minWidth: NORMAL_MIN[0],
     minHeight: NORMAL_MIN[1],
     title: '3CH',
-    backgroundColor: '#0f1013',
+    backgroundColor: '#070608',
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
