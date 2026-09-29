@@ -1,7 +1,7 @@
 {
   "name": "3ch",
   "productName": "3CH",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Random subject generator for concept art and speed painting, a modern rebuild of 3CH kilogeneratormorphic (2005).",
   "author": "Hydropix",
   "license": "MIT",
@@ -81,6 +81,16 @@
     },
     "dmg": {
       "artifactName": "3CH-mac.${ext}"
-    }
+    },
+    "extraResources": [
+      {
+        "from": "../LICENSE",
+        "to": "LICENSE"
+      },
+      {
+        "from": "../CREDITS.md",
+        "to": "CREDITS.md"
+      }
+    ]
   }
 }

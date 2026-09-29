@@ -17,15 +17,16 @@
 
 ## ⬇️ Download
 
-| | Download | Notes |
-|---|---|---|
-| **Windows** | [**3CH-Setup.exe**](https://github.com/hydropix/3CH/releases/latest/download/3CH-Setup.exe) | Installer, Windows 10 / 11 (64-bit) |
-| **Windows** | [**3CH-Portable.exe**](https://github.com/hydropix/3CH/releases/latest/download/3CH-Portable.exe) | No install: run it from anywhere, even a USB stick |
-| **macOS** | [**3CH-mac.dmg**](https://github.com/hydropix/3CH/releases/latest/download/3CH-mac.dmg) | Apple Silicon and Intel (universal) |
+<p align="center">
+  <a href="https://github.com/hydropix/3CH/releases/latest/download/3CH-Setup.exe"><img src="docs/download-windows.svg" width="320" alt="Download for Windows"></a>
+  &nbsp;
+  <a href="https://github.com/hydropix/3CH/releases/latest/download/3CH-mac.dmg"><img src="docs/download-macos.svg" width="320" alt="Download for macOS"></a>
+</p>
 
-These links always point to the latest release. Every version is listed on the
-[Releases page](https://github.com/hydropix/3CH/releases). The builds are made
-automatically by GitHub Actions from this repository.
+<p align="center">
+  No install on Windows? Get the <a href="https://github.com/hydropix/3CH/releases/latest/download/3CH-Portable.exe"><b>portable version</b></a>, which runs from anywhere, even a USB stick.<br>
+  <sub>The buttons always download the latest version. See every version on the <a href="https://github.com/hydropix/3CH/releases">Releases page</a>. The builds are made automatically by GitHub Actions from this repository.</sub>
+</p>
 
 <details>
 <summary><b>First launch: "Windows protected your PC" / "Apple could not verify 3CH"</b></summary>
@@ -100,12 +101,14 @@ npm run dist:win   # build Windows installers into app/dist
 npm run dist:mac   # build the macOS .dmg (on a Mac)
 ```
 
-To publish a new version, bump `version` in `app/package.json`, commit, then tag
-and push. GitHub Actions builds both platforms and attaches them to a new release:
+To publish a new version:
+1. Bump `version` in `app/package.json` (`npm version 2.x.y --no-git-tag-version` in `app/`).
+2. Add a `## [2.x.y]` section to [CHANGELOG.md](CHANGELOG.md). It becomes the release notes.
+3. Commit, then tag and push. GitHub Actions builds both platforms and attaches them to a new release:
 
 ```bash
-git tag v2.0.1
-git push origin v2.0.1
+git tag v2.x.y
+git push origin v2.x.y
 ```
 
 ## History

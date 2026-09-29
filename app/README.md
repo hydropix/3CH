@@ -63,11 +63,15 @@ npm run icon       # regenerate build/icon.png
 ```
 
 CI (`.github/workflows/build.yml`) runs the tests and builds both platforms on
-every push. A `v*` tag also publishes a GitHub Release.
+every push. A `v*` tag also publishes a GitHub Release, with the matching
+[CHANGELOG](../CHANGELOG.md) section as its notes.
 
-- `main.js`: window and file system access (themes, import, export, clipboard)
+- `main.js`: window and file system access (themes, import, export, clipboard),
+  timer taskbar progress and notification, mini mode
 - `preload.js`: the small API the page can call (`window.ch3`)
 - `renderer/generator.js`: generation logic, shared with the tests
 - `renderer/app.js`, `index.html`, `styles.css`: the interface
 - `renderer/timer.js`: speed painting countdown, shared with the tests
 - `src/legacy.js`: v1 → v2 theme conversion
+- `src/themes.js`: loads bundled and user themes
+- `scripts/`: legacy conversion and icon generation

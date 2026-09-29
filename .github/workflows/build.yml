@@ -72,11 +72,19 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
           merge-multiple: true
+      - name: Release notes from CHANGELOG.md
+        working-directory: .
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="[$version]" '/^## /{p = index($0, v) > 0; next} p' CHANGELOG.md > notes.md
+          test -s notes.md || echo "See [CHANGELOG.md](CHANGELOG.md)." > notes.md
+          cat notes.md
       - uses: softprops/action-gh-release@v2
         with:
           files: artifacts/*
-          generate_release_notes: true
+          body_path: notes.md
