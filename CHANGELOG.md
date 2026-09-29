@@ -2,12 +2,15 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
-## [Unreleased]
+## [2.1.0] - 2026-09-29
 
 ### Changed
 - New logo and icon: the old die is now a neon mascot on a hot pink paint splat.
 - The interface is dark only and matches the logo: black, hot pink accents and
   a neon glow.
+- The Windows icon uses a simplified face at small sizes, so it stays readable
+  in the taskbar.
+- README: animated logo, new screenshots and matching download buttons.
 
 ## [2.0.1] - 2026-09-29
 
