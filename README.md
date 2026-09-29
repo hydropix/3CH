@@ -16,9 +16,9 @@
 ## ⬇️ Download
 
 <p align="center">
-  <a href="https://github.com/hydropix/3CH/releases/latest/download/3CH-Setup.exe"><img src="docs/download-windows.svg" width="320" alt="Download for Windows"></a>
+  <a href="https://github.com/hydropix/3CH/releases/latest/download/3CH-Setup.exe"><img src="docs/download-windows.svg" width="344" alt="Download for Windows"></a>
   &nbsp;
-  <a href="https://github.com/hydropix/3CH/releases/latest/download/3CH-mac.dmg"><img src="docs/download-macos.svg" width="320" alt="Download for macOS"></a>
+  <a href="https://github.com/hydropix/3CH/releases/latest/download/3CH-mac.dmg"><img src="docs/download-macos.svg" width="344" alt="Download for macOS"></a>
 </p>
 
 <p align="center">

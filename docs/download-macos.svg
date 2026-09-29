@@ -1,17 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="72" viewBox="0 0 320 72" role="img" aria-label="Download for macOS">
+<svg xmlns="http://www.w3.org/2000/svg" width="344" height="96" viewBox="0 0 344 96" role="img" aria-label="Download for macOS">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffb766"/>
-      <stop offset="1" stop-color="#e08a2e"/>
+      <stop offset="0" stop-color="#ff5b97"/>
+      <stop offset="1" stop-color="#ff2e7a"/>
     </linearGradient>
+    <filter id="glow" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
   </defs>
-  <rect width="320" height="72" rx="14" fill="url(#bg)"/>
-  <rect x="0.5" y="0.5" width="319" height="71" rx="13.5" fill="none" stroke="#1a1206" stroke-opacity="0.15"/>
-  <g transform="translate(22 18)" fill="none" stroke="#1a1206" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="12" y="12" width="320" height="72" rx="14" fill="#ff2e7a" opacity="0.7" filter="url(#glow)"/>
+  <rect x="12" y="12" width="320" height="72" rx="14" fill="url(#bg)"/>
+  <rect x="12.5" y="12.5" width="319" height="71" rx="13.5" fill="none" stroke="#0a0206" stroke-opacity="0.18"/>
+  <g transform="translate(34 30)" fill="none" stroke="#0a0206" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
     <path d="M18 4v20m0 0-8-8m8 8 8-8M5 32h26"/>
   </g>
-  <g font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" fill="#1a1206">
-    <text x="72" y="33" font-size="20" font-weight="700">Download for macOS</text>
-    <text x="72" y="53" font-size="13" font-weight="500" fill-opacity="0.72">Universal · Apple Silicon and Intel</text>
+  <g font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" fill="#0a0206">
+    <text x="84" y="45" font-size="20" font-weight="700">Download for macOS</text>
+    <text x="84" y="65" font-size="13" font-weight="500" fill-opacity="0.72">Universal · Apple Silicon and Intel</text>
   </g>
 </svg>
