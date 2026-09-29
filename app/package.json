@@ -1,0 +1,85 @@
+{
+  "name": "3ch",
+  "productName": "3CH",
+  "version": "2.0.0",
+  "description": "Random subject generator for concept art and speed painting, a modern rebuild of 3CH kilogeneratormorphic (2005).",
+  "author": "Hydropix",
+  "homepage": "https://github.com/hydropix/3CH",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hydropix/3CH.git"
+  },
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "convert-legacy": "node scripts/convert-legacy.js",
+    "test": "node --test test/*.test.js",
+    "icon": "electron scripts/make-icon.js",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.hydropix.3ch",
+    "productName": "3CH",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "src/**",
+      "renderer/**",
+      "themes/**"
+    ],
+    "publish": null,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "3CH-Setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "portable": {
+      "artifactName": "3CH-Portable.${ext}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "category": "public.app-category.graphics-design",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "notarize": false
+    },
+    "dmg": {
+      "artifactName": "3CH-mac.${ext}"
+    }
+  }
+}

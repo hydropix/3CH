@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+*.exe binary
+# Original 2005 files: keep them byte for byte (Windows-1252, CRLF).
+Legacy/** -text

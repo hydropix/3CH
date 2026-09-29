@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3CH</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="3" y="3" width="26" height="26" rx="7" />
+        <circle cx="11" cy="11" r="2.4" /><circle cx="21" cy="11" r="2.4" />
+        <circle cx="16" cy="16" r="2.4" />
+        <circle cx="11" cy="21" r="2.4" /><circle cx="21" cy="21" r="2.4" />
+      </svg>
+      <div>
+        <h1>3CH</h1>
+        <p>kilogeneratormorphic <span class="version">v2</span></p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn ghost" id="importBtn" title="Convert a legacy theme folder (structure.txt + lists)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg>
+        Import legacy theme
+      </button>
+      <button class="btn ghost" id="folderBtn" title="Open the folder holding your own themes">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Themes folder
+      </button>
+    </div>
+  </header>
+
+  <nav class="themebar">
+    <div class="themes" id="themes" role="tablist" aria-label="Theme"></div>
+    <div class="combos" id="combos" title="Distinct subjects this theme can produce"></div>
+  </nav>
+
+  <main>
+    <section class="stage" aria-label="Subject">
+      <div class="subject" id="subject" aria-live="polite"></div>
+      <p class="hint" id="hint">Click a word to reroll it, lock it to keep it between rolls.</p>
+      <div class="actions">
+        <button class="btn primary" id="generateBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg>
+          Generate <kbd>Space</kbd>
+        </button>
+        <button class="btn" id="keepBtn" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 4 2.47 5 5.53.8-4 3.9.94 5.5L12 16.6l-4.94 2.6.94-5.5-4-3.9 5.53-.8z"/></svg>
+          Keep <kbd>Enter</kbd>
+        </button>
+        <button class="btn" id="copyBtn" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>
+          Copy <kbd>C</kbd>
+        </button>
+        <button class="btn" id="unlockBtn" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg>
+          Unlock all <kbd>U</kbd>
+        </button>
+      </div>
+
+      <div class="timer" id="timer" data-status="idle">
+        <div class="timer-presets" id="timerPresets" role="group" aria-label="Session length">
+          <label class="timer-custom" title="Custom length, in minutes">
+            <input type="number" id="timerMinutes" min="1" max="240" step="1" aria-label="Minutes">
+            <span>min</span>
+          </label>
+        </div>
+        <div class="timer-clock" id="timerClock" aria-live="off">30:00</div>
+        <div class="timer-controls">
+          <button class="btn timer-start" id="timerStartBtn">
+            <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>
+            <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+            <span id="timerStartLabel">Start</span> <kbd>T</kbd>
+          </button>
+          <button class="btn" id="timerResetBtn" title="Reset the timer (R)" aria-label="Reset the timer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66M4 4v5h5"/></svg>
+            <kbd>R</kbd>
+          </button>
+          <button class="btn" id="soundBtn" aria-pressed="true" title="Sound alerts on / off" aria-label="Sound alerts">
+            <svg class="i-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+            <svg class="i-mute" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM17 10l4 4m0-4-4 4"/></svg>
+          </button>
+          <button class="btn" id="miniBtn" title="Small always-on-top window, to keep the subject and time in sight while painting (M)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><rect x="12" y="12" width="6" height="5" rx="1"/></svg>
+            <span id="miniLabel">Mini</span> <kbd>M</kbd>
+          </button>
+        </div>
+        <div class="timer-track" aria-hidden="true"><div class="timer-bar" id="timerBar"></div></div>
+      </div>
+    </section>
+
+    <section class="panels">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Selected <span class="count" id="selectedCount">0</span></h2>
+          <div class="panel-actions">
+            <button class="btn small" id="copyAllBtn">Copy all</button>
+            <button class="btn small" id="exportBtn">Export .txt</button>
+            <button class="btn small danger" id="clearSelectedBtn">Clear</button>
+          </div>
+        </div>
+        <ol class="list" id="selectedList"></ol>
+        <p class="empty" id="selectedEmpty">Subjects you keep land here, and stay after you close the app.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>History <span class="count" id="historyCount">0</span></h2>
+          <div class="panel-actions">
+            <button class="btn small danger" id="clearHistoryBtn">Clear</button>
+          </div>
+        </div>
+        <ol class="list" id="historyList"></ol>
+        <p class="empty" id="historyEmpty">Every roll is logged here. Click one to bring it back.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Original 3CH kilogeneratormorphic v1.0 (2005) · Credits: Hydropix, Vyle, Viag, Sparth, BARoNTiERi</span>
+    <span class="shortcuts"><kbd>1</kbd>–<kbd>9</kbd> reroll word · <kbd>Shift</kbd>+<kbd>1</kbd>–<kbd>9</kbd> lock · <kbd>←</kbd><kbd>→</kbd> theme · <kbd>Esc</kbd> leave mini</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="generator.js"></script>
+  <script src="timer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

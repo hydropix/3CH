@@ -1,0 +1,1 @@
+adjective,object,action,object2,location

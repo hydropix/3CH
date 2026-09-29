@@ -1,0 +1,12 @@
+fish,
+arthropod,
+worm,
+mammifer,
+reptile,
+saurian,
+mollusk,
+humanoid,
+cephalopod,
+bird,
+creature,
+cnidaria
