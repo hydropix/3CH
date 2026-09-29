@@ -12,6 +12,7 @@
 <p align="center">
   <a href="https://github.com/hydropix/3CH/actions/workflows/build.yml"><img src="https://github.com/hydropix/3CH/actions/workflows/build.yml/badge.svg" alt="Build status"></a>
   <a href="https://github.com/hydropix/3CH/releases/latest"><img src="https://img.shields.io/github/v/release/hydropix/3CH?label=latest%20release" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/hydropix/3CH" alt="MIT license"></a>
 </p>
 
 ## ⬇️ Download
@@ -116,3 +117,7 @@ fixes the original data-parsing bugs and adds rerolling and locking single
 words, kept subjects, the timer and mini mode.
 
 **Original credits:** Hydropix, Vyle, Viag, Sparth, BARoNTiERi.
+
+## License
+
+[MIT](LICENSE) © Hydropix

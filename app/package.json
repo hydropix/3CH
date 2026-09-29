@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "description": "Random subject generator for concept art and speed painting, a modern rebuild of 3CH kilogeneratormorphic (2005).",
   "author": "Hydropix",
+  "license": "MIT",
   "homepage": "https://github.com/hydropix/3CH",
   "repository": {
     "type": "git",
