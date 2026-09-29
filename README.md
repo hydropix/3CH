@@ -116,8 +116,12 @@ were in [`Legacy/`](Legacy). Version 2 is a rebuild with the same themes. It
 fixes the original data-parsing bugs and adds rerolling and locking single
 words, kept subjects, the timer and mini mode.
 
-**Original credits:** Hydropix, Vyle, Viag, Sparth, BARoNTiERi.
+**Original credits:** Hydropix, Vyle, Viag, Sparth, BARoNTiERi. They wrote the
+original app and all the word lists that the themes are built from. See
+[CREDITS.md](CREDITS.md).
 
 ## License
 
-[MIT](LICENSE) © Hydropix
+[MIT](LICENSE) © Hydropix and the 3CH contributors. The word lists (in `Legacy/`
+and `app/themes/`) are by the original 3CH team: please keep their credit when
+you reuse them ([CREDITS.md](CREDITS.md)).
