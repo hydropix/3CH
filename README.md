@@ -47,9 +47,7 @@ you the first time.
 
 ## 🎬 Trailer
 
-<p align="center">
-  <a href="docs/trailer.mp4"><img src="docs/trailer-poster.jpg" width="880" alt="Watch the 3CH trailer (30 s, sound on)"></a>
-</p>
+https://github.com/user-attachments/assets/6ad86c5e-5fcb-4526-ba17-81c438e555da
 
 ## What it does
 
