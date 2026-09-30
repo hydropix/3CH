@@ -2,7 +2,7 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
-## [Unreleased]
+## [2.2.0] - 2026-09-30
 
 ### Added
 - **Chimera**, a new theme that changes the shape of the sentence on every
@@ -43,8 +43,14 @@ Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
   depending on the theme, and "transvestite", "native Indian" and "gypsy"
   became "drag queen", "Native American" and "Romani woman". "midget" became
   "pygmy", and "crippling" (a place) became "crumbling".
+- The subject stays on one line when it fits: the words shrink a little (down
+  to 70%, 80% in the mini window) instead of wrapping. Longer subjects still
+  wrap at full size.
+- History is now on the left and Selected on the right.
 
 ### Fixed
+- Chimera: proper nouns ("Viking", "Jedi knight", "UFO"...) are capitalised
+  in the middle of a subject.
 - macOS: Cmd+Q, Cmd+W and copy/paste work again. The app had no menu, and
   macOS takes these shortcuts from it.
 - A hand-written theme with a bad entry (`null`, a number, a weight written as
