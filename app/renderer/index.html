@@ -98,6 +98,16 @@
     <section class="panels">
       <div class="panel">
         <div class="panel-head">
+          <h2>History <span class="count" id="historyCount">0</span></h2>
+          <div class="panel-actions">
+            <button class="btn small danger" id="clearHistoryBtn">Clear</button>
+          </div>
+        </div>
+        <ol class="list" id="historyList"></ol>
+        <p class="empty" id="historyEmpty">Every roll is logged here. Click one to bring it back.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
           <h2>Selected <span class="count" id="selectedCount">0</span></h2>
           <div class="panel-actions">
             <button class="btn small" id="copyAllBtn">Copy all</button>
@@ -107,16 +117,6 @@
         </div>
         <ol class="list" id="selectedList"></ol>
         <p class="empty" id="selectedEmpty">Subjects you keep land here, and stay after you close the app.</p>
-      </div>
-      <div class="panel">
-        <div class="panel-head">
-          <h2>History <span class="count" id="historyCount">0</span></h2>
-          <div class="panel-actions">
-            <button class="btn small danger" id="clearHistoryBtn">Clear</button>
-          </div>
-        </div>
-        <ol class="list" id="historyList"></ol>
-        <p class="empty" id="historyEmpty">Every roll is logged here. Click one to bring it back.</p>
       </div>
     </section>
   </main>
