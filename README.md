@@ -45,6 +45,12 @@ you the first time.
   <img src="docs/screenshot.png" width="880" alt="3CH main window">
 </p>
 
+## 🎬 Trailer
+
+<p align="center">
+  <a href="docs/trailer.mp4"><img src="docs/trailer-poster.jpg" width="880" alt="Watch the 3CH trailer (30 s, sound on)"></a>
+</p>
+
 ## What it does
 
 Press **Space** and 3CH gives you a subject to paint:
