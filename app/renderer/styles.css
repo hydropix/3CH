@@ -165,9 +165,14 @@ main {
   justify-content: center;
   align-items: flex-start;
   gap: 10px 8px;
+  width: 100%;
   min-height: 132px;
   max-width: 1100px;
+  --fit-min: 0.7;
 }
+/* Set by fitSubject() while the subject fits on one line. */
+.subject.one-line { flex-wrap: nowrap; }
+.subject.one-line > * { flex-shrink: 0; }
 .subject .placeholder {
   align-self: center;
   color: var(--text-3);
@@ -190,7 +195,7 @@ main {
   animation: rise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: calc(var(--i, 0) * 35ms);
 }
-.chip .word { font: 600 30px/1.2 var(--font-display); letter-spacing: -0.01em; white-space: nowrap; }
+.chip .word { font: 600 calc(27px * var(--fit, 1))/1.2 var(--font-display); letter-spacing: -0.01em; white-space: nowrap; }
 .chip .label {
   font: 600 10px/1 var(--font);
   letter-spacing: 0.1em;
@@ -224,7 +229,7 @@ main {
 .chip.locked .lock { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .literal {
   padding: 8px 2px 7px;
-  font: 400 30px/1.2 var(--font-display);
+  font: 400 calc(27px * var(--fit, 1))/1.2 var(--font-display);
   color: var(--text-3);
   animation: rise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: calc(var(--i, 0) * 35ms);
@@ -329,10 +334,10 @@ body.mini .stage {
   border-radius: 0;
   box-shadow: none;
 }
-body.mini .subject { min-height: 0; flex: 1; align-items: center; align-content: center; gap: 2px 4px; }
+body.mini .subject { min-height: 0; flex: 1; align-items: center; align-content: center; gap: 2px 4px; --fit-min: 0.8; }
 body.mini .subject .placeholder { font-size: 17px; }
 body.mini .chip { padding: 3px 6px; gap: 0; }
-body.mini .chip .word, body.mini .literal { font-size: 19px; }
+body.mini .chip .word, body.mini .literal { font-size: calc(18px * var(--fit, 1)); }
 body.mini .literal { padding: 3px 0; }
 body.mini .literal.glue { margin-left: -9px; }
 body.mini .chip .label, body.mini .chip .lock { display: none; }
@@ -449,7 +454,7 @@ body.mini .btn kbd { display: none; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; border: 3px solid var(--surface); }
 
 @media (max-width: 1050px) {
-  .chip .word, .literal { font-size: 24px; }
+  .chip .word, .literal { font-size: calc(22px * var(--fit, 1)); }
   .timer-clock { font-size: 32px; }
   .timer .btn kbd { display: none; }
   .footer .shortcuts { display: none; }

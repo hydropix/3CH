@@ -234,7 +234,36 @@ function renderSubject(flashIndex = null) {
       return chip;
     })
   );
+  fitSubject();
 }
+
+// Shrinks the words (down to --fit-min) so the subject stays on one line when
+// that is enough. Longer subjects wrap at full size instead.
+function fitSubject() {
+  const box = $('subject');
+  const first = box.firstElementChild;
+  const last = box.lastElementChild;
+  box.style.setProperty('--fit', '1');
+  box.classList.remove('one-line');
+  if (!first || first.classList.contains('placeholder')) return;
+
+  box.classList.add('one-line');
+  const min = parseFloat(getComputedStyle(box).getPropertyValue('--fit-min')) || 1;
+  const width = () => last.getBoundingClientRect().right - first.getBoundingClientRect().left;
+  let fit = 1;
+  // Labels and paddings do not scale with the font, so this takes a few steps.
+  for (let i = 0; i < 6 && fit > min && width() > box.clientWidth; i++) {
+    fit = Math.max(min, fit * (box.clientWidth / width()) - 0.005);
+    box.style.setProperty('--fit', fit.toFixed(3));
+  }
+  if (width() > box.clientWidth) {
+    box.classList.remove('one-line');
+    box.style.setProperty('--fit', '1');
+  }
+}
+
+window.addEventListener('resize', fitSubject);
+document.fonts.ready.then(fitSubject);
 
 function logHistory() {
   const view = current();
@@ -572,6 +601,7 @@ function renderSound() {
 async function setMini(on) {
   timerUi.mini = await window.ch3.setMini(on);
   document.body.classList.toggle('mini', timerUi.mini);
+  fitSubject();
   $('miniLabel').textContent = timerUi.mini ? 'Exit mini' : 'Mini';
 }
 
