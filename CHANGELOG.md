@@ -2,6 +2,18 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [2.3.0] - 2026-09-30
+
+### Added
+- **A broken robot voice** reads every new subject aloud as soon as it is
+  rolled: the system's own voice, vocoded, stuttering and glitching
+  differently every time. Moving on to another subject cuts it off.
+  **Auto voice** (`Shift` + `V`) turns it off, **Speak** (`V`) replays it.
+- **The timer talks** with the same voice, like a passive-aggressive lab AI:
+  it announces the time left, puts on the pressure, counts down from 10 and
+  calls the end. The sound button mutes it with the other alerts.
+- A very soft tick on every minute of a timer session.
+
 ## [2.2.0] - 2026-09-30
 
 ### Added
