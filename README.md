@@ -1,6 +1,4 @@
-<h1 align="center">
-  <img src="docs/logo.gif" width="640" alt="3CH">
-</h1>
+https://github.com/user-attachments/assets/6ad86c5e-5fcb-4526-ba17-81c438e555da
 
 <p align="center">
   <b>Random subject generator for concept art and speed painting</b><br>
@@ -45,9 +43,7 @@ you the first time.
   <img src="docs/screenshot.png" width="880" alt="3CH main window">
 </p>
 
-## 🎬 Trailer
 
-https://github.com/user-attachments/assets/6ad86c5e-5fcb-4526-ba17-81c438e555da
 
 ## What it does
 
