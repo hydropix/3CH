@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadThemes } = require('./src/themes');
 const { convertLegacyTheme, findLegacyThemes } = require('./src/legacy');
+const speech = require('./src/speech');
 
 const bundledThemesDir = path.join(__dirname, 'themes');
 const userThemesDir = () => path.join(app.getPath('userData'), 'themes');
@@ -146,6 +147,11 @@ ipcMain.handle('window:mini', (_e, on) => {
   return Boolean(normalBounds);
 });
 
+ipcMain.handle('speech:synthesize', (_e, text, latest = true) =>
+  speech.synthesize(String(text).slice(0, 1000), { latest: latest !== false })
+);
+ipcMain.on('speech:warmUp', () => speech.warmUp());
+
 ipcMain.handle('clipboard:write', (_e, content) => clipboard.writeText(String(content)));
 
 app.setAppUserModelId('com.hydropix.3ch');
@@ -166,6 +172,8 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
+
+app.on('will-quit', () => speech.stop());
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

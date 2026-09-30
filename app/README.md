@@ -99,7 +99,7 @@ it leaves the reworked themes alone.
 ```bash
 npm install
 npm start          # run the app
-npm test           # unit tests (generator, timer, themes, legacy conversion)
+npm test           # unit tests (generator, timer, voice, announcer, themes, legacy conversion)
 npm run dist:win   # Windows installer + portable exe in dist/
 npm run dist:mac   # universal macOS .dmg in dist/ (on a Mac)
 npm run icon       # regenerate build/icon.png, build/icon.ico, renderer/logo.png
@@ -116,6 +116,11 @@ every push. A `v*` tag also publishes a GitHub Release, with the matching
 - `renderer/generator.js`: generation logic, shared with the tests
 - `renderer/app.js`, `index.html`, `styles.css`: the interface
 - `renderer/timer.js`: speed painting countdown, shared with the tests
+- `renderer/voice.js`: robot voice DSP (vocoder, glitches), shared with the tests
+- `renderer/announcer.js`: what the timer voice says and when (lines,
+  milestones, countdown), shared with the tests
+- `src/speech.js`: text to WAV with the system voice (SAPI through one
+  long-lived PowerShell process on Windows, `say` on macOS)
 - `src/legacy.js`: v1 → v2 theme conversion
 - `src/themes.js`: loads bundled and user themes
 - `scripts/`: legacy conversion, and `make-logo.py` for the logo, the icons and

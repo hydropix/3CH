@@ -178,9 +178,11 @@ function renderSubject(flashIndex = null) {
   const box = $('subject');
   const view = current();
   const hasSubject = Boolean(view);
+  sentenceChanged(view?.sentence ?? null);
 
   $('keepBtn').disabled = !hasSubject || state.kept;
   $('copyBtn').disabled = !hasSubject;
+  $('speakBtn').disabled = !hasSubject;
   $('unlockBtn').disabled = state.locked.size === 0 && !state.structureLocked;
   $('reshapeBtn').hidden = $('shapeLockBtn').hidden = !isMulti();
   $('reshapeBtn').disabled = $('shapeLockBtn').disabled = !hasSubject;
@@ -507,6 +509,11 @@ function tone(freq, at, length, volume) {
   osc.start(t0);
   osc.stop(t0 + length + 0.05);
 }
+// A very soft tick on every whole minute left.
+function playMinute() {
+  if (!timerUi.sound) return;
+  tone(1320, 0, 0.18, 0.03);
+}
 function playWarning() {
   if (!timerUi.sound) return;
   tone(660, 0, 0.35, 0.12);
@@ -581,11 +588,231 @@ function renderTimer(snap = timer.snapshot()) {
   }[snap.status];
 
   // Taskbar progress: only talk to the main process when something visible changes.
+  timerTalk(snap);
+
   const taskbar = busy ? `${snap.status}:${snap.progress.toFixed(3)}` : 'off';
   if (taskbar !== timerUi.lastTaskbar) {
     timerUi.lastTaskbar = taskbar;
     if (busy) window.ch3.timerProgress(Math.max(snap.progress, 0.01), snap.status);
     else if (snap.status === 'idle') window.ch3.timerProgress(-1);
+  }
+}
+
+// ---------- Robot voice ----------
+
+// The system voice renders each text once (a few tens of ms once the engine
+// is up); every playback then breaks it in a new way. Two voices share the
+// speakers: the subject, and the timer, which always wins. A subject cut off
+// or held back by the timer is read once the timer is quiet.
+const voice = {
+  recordings: new Map(),
+  subject: null,
+  request: 0,
+  sentence: null,
+  owed: false,
+  auto: load('3ch.voice.auto', true),
+};
+
+function playRobot(speech, when = 0) {
+  const ctx = audio();
+  const samples = Voice.robotize(speech.samples, speech.sampleRate);
+  if (!samples.length) return null;
+  const buffer = ctx.createBuffer(1, samples.length, speech.sampleRate);
+  buffer.copyToChannel(samples, 0);
+  const node = ctx.createBufferSource();
+  node.buffer = buffer;
+  const gain = ctx.createGain();
+  gain.gain.value = 0.8;
+  node.connect(gain).connect(ctx.destination);
+  node.start(when);
+  return node;
+}
+
+async function speak() {
+  const view = current();
+  if (!view) return;
+  audio(); // on this user gesture, before the wait
+  const request = ++voice.request;
+  stopSubject();
+  if (timerTalking()) return void (voice.owed = true);
+
+  let speech = voice.recordings.get(view.sentence);
+  if (!speech) {
+    $('speakBtn').classList.add('busy');
+    let wav;
+    try {
+      wav = await window.ch3.speak(view.sentence);
+    } catch (err) {
+      if (request === voice.request) toast(`No voice: ${err.message}`, true);
+      return;
+    } finally {
+      if (request === voice.request) $('speakBtn').classList.remove('busy');
+    }
+    if (!wav) return; // overtaken by a newer sentence
+    speech = Voice.parseWav(wav);
+    if (voice.recordings.size >= 20) voice.recordings.delete(voice.recordings.keys().next().value);
+    voice.recordings.set(view.sentence, speech);
+  }
+  // Pressed again, or moved on to another sentence, while waiting.
+  if (request !== voice.request) return;
+  if (timerTalking()) return void (voice.owed = true);
+
+  const node = playRobot(speech);
+  if (!node) return;
+  node.onended = () => {
+    if (voice.subject !== node) return;
+    voice.subject = null;
+    $('subject').classList.remove('speaking');
+  };
+  voice.subject = node;
+  $('subject').classList.add('speaking');
+}
+
+function stopSubject() {
+  const node = voice.subject;
+  voice.subject = null;
+  node?.stop();
+  $('subject').classList.remove('speaking');
+}
+
+// A new sentence cuts the voice off, and is read aloud when Auto voice is on.
+function sentenceChanged(sentence) {
+  if (sentence === voice.sentence) return;
+  voice.sentence = sentence;
+  voice.request++;
+  voice.owed = false;
+  stopSubject();
+  $('speakBtn').classList.remove('busy');
+  if (sentence && voice.auto) speak();
+}
+
+function toggleAutoSpeak() {
+  voice.auto = !voice.auto;
+  save('3ch.voice.auto', voice.auto);
+  renderAutoSpeak();
+  if (voice.auto) {
+    window.ch3.speechWarmUp();
+    speak();
+  } else {
+    voice.request++;
+    voice.owed = false;
+    stopSubject();
+  }
+}
+
+function renderAutoSpeak() {
+  $('autoSpeakBtn').setAttribute('aria-pressed', String(voice.auto));
+}
+
+$('speakBtn').addEventListener('click', speak);
+$('autoSpeakBtn').addEventListener('click', toggleAutoSpeak);
+
+// ---------- Timer voice ----------
+
+// The facility AI comments on the session (see announcer.js), with a 10 to 1
+// countdown timed on the audio clock. Part of the sound alerts: muted with them.
+const COUNTDOWN_AT = (Announcer.COUNTDOWN_FROM + 1.5) * 1000;
+const talk = {
+  lines: new Map(), // text -> Promise of a recording
+  nodes: new Set(),
+  plan: [],
+  done: '',
+  before: 0,
+  status: 'idle',
+  gen: 0,
+};
+
+function timerTalking() {
+  return talk.nodes.size > 0;
+}
+
+function recording(text) {
+  if (!talk.lines.has(text)) {
+    const rec = window.ch3
+      .speakLine(text)
+      .then((wav) => (wav ? Voice.parseWav(wav) : null))
+      .catch(() => {
+        talk.lines.delete(text);
+        return null;
+      });
+    talk.lines.set(text, rec);
+  }
+  return talk.lines.get(text);
+}
+
+// Says `text` in `delay` ms. A line cuts off the previous ones, except for
+// the countdown numbers (`keep`), which are all scheduled at once.
+async function say(text, delay = 0, { keep = false } = {}) {
+  const gen = talk.gen;
+  const asked = performance.now();
+  const speech = await recording(text);
+  if (!speech || gen !== talk.gen || !timerUi.sound) return;
+  if (!keep) for (const n of talk.nodes) n.stop();
+  const ctx = audio();
+  const wait = Math.max(0, delay - (performance.now() - asked)) / 1000;
+  const node = playRobot(speech, ctx.currentTime + wait);
+  if (!node) return;
+  if (voice.subject) {
+    stopSubject();
+    voice.owed = true;
+  }
+  talk.nodes.add(node);
+  $('timer').classList.add('speaking');
+  node.onended = () => {
+    talk.nodes.delete(node);
+    if (timerTalking()) return;
+    $('timer').classList.remove('speaking');
+    if (voice.owed) {
+      voice.owed = false;
+      speak();
+    }
+  };
+}
+
+function hush() {
+  talk.gen++;
+  for (const n of talk.nodes) n.stop();
+}
+
+function countdown(remaining) {
+  for (const c of Announcer.countdown(remaining)) say(c.text, c.delay, { keep: true });
+}
+
+function timerTalk(snap) {
+  const prev = talk.status;
+  const before = talk.before;
+  talk.status = snap.status;
+  talk.before = snap.remaining;
+  if (snap.status === prev && snap.status !== 'running') return;
+
+  if (snap.status === 'running' && prev !== 'running') {
+    if (prev === 'paused') {
+      say(Announcer.pickLine('resume'));
+    } else {
+      // A new session: draw its lines now and render them ahead of time.
+      talk.plan = Announcer.milestones(snap.duration);
+      talk.done = Announcer.pickLine('done');
+      say(Announcer.pickLine('start'));
+      for (const m of talk.plan) recording(m.text);
+      for (let n = Announcer.COUNTDOWN_FROM; n >= 1; n--) recording(String(n));
+      recording(talk.done);
+    }
+    if (snap.remaining <= COUNTDOWN_AT) countdown(snap.remaining);
+  } else if (snap.status === 'running') {
+    // The last minute already gets the warning beeps.
+    const minute = Announcer.minutePassed(before, snap.remaining);
+    if (minute && !(minute === 1 && snap.duration > 2 * Timer.WARN_BEFORE_MS)) playMinute();
+    for (const m of Announcer.crossed(talk.plan, before, snap.remaining)) {
+      say(m.text, m.at === Timer.WARN_BEFORE_MS ? 900 : 0); // after the warning beeps
+    }
+    if (before > COUNTDOWN_AT && snap.remaining <= COUNTDOWN_AT) countdown(snap.remaining);
+  } else if (snap.status === 'paused') {
+    hush();
+    say(Announcer.pickLine('pause'));
+  } else if (snap.status === 'done') {
+    say(talk.done, 1200); // after the first chime
+  } else {
+    hush(); // reset
   }
 }
 
@@ -615,7 +842,12 @@ $('soundBtn').addEventListener('click', () => {
   timerUi.sound = !timerUi.sound;
   save('3ch.timer.sound', timerUi.sound);
   renderSound();
-  if (timerUi.sound) tone(988, 0, 0.25, 0.12);
+  if (timerUi.sound) {
+    tone(988, 0, 0.25, 0.12);
+    window.ch3.speechWarmUp();
+  } else {
+    hush();
+  }
 });
 $('miniBtn').addEventListener('click', () => setMini(!timerUi.mini));
 
@@ -639,6 +871,9 @@ document.addEventListener('keydown', (e) => {
     keep();
   } else if (e.key === 'c' || e.key === 'C') {
     if (current()) copy(current().sentence);
+  } else if (e.key === 'v' || e.key === 'V') {
+    if (e.shiftKey) toggleAutoSpeak();
+    else speak();
   } else if (e.key === 'u' || e.key === 'U') {
     unlockAll();
   } else if (e.key === 's' || e.key === 'S') {
@@ -662,5 +897,7 @@ renderSelected();
 renderHistory();
 renderPresets();
 renderSound();
+renderAutoSpeak();
+if (voice.auto || timerUi.sound) window.ch3.speechWarmUp();
 setMinutes(timerUi.minutes);
 refreshThemes();

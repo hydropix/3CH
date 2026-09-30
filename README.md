@@ -66,9 +66,16 @@ Press **Space** and 3CH gives you a subject to paint:
   everything else changes.
 - **Keep** the subjects you like. They stay saved, and you can copy them or export
   them to a `.txt` file. The last 100 rolls are in the history.
+- **A broken robot voice** reads every new subject aloud as soon as it is
+  rolled: the system's own voice, vocoded, stuttering and glitching
+  differently every time. **Auto voice** turns it off, **Speak** replays it.
 - **Speed painting timer** (5 to 60 min, or any length up to 4 hours):
   - The time left shows in the taskbar.
-  - A beep marks the last minute, and a chime plus a notification mark the end.
+  - A very soft tick on every minute, a beep for the last one, and a chime
+    plus a notification at the end.
+  - The same robot voice runs the session like a passive-aggressive lab AI:
+    it announces the time left, puts on the pressure, counts down from 10 and
+    calls the end. The sound button mutes it with the other alerts.
 - **Mini mode**: a small always-on-top window with just the subject and the
   clock, so they stay in sight over Photoshop, Krita or Procreate.
 
@@ -83,6 +90,7 @@ Press **Space** and 3CH gives you a subject to paint:
 | New subject | `Space` |
 | Reroll word 1 to 9 / lock it | `1`–`9` / `Shift` + `1`–`9` |
 | Keep / copy the subject | `Enter` / `C` |
+| Read the subject aloud / auto voice on or off | `V` / `Shift` + `V` |
 | Unlock every word | `U` |
 | New sentence shape, same words | `S` |
 | Previous / next theme | `←` `→` |

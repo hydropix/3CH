@@ -108,7 +108,8 @@ kbd {
 .btn.small { height: 28px; padding: 0 10px; font-size: 12px; border-radius: 7px; }
 .btn.danger:hover:not(:disabled) { color: var(--danger); border-color: var(--danger); }
 .btn[hidden] { display: none; }
-.btn[aria-pressed="true"]#shapeLockBtn { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.btn[aria-pressed="true"]#shapeLockBtn,
+.btn[aria-pressed="true"]#autoSpeakBtn { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 
 /* Theme bar */
 .themebar {
@@ -240,6 +241,20 @@ main {
 
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes flash { 0% { opacity: 0.2; } 100% { opacity: 1; } }
+
+/* Robot voice: the button waits for the speech engine, the words glitch while it talks. */
+#speakBtn.busy { animation: breathe 0.8s ease-in-out infinite; }
+.subject.speaking .chip .word, .timer.speaking .timer-clock { animation: glitch 0.6s steps(1) infinite; }
+.subject.speaking .chip:nth-child(3n + 1) .word { animation-duration: 0.45s; }
+.subject.speaking .chip:nth-child(3n + 2) .word { animation-duration: 0.75s; animation-delay: -0.2s; }
+@keyframes glitch {
+  0%, 100% { transform: none; text-shadow: var(--glow-text); }
+  12% { transform: translateX(-2px); text-shadow: 2px 0 var(--accent), -2px 0 #2ef0ff; }
+  18% { transform: none; opacity: 0.4; }
+  24% { opacity: 1; }
+  57% { transform: translateX(1px) skewX(-8deg); text-shadow: -3px 0 var(--accent), 3px 0 #2ef0ff; }
+  63% { transform: none; }
+}
 
 .hint { margin: 0; color: var(--text-3); font-size: 12px; }
 .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }

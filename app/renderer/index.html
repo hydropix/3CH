@@ -50,6 +50,13 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>
           Copy <kbd>C</kbd>
         </button>
+        <button class="btn" id="speakBtn" disabled title="Read the subject aloud, with a broken robot voice (V)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M8 14h1m2 0h2m2 0h1M9 10h.01M15 10h.01M12 3v3"/></svg>
+          Speak <kbd>V</kbd>
+        </button>
+        <button class="btn" id="autoSpeakBtn" aria-pressed="true" title="Read every new subject aloud as soon as it is rolled (Shift+V)">
+          Auto voice
+        </button>
         <button class="btn" id="unlockBtn" disabled>
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg>
           Unlock all <kbd>U</kbd>
@@ -82,7 +89,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66M4 4v5h5"/></svg>
             <kbd>R</kbd>
           </button>
-          <button class="btn" id="soundBtn" aria-pressed="true" title="Sound alerts on / off" aria-label="Sound alerts">
+          <button class="btn" id="soundBtn" aria-pressed="true" title="Sound alerts and timer voice on / off" aria-label="Sound alerts and timer voice">
             <svg class="i-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
             <svg class="i-mute" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM17 10l4 4m0-4-4 4"/></svg>
           </button>
@@ -130,6 +137,8 @@
 
   <script src="generator.js"></script>
   <script src="timer.js"></script>
+  <script src="voice.js"></script>
+  <script src="announcer.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

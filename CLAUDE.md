@@ -20,7 +20,7 @@ app, which is kept byte for byte in `Legacy/`.
 ```bash
 npm install
 npm start
-npm test                 # node:test: generator, timer, themes, legacy parser (22 tests)
+npm test                 # node:test: generator, timer, voice, announcer, themes, legacy parser (30 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # ../Legacy -> JSON; skips the hand-reworked themes
@@ -49,9 +49,9 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
 - **The CSP (`style-src 'self'`) blocks inline `style` attributes.** Set styles
   through CSSOM (`el.style.setProperty`) instead. `el()` in `app.js` handles a
   `style` object that way.
-- `renderer/generator.js` and `renderer/timer.js` are UMD-style classic scripts:
-  `window.Generator` / `window.Timer` in the page, `module.exports` in Node for
-  the tests. Keep them free of DOM and Electron code.
+- `renderer/generator.js`, `renderer/timer.js`, `renderer/voice.js` and
+  `renderer/announcer.js` are UMD-style classic scripts: `window.Generator` /
+  `window.Timer` / `window.Voice` / `window.Announcer` in the page, `module.exports` in Node for the tests. Keep them free of DOM and Electron code.
 - `themes/chimera.json` is hand-written (99 `structures`, lists sorted by
   grammatical role, every noun and verb form spelled out). The five legacy
   themes were reworked the same way (`"source": "legacy-reworked"`): the 2005
@@ -67,6 +67,22 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   asked to write or to be "wild", the model drifts back to plausible, clichéd
   associations or breaks the grammar. The LLM is only useful offline (writing
   structures, sorting and inflecting the lexicon), never at runtime.
+- **Robot voice** (auto by default, `V` replays, `Shift`+`V` toggles auto):
+  `speechSynthesis` cannot be routed into Web Audio, so the main process
+  renders the system voice to a WAV (`src/speech.js`, an English voice when one
+  is installed) and `renderer/voice.js` breaks it in JS (vocoder on a stepped
+  sawtooth, then stutters, bitcrush, reverse, dropouts). On Windows one
+  PowerShell process stays alive, warmed up at launch: one process per sentence
+  cost ~1 s, a sentence now takes 20-80 ms. Only the latest request waits
+  (older ones resolve to null), and a new sentence cuts the voice off. The
+  recording is cached per sentence; the glitches are redrawn every time.
+- **Timer voice**: `renderer/announcer.js` holds the lines (original ones in
+  the tone of a passive-aggressive lab AI; no Portal quotes or names) and the
+  marks. A session draws its lines at start and renders them ahead
+  (`speakLine`, which queues instead of keeping only the latest). The 10 to 1
+  countdown is scheduled on the AudioContext clock at 11.5 s left. The timer
+  voice cuts the subject voice off; the subject is read again afterwards.
+  Muted by the sound alerts button.
 - `Legacy/**` is `-text` in `.gitattributes`: the original files are
   Windows-1252 with CRLF and must not be normalised.
 - `backgroundThrottling: false` keeps the timer exact while the window is hidden.
