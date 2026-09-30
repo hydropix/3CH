@@ -54,8 +54,10 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   the tests. Keep them free of DOM and Electron code.
 - `themes/chimera.json` is hand-written (99 `structures`, lists sorted by
   grammatical role, every noun and verb form spelled out). The five legacy
-  themes were reworked the same way (`"source": "legacy-reworked"`): same
-  words and weights, typos fixed, 31 to 34 structures. They are hand-edited
+  themes were reworked the same way (`"source": "legacy-reworked"`): the 2005
+  words and weights, typos fixed, 31 to 34 structures, plus new words at
+  weight 1. New words must be drawable: concrete creatures, objects, places,
+  materials and visual traits, not abstract ideas. They are hand-edited
   sources now; their one-off build scripts were not kept. Adjectives such as
   "white" or "black" are avoided on beings, since they read as skin colour.
   `convert-legacy` skips any existing file whose `source` is not `legacy`. A

@@ -32,6 +32,12 @@ Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
   cycle; a place's structure, materials, state and point of view. Darwin gains
   habitats and behaviours, Constructor gains materials and states ("half
   flooded", "covered in scaffolding"...).
+- Every bundled theme has a larger vocabulary (about 1,400 new words in all),
+  chosen to be easy to draw: new creatures and characters (axolotl, plague
+  doctor, luchador...), odd objects (grandfather clock, diving helmet, snow
+  globe...), body parts, places, materials (rammed earth, mother-of-pearl...),
+  visual traits, actions, settings and camera shots ("(extreme close-up)",
+  "(backlit by an explosion)"...).
 - Words that read badly on a person were changed: "white" and "black" became
   "ghost-white", "snow-white", "jet-black", "white-clad" or "black-clad"
   depending on the theme, and "transvestite", "native Indian" and "gypsy"

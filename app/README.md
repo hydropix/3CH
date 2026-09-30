@@ -86,8 +86,9 @@ Windows-1252 accents, missing commas, `;` typed instead of `,`, and accidental
 empty entries. Duplicate entries become weights.
 
 The five bundled legacy themes started from that conversion of `../Legacy`,
-then were rewritten by hand (`"source": "legacy-reworked"`): the same words and
-weights in typed lists, the spelling fixed, and 31 to 34 structures each. The
+then were rewritten by hand (`"source": "legacy-reworked"`): the 2005 words and
+weights in typed lists, the spelling fixed, 31 to 34 structures each, and new
+words added at weight 1 (things a concept artist can draw). The
 2005 versions can still be brought back with **Import legacy theme** on the
 matching `../Legacy` folder. `npm run convert-legacy` writes the plain
 conversion to `themes/`, but skips any file whose `source` is not `legacy`, so
