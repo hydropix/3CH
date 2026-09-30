@@ -27,10 +27,16 @@ Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
   "(looking up)"...) at the end of some shapes, and gains action-movie props
   (detonator, microfilm...). Urban gains street props (spray can, manhole
   cover...) and keeps the original team's names.
+- **Darwin** (33 shapes) and **Constructor** (31 shapes) are reworked too, and
+  stay design briefs: a creature's body, hunting, defence, habitat and life
+  cycle; a place's structure, materials, state and point of view. Darwin gains
+  habitats and behaviours, Constructor gains materials and states ("half
+  flooded", "covered in scaffolding"...).
 - Words that read badly on a person were changed: "white" and "black" became
   "ghost-white", "snow-white", "jet-black", "white-clad" or "black-clad"
   depending on the theme, and "transvestite", "native Indian" and "gypsy"
-  became "drag queen", "Native American" and "Romani woman".
+  became "drag queen", "Native American" and "Romani woman". "midget" became
+  "pygmy", and "crippling" (a place) became "crumbling".
 
 ### Fixed
 - macOS: Cmd+Q, Cmd+W and copy/paste work again. The app had no menu, and

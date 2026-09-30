@@ -23,7 +23,7 @@ npm start
 npm test                 # node:test: generator, timer, themes, legacy parser (22 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
-npm run convert-legacy   # regenerate the "source": "legacy" themes from ../Legacy
+npm run convert-legacy   # ../Legacy -> JSON; skips the hand-reworked themes
 npm run icon             # build/icon.png + icon.ico + renderer/logo.png (Python)
 npm run logo             # same, plus docs/logo.gif (needs ffmpeg)
 ```
@@ -53,11 +53,11 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   `window.Generator` / `window.Timer` in the page, `module.exports` in Node for
   the tests. Keep them free of DOM and Electron code.
 - `themes/chimera.json` is hand-written (99 `structures`, lists sorted by
-  grammatical role, every noun and verb form spelled out). Legacy themes are
-  being reworked the same way, one by one (`"source": "legacy-reworked"`:
-  Fantasy, Hollywood action, Urban so far): same words and weights, typos
-  fixed, several structures. Adjectives such as "white" or "black" are avoided
-  on beings, since they read as skin colour.
+  grammatical role, every noun and verb form spelled out). The five legacy
+  themes were reworked the same way (`"source": "legacy-reworked"`): same
+  words and weights, typos fixed, 31 to 34 structures. They are hand-edited
+  sources now; their one-off build scripts were not kept. Adjectives such as
+  "white" or "black" are avoided on beings, since they read as skin colour.
   `convert-legacy` skips any existing file whose `source` is not `legacy`. A
   slot stores the entry (`raw`), the form is applied at render time by
   `inflect()`.
