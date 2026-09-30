@@ -80,7 +80,7 @@ same `id` as a bundled one replaces it.
 **Import legacy theme** converts a v1 folder (`structure.txt` plus one
 comma-separated `.txt` per slot). You can pick a single theme folder or a parent
 holding several, up to four levels down (unreadable folders are skipped). The
-bundled themes were generated from `../Legacy` with:
+bundled themes with `"source": "legacy"` were generated from `../Legacy` with:
 
 ```bash
 npm run convert-legacy
@@ -89,6 +89,11 @@ npm run convert-legacy
 The conversion keeps the original data and odds, and fixes the v1 parsing bugs:
 Windows-1252 accents, missing commas, `;` typed instead of `,`, and accidental
 empty entries. Duplicate entries become weights.
+
+Themes with `"source": "legacy-reworked"` started from that conversion, then
+were rewritten by hand with several structures, typed lists and fixed spelling.
+The script leaves them alone. The 2005 versions can still be brought back with
+**Import legacy theme** on the matching `../Legacy` folder.
 
 ## Development
 

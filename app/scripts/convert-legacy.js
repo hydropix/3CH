@@ -19,6 +19,12 @@ for (const dir of findLegacyThemes(root)) {
   }
   seen.add(theme.id);
   const file = path.join(outDir, `${theme.id}.json`);
+  // Reworked themes (several structures, fixed spelling) are edited by hand:
+  // only overwrite the ones this script produced.
+  if (fs.existsSync(file) && JSON.parse(fs.readFileSync(file, 'utf8')).source !== 'legacy') {
+    console.log(`${theme.name.padEnd(18)} -> kept ${path.relative(process.cwd(), file)} (reworked by hand)`);
+    continue;
+  }
   fs.writeFileSync(file, JSON.stringify(theme, null, 2) + '\n', 'utf8');
   const sizes = Object.entries(theme.lists).map(([k, v]) => `${k}:${v.length}`);
   console.log(`${theme.name.padEnd(18)} -> ${path.relative(process.cwd(), file)}  [${sizes.join(' ')}]`);

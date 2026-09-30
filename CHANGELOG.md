@@ -15,6 +15,14 @@ Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 - Themes can hold several structures (`structures`), with word forms such as
   `{being.pl}`. See [app/README.md](app/README.md).
 
+### Changed
+- **Fantasy** now has 32 sentence shapes instead of one, with Reshape and Lock
+  shape like Chimera. It keeps its 2005 words and odds, with the English typos
+  fixed ("menacant", "surpuissant", "lyche"...), plus a few fantasy objects
+  (sword, grimoire, relic...) and verbs without an object (prays, howls...).
+  Fantasy rolls from the history of an older version can no longer be
+  restored.
+
 ### Fixed
 - macOS: Cmd+Q, Cmd+W and copy/paste work again. The app had no menu, and
   macOS takes these shortcuts from it.
