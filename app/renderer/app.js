@@ -4,6 +4,8 @@ const G = window.Generator;
 const $ = (id) => document.getElementById(id);
 
 const HISTORY_MAX = 100;
+const HINT = 'Click a word to reroll it, lock it to keep it between rolls.';
+const HINT_MULTI = 'Every roll changes the sentence shape too. Locked words follow into the next one.';
 const ICONS = {
   lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
   unlock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/>',
@@ -25,6 +27,9 @@ const state = {
   theme: null,
   parts: null,
   locked: new Set(),
+  // Themes with several structures: the one in use, and whether it is kept.
+  structure: null,
+  structureLocked: false,
   kept: false,
   selected: load('3ch.selected', []),
   history: load('3ch.history', []),
@@ -110,9 +115,11 @@ function renderThemes() {
     )
   );
   if (state.theme) {
+    const shapes = state.theme.structures?.length;
     $('combos').replaceChildren(
       el('strong', { text: formatCombos(G.combinations(state.theme)) }),
-      ' possible subjects'
+      ' possible subjects',
+      shapes ? ` · ${shapes} sentence shapes` : ''
     );
   }
 }
@@ -126,6 +133,8 @@ function selectTheme(id, { keepParts = false } = {}) {
   if (changed && !keepParts) {
     state.parts = null;
     state.locked.clear();
+    state.structure = null;
+    state.structureLocked = false;
   }
   renderThemes();
   renderSubject();
@@ -150,8 +159,15 @@ async function refreshThemes(preferId) {
 
 // ---------- Subject ----------
 
+const isMulti = () => Boolean(state.theme?.structures);
+
+// The theme seen through the structure in use (the theme itself for classic ones).
+function shaped() {
+  return G.shape(state.theme, state.structure ?? 0);
+}
+
 function current() {
-  return state.parts ? G.render(state.parts) : null;
+  return state.parts ? G.render(G.inflect(state.theme, state.parts)) : null;
 }
 
 function wordSlots() {
@@ -165,7 +181,11 @@ function renderSubject(flashIndex = null) {
 
   $('keepBtn').disabled = !hasSubject || state.kept;
   $('copyBtn').disabled = !hasSubject;
-  $('unlockBtn').disabled = state.locked.size === 0;
+  $('unlockBtn').disabled = state.locked.size === 0 && !state.structureLocked;
+  $('reshapeBtn').hidden = $('shapeLockBtn').hidden = !isMulti();
+  $('reshapeBtn').disabled = $('shapeLockBtn').disabled = !hasSubject;
+  $('shapeLockBtn').setAttribute('aria-pressed', String(state.structureLocked));
+  $('hint').textContent = isMulti() ? HINT_MULTI : HINT;
   $('hint').style.visibility = hasSubject ? 'visible' : 'hidden';
 
   if (!view) {
@@ -178,7 +198,7 @@ function renderSubject(flashIndex = null) {
   box.replaceChildren(
     ...view.parts.map((p, i) => {
       const style = animate ? { '--i': String(i) } : { animation: 'none' };
-      if (p.literal) return el('span', { class: 'literal', text: p.display, style });
+      if (p.literal) return el('span', { class: `literal${p.glue ? ' glue' : ''}`, text: p.display, style });
 
       const n = slots.indexOf(p.index) + 1;
       const locked = state.locked.has(p.index);
@@ -223,6 +243,7 @@ function logHistory() {
     themeId: state.theme.id,
     themeName: state.theme.name,
     raws: state.parts.map((p) => p.raw),
+    structure: isMulti() ? state.theme.structures[state.structure] : undefined,
     sentence: view.sentence,
     t: Date.now(),
   });
@@ -231,17 +252,45 @@ function logHistory() {
   renderHistory();
 }
 
+function applyShape({ structure, parts, locked }) {
+  state.structure = structure;
+  state.parts = parts;
+  state.locked = locked;
+}
+
+// Themes with several structures change shape on every roll, unless the
+// shape is locked. Locked words follow into the new shape.
 function generate() {
   if (!state.theme) return;
-  state.parts = G.roll(state.theme, state.parts, state.locked);
+  if (isMulti() && !state.structureLocked) {
+    applyShape(G.reshape(state.theme, state.parts, state.locked, { current: state.structure }));
+  } else {
+    state.parts = G.roll(shaped(), state.parts, state.locked);
+  }
   state.kept = false;
   renderSubject();
   logHistory();
 }
 
+// A new shape that keeps every word it has room for.
+function reshape() {
+  if (!isMulti() || !state.parts) return;
+  state.structureLocked = false;
+  applyShape(G.reshape(state.theme, state.parts, state.locked, { current: state.structure, keepAll: true }));
+  state.kept = false;
+  renderSubject();
+  logHistory();
+}
+
+function toggleShapeLock() {
+  if (!isMulti() || !state.parts) return;
+  state.structureLocked = !state.structureLocked;
+  renderSubject(-1);
+}
+
 function rerollWord(index) {
   if (!state.parts || state.locked.has(index)) return;
-  state.parts = G.rerollSlot(state.theme, state.parts, index);
+  state.parts = G.rerollSlot(shaped(), state.parts, index);
   state.kept = false;
   renderSubject(index);
   logHistory();
@@ -255,6 +304,7 @@ function toggleLock(index) {
 
 function unlockAll() {
   state.locked.clear();
+  state.structureLocked = false;
   renderSubject(-1);
 }
 
@@ -277,10 +327,13 @@ async function copy(textToCopy, message = 'Copied to clipboard') {
 function restore(entry) {
   const theme = state.themes.find((t) => t.id === entry.themeId);
   if (!theme) return toast(`Theme "${entry.themeName}" is not available any more`, true);
-  const slots = G.slotsOf(theme);
+  const structure = theme.structures ? theme.structures.indexOf(entry.structure) : null;
+  const slots = structure === -1 ? [] : G.slotsOf(G.shape(theme, structure ?? 0));
   if (slots.length !== entry.raws.length) return toast('This theme has changed since that roll', true);
   selectTheme(theme.id, { keepParts: true });
   state.locked.clear();
+  state.structure = structure;
+  state.structureLocked = false;
   state.parts = slots.map((s, i) => ({ ...s, raw: entry.raws[i] }));
   state.kept = state.selected.some((s) => s.sentence === entry.sentence);
   renderSubject();
@@ -352,6 +405,8 @@ $('generateBtn').addEventListener('click', generate);
 $('keepBtn').addEventListener('click', keep);
 $('copyBtn').addEventListener('click', () => current() && copy(current().sentence));
 $('unlockBtn').addEventListener('click', unlockAll);
+$('reshapeBtn').addEventListener('click', reshape);
+$('shapeLockBtn').addEventListener('click', toggleShapeLock);
 $('copyAllBtn').addEventListener('click', () => copy(selectedAsText(), `Copied ${state.selected.length} subjects`));
 $('exportBtn').addEventListener('click', async () => {
   const stamp = new Date().toISOString().slice(0, 10);
@@ -556,6 +611,8 @@ document.addEventListener('keydown', (e) => {
     if (current()) copy(current().sentence);
   } else if (e.key === 'u' || e.key === 'U') {
     unlockAll();
+  } else if (e.key === 's' || e.key === 'S') {
+    reshape();
   } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     cycleTheme(e.key === 'ArrowLeft' ? -1 : 1);
   } else if (/^Digit[1-9]$/.test(e.code)) {

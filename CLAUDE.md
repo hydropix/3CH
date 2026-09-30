@@ -20,7 +20,7 @@ app, which is kept byte for byte in `Legacy/`.
 ```bash
 npm install
 npm start
-npm test                 # node:test: generator, timer, themes, legacy parser (17 tests)
+npm test                 # node:test: generator, timer, themes, legacy parser (22 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # regenerate app/themes/*.json from ../Legacy
@@ -52,6 +52,14 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
 - `renderer/generator.js` and `renderer/timer.js` are UMD-style classic scripts:
   `window.Generator` / `window.Timer` in the page, `module.exports` in Node for
   the tests. Keep them free of DOM and Electron code.
+- `themes/chimera.json` is hand-written (99 `structures`, lists sorted by
+  grammatical role, every noun and verb form spelled out). It is not produced
+  by `convert-legacy`, which only overwrites the themes it generates. A slot
+  stores the entry (`raw`), the form is applied at render time by `inflect()`.
+- A local LLM mode (node-llama-cpp, Qwen 1.5B) was prototyped and dropped:
+  asked to write or to be "wild", the model drifts back to plausible, clichéd
+  associations or breaks the grammar. The LLM is only useful offline (writing
+  structures, sorting and inflecting the lexicon), never at runtime.
 - `Legacy/**` is `-text` in `.gitattributes`: the original files are
   Windows-1252 with CRLF and must not be normalised.
 - `backgroundThrottling: false` keeps the timer exact while the window is hidden.
@@ -70,6 +78,7 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   need a force-push: ask before doing it.
 - The co-authors have not been asked to agree to the MIT license for the word
   lists. They are credited in `CREDITS.md`.
-- Ideas not started: fixing the English typos in the word lists ("trough",
-  "menacant"...), an in-app theme editor, linking timer sessions to the
+- Ideas not started: fixing the English typos in the legacy-derived word lists
+  ("trough", "menacant"...; Chimera's lists are already fixed), a French
+  Chimera (needs gender and agreement links between slots), an in-app theme editor, linking timer sessions to the
   history, code signing.

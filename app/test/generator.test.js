@@ -9,15 +9,85 @@ const themes = fs.readdirSync(themesDir).map((f) => require(path.join(themesDir,
 const seq = (...values) => { let i = 0; return () => values[i++ % values.length]; };
 
 test('every bundled theme is valid and rolls a full sentence', () => {
-  assert.ok(themes.length >= 5);
+  assert.ok(themes.length >= 6);
   for (const theme of themes) {
     assert.strictEqual(G.validateTheme(theme), null, theme.name);
-    for (let i = 0; i < 200; i++) {
-      const { sentence } = G.render(G.roll(theme));
-      assert.match(sentence, /^[A-Z(].*[.)]$/, `${theme.name}: ${sentence}`);
-      assert.doesNotMatch(sentence, /\s{2}|\n/, `${theme.name}: ${sentence}`);
+    const shapes = theme.structures ? theme.structures.map((_, i) => G.shape(theme, i)) : [theme];
+    for (const shaped of shapes) {
+      for (let i = 0; i < 200 / shapes.length + 1; i++) {
+        const { sentence } = G.render(G.inflect(theme, G.roll(shaped)));
+        assert.match(sentence, /^[A-Z(].*[.)]$/, `${theme.name}: ${sentence}`);
+        assert.doesNotMatch(sentence, /\s{2}|\s[,;:]|\n|[{}]/, `${theme.name}: ${sentence}`);
+      }
     }
   }
+});
+
+test('structures parse into slots, forms and glued punctuation', () => {
+  assert.deepStrictEqual(G.parseStructure('while a {being} {vi}, the {being.pl} {vt.base} it'), [
+    { text: 'while a' },
+    'being',
+    'vi',
+    { text: ',', glue: true },
+    { text: 'the' },
+    { list: 'being', form: 'pl' },
+    { list: 'vt', form: 'base' },
+    { text: 'it' },
+  ]);
+});
+
+const chimera = {
+  structures: ['a {adj} {being} {vt} a {being}', 'while {being.pl} {vi.base}, a {adj} {being} {vi}'],
+  lists: {
+    adj: ['old', 'red'],
+    being: [{ text: 'wolf', pl: 'wolves' }, { text: 'owl', pl: 'owls' }, { text: 'eel', pl: 'eels' }],
+    vt: [{ text: 'eats', base: 'eat', ing: 'eating' }],
+    vi: [{ text: 'sleeps', base: 'sleep', ing: 'sleeping' }, { text: 'sings', base: 'sing', ing: 'singing' }],
+  },
+};
+
+test('forms, a/an and punctuation render in a multi-structure theme', () => {
+  const parts = G.roll(G.shape(chimera, 1), null, new Set(), seq(0, 0, 0, 0, 0.9));
+  assert.deepStrictEqual(parts.filter((p) => !p.literal).map((p) => p.raw), ['wolf', 'sleeps', 'old', 'owl', 'sings']);
+  assert.strictEqual(G.render(G.inflect(chimera, parts)).sentence, 'While wolves sleep, an old owl sings.');
+  assert.strictEqual(G.combinations(chimera), 2n * 3n * 1n * 3n + 3n * 2n * 2n * 3n * 2n);
+});
+
+test('reshape carries locked words into a structure with room for them', () => {
+  const first = G.reshape(chimera, null, new Set(), {}, seq(0));
+  assert.strictEqual(first.structure, 0);
+  // Lock the verb: only structure 0 has a {vt}, so it must stay.
+  const vt = first.parts.find((p) => p.list === 'vt').index;
+  const kept = G.reshape(chimera, first.parts, new Set([vt]), { current: 0 }, seq(0.9));
+  assert.strictEqual(kept.structure, 0);
+  assert.deepStrictEqual([...kept.locked], [vt]);
+  // Lock the adjective: it moves to the other structure, at its new index.
+  const adj = first.parts.find((p) => p.list === 'adj');
+  const moved = G.reshape(chimera, first.parts, new Set([adj.index]), { current: 0 }, seq(0));
+  assert.strictEqual(moved.structure, 1);
+  const [index] = moved.locked;
+  assert.strictEqual(moved.parts[index].list, 'adj');
+  assert.strictEqual(moved.parts[index].raw, adj.raw);
+});
+
+test('reshape with keepAll carries every word that finds a slot', () => {
+  const first = G.reshape(chimera, null, new Set(), {}, seq(0));
+  const beings = first.parts.filter((p) => p.list === 'being').map((p) => p.raw);
+  const next = G.reshape(chimera, first.parts, new Set(), { current: 0, keepAll: true }, seq(0));
+  assert.strictEqual(next.structure, 1);
+  assert.deepStrictEqual(next.parts.filter((p) => p.list === 'being').map((p) => p.raw), beings);
+  assert.strictEqual(next.locked.size, 0);
+});
+
+test('multi-structure validation names the broken structure', () => {
+  const theme = (structures, lists = chimera.lists) => ({ structures, lists });
+  assert.strictEqual(G.validateTheme(chimera), null);
+  assert.match(G.validateTheme(theme([])), /"structures" is empty/);
+  assert.match(G.validateTheme(theme(['a {adj} {being}', 'a {ghost}'])), /structure 2: list "ghost"/);
+  assert.match(G.validateTheme(theme(['a {adj.pl} {being}'])), /structure 1: list "adj", entry 1: no "pl" form/);
+  assert.match(G.validateTheme(theme(['a {adj} {being'])), /unmatched/);
+  assert.match(G.validateTheme(theme(['nothing to draw'])), /no \{slot\}/);
+  assert.match(G.validateTheme(theme([42])), /expected text/);
 });
 
 test('a/an agrees with the following word', () => {

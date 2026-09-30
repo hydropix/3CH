@@ -4,6 +4,17 @@ Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
 ## [Unreleased]
 
+### Added
+- **Chimera**, a new theme that changes the shape of the sentence on every
+  roll, not only the words: 99 sentence shapes, filled with creatures,
+  objects, body parts, places, adjectives and actions drawn at random.
+  - Locked words follow into the next shape, and take the form it needs
+    (plural, "-ing"...).
+  - **Reshape** (`S`) keeps the words and changes the shape. **Lock shape**
+    keeps the shape, so Generate only changes the words.
+- Themes can hold several structures (`structures`), with word forms such as
+  `{being.pl}`. See [app/README.md](app/README.md).
+
 ### Fixed
 - macOS: Cmd+Q, Cmd+W and copy/paste work again. The app had no menu, and
   macOS takes these shortcuts from it.

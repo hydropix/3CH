@@ -107,6 +107,8 @@ kbd {
 .btn.primary kbd { background: rgba(0, 0, 0, 0.12); border-color: rgba(0, 0, 0, 0.2); color: inherit; }
 .btn.small { height: 28px; padding: 0 10px; font-size: 12px; border-radius: 7px; }
 .btn.danger:hover:not(:disabled) { color: var(--danger); border-color: var(--danger); }
+.btn[hidden] { display: none; }
+.btn[aria-pressed="true"]#shapeLockBtn { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 
 /* Theme bar */
 .themebar {
@@ -227,6 +229,8 @@ main {
   animation: rise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: calc(var(--i, 0) * 35ms);
 }
+/* Punctuation sits right after the previous word, across the chip padding and the gap. */
+.literal.glue { margin-left: -21px; }
 .chip.flash .word { animation: flash 0.35s ease; }
 
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -330,6 +334,7 @@ body.mini .subject .placeholder { font-size: 17px; }
 body.mini .chip { padding: 3px 6px; gap: 0; }
 body.mini .chip .word, body.mini .literal { font-size: 19px; }
 body.mini .literal { padding: 3px 0; }
+body.mini .literal.glue { margin-left: -9px; }
 body.mini .chip .label, body.mini .chip .lock { display: none; }
 body.mini .timer { grid-template-columns: auto 1fr; margin: 0 -16px; padding: 10px 16px 12px; gap: 12px; }
 body.mini .timer-clock { font-size: 30px; }

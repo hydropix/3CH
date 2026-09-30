@@ -33,6 +33,43 @@ A theme is a JSON file:
   capital letter and a full stop.
 - `labels` (optional) sets the small caption shown under each word.
 
+### Themes with several structures
+
+Instead of `structure`, a theme can list `structures`, written as text. Every
+roll draws one of them, then fills its slots. This is how Chimera works:
+
+```json
+{
+  "format": "3ch-theme/2",
+  "id": "chimera",
+  "name": "Chimera",
+  "structures": [
+    "a {adj} {being} {vt} a {adj} {being} {setting}",
+    "while a {being} {vi}, a {adj} {being} {vt} the {part.pl} of a {being}"
+  ],
+  "lists": {
+    "being": [{ "text": "werewolf", "pl": "werewolves" }, { "text": "zombie", "pl": "zombies" }],
+    "vt": [{ "text": "devours", "base": "devour", "ing": "devouring" }]
+  }
+}
+```
+
+- `{list}` draws a word from `list`. `{list.form}` shows one form of that word:
+  the entry must have that field (`"pl"`, `"base"`, `"ing"`… any name works).
+  Every form is written in the JSON: the app knows no English grammar besides
+  `a` / `an`.
+- A slot keeps the entry, not the form. A locked word can move to a slot that
+  wants another form ("werewolves" becomes "werewolf").
+- `,` `;` `:` stick to the word before them.
+- When the shape changes, a locked word moves to the first slot of the same
+  list. Only structures with room for every locked word are drawn.
+
+`themes/chimera.json` is written by hand, not generated from `../Legacy`. Its
+lists were sorted from the legacy lists by role (`being`, `object`, `part`,
+`place`, `setting`, `adj`, `vt` for verbs with an object, `vi` for verbs
+without one), with the English typos fixed. The `vi` verbs are new: the legacy
+lists had only one.
+
 The bundled themes live in `themes/`. Your own themes go in the folder opened
 by **Themes folder** (`%APPDATA%\3CH\themes` on Windows,
 `~/Library/Application Support/3CH/themes` on macOS). A theme there with the

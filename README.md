@@ -53,8 +53,14 @@ Press **Space** and 3CH gives you a subject to paint:
 
 > *A headless frog crosses iron with a chameleon in a field of meteorites.*
 
-- **5 themes**: Fantasy, Urban, Hollywood action, Darwin (creatures) and
-  Constructor (environments). That is up to 783 trillion subjects.
+> *While a wild boar crashes to pieces, a nauseous old god dissects the tentacles of a penguin.*
+
+- **6 themes**: Fantasy, Urban, Hollywood action, Darwin (creatures),
+  Constructor (environments) and Chimera.
+- **Chimera** changes the shape of the sentence on every roll, not only the
+  words: 99 sentence shapes filled with words drawn at random, so nothing makes
+  sense except the grammar. Locked words follow into the next shape, **Reshape**
+  keeps the words and changes the shape, and **Lock shape** keeps the shape.
 - **Click a word to reroll only that word**, or lock it to keep it while
   everything else changes.
 - **Keep** the subjects you like. They stay saved, and you can copy them or export
@@ -77,6 +83,7 @@ Press **Space** and 3CH gives you a subject to paint:
 | Reroll word 1 to 9 / lock it | `1`–`9` / `Shift` + `1`–`9` |
 | Keep / copy the subject | `Enter` / `C` |
 | Unlock every word | `U` |
+| New sentence shape, same words (Chimera) | `S` |
 | Previous / next theme | `←` `→` |
 | Start or pause the timer / reset it | `T` / `R` |
 | Mini window / leave it | `M` / `Esc` |
@@ -84,7 +91,7 @@ Press **Space** and 3CH gives you a subject to paint:
 ## Make your own themes
 
 A theme is a small JSON file: the sentence structure plus word lists, with
-optional weights. Drop it in the folder opened by **Themes folder**, or use
+optional weights. A theme can also hold several structures, like Chimera. Drop it in the folder opened by **Themes folder**, or use
 **Import legacy theme** to convert a theme folder from the original 2005 app. See
 [app/README.md](app/README.md) for the format.
 
