@@ -54,8 +54,10 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   the tests. Keep them free of DOM and Electron code.
 - `themes/chimera.json` is hand-written (99 `structures`, lists sorted by
   grammatical role, every noun and verb form spelled out). Legacy themes are
-  being reworked the same way, one by one (`"source": "legacy-reworked"`,
-  Fantasy first): same words and weights, typos fixed, several structures.
+  being reworked the same way, one by one (`"source": "legacy-reworked"`:
+  Fantasy, Hollywood action, Urban so far): same words and weights, typos
+  fixed, several structures. Adjectives such as "white" or "black" are avoided
+  on beings, since they read as skin colour.
   `convert-legacy` skips any existing file whose `source` is not `legacy`. A
   slot stores the entry (`raw`), the form is applied at render time by
   `inflect()`.

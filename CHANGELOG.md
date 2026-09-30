@@ -22,6 +22,15 @@ Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
   (sword, grimoire, relic...) and verbs without an object (prays, howls...).
   Fantasy rolls from the history of an older version can no longer be
   restored.
+- **Hollywood action** (34 shapes) and **Urban** (33 shapes) are reworked the
+  same way. Hollywood action keeps its camera directions ("(fisheye lens)",
+  "(looking up)"...) at the end of some shapes, and gains action-movie props
+  (detonator, microfilm...). Urban gains street props (spray can, manhole
+  cover...) and keeps the original team's names.
+- Words that read badly on a person were changed: "white" and "black" became
+  "ghost-white", "snow-white", "jet-black", "white-clad" or "black-clad"
+  depending on the theme, and "transvestite", "native Indian" and "gypsy"
+  became "drag queen", "Native American" and "Romani woman".
 
 ### Fixed
 - macOS: Cmd+Q, Cmd+W and copy/paste work again. The app had no menu, and
