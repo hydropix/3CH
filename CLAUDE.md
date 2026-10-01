@@ -20,7 +20,7 @@ app, which is kept byte for byte in `Legacy/`.
 ```bash
 npm install
 npm start
-npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (52 tests)
+npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (53 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # ../Legacy -> JSON; skips the hand-reworked themes
@@ -119,8 +119,16 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   renders the system voice to a WAV (`src/speech.js`, one voice per language:
   on Windows the first enabled SAPI voice of the culture, else the default
   voice; on macOS a preferred `say` voice, else the first of the locale, else
-  the default, untested on a real Mac) and `renderer/voice.js` breaks it in JS
-  (vocoder on a stepped sawtooth, then stutters, bitcrush, reverse, dropouts).
+  the default, untested on a real Mac) and `renderer/voice.js` breaks it in JS.
+  It sings rather than glitches at random: `compose()` draws a style per
+  playback (scale, root, tempo, melody contour, harmony voices, glides,
+  vibrato, rubato, tuned comb, echo on the beat), the speech is sped up and
+  slowed down *before* the vocoder (formants move, the pitch stays in key),
+  and the glitches are cut on a sixteenth-note grid and keep whole steps
+  (rolls climbing the harmonic series, grains frozen at a note's period,
+  gates, octave shifts, rests). The dry speech comes back only high-passed,
+  for the consonants, since its own pitch is out of key. The countdown
+  shares one style and walks down the scale to the root at 1.
   On Windows one PowerShell process stays alive, warmed up at launch: one
   process per sentence cost ~1 s, a sentence now takes 20-80 ms. Only the latest request waits
   (older ones resolve to null), and a new sentence cuts the voice off. The

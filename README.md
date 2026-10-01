@@ -86,7 +86,8 @@ It also speaks French and Chinese:
 - **Keep** the subjects you like. They stay saved, and you can copy them or export
   them to a `.txt` file. The last 100 rolls are in the history.
 - **A broken robot voice** reads the subject aloud: the system's own voice,
-  vocoded, stuttering and glitching differently every time. **Speak** reads it,
+  vocoded and sung in a key and a tempo drawn anew every time, with glitches
+  on the beat. **Speak** reads it,
   **Auto voice** (on by default) reads every new subject as soon as it is
   rolled. It reads the subject in the language of its theme. For French or
   Chinese speech, install a voice of that language in Windows (Settings →

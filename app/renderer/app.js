@@ -733,9 +733,9 @@ function checkVoice(speech, lang) {
   toast(tr('noVoiceLang', { language }), true);
 }
 
-function playRobot(speech, when = 0) {
+function playRobot(speech, when = 0, style) {
   const ctx = audio();
-  const samples = Voice.robotize(speech.samples, speech.sampleRate);
+  const samples = Voice.robotize(speech.samples, speech.sampleRate, Math.random, style);
   if (!samples.length) return null;
   const buffer = ctx.createBuffer(1, samples.length, speech.sampleRate);
   buffer.copyToChannel(samples, 0);
@@ -878,8 +878,9 @@ function planSession(duration) {
 }
 
 // Says `text` in `delay` ms. A line cuts off the previous ones, except for
-// the countdown numbers (`keep`), which are all scheduled at once.
-async function say(text, delay = 0, { keep = false } = {}) {
+// the countdown numbers (`keep`), which are all scheduled at once. `style`
+// fixes how the robot sings it (Voice.compose), drawn anew when missing.
+async function say(text, delay = 0, { keep = false, style } = {}) {
   const gen = talk.gen;
   const asked = performance.now();
   const speech = await recording(text);
@@ -887,7 +888,7 @@ async function say(text, delay = 0, { keep = false } = {}) {
   if (!keep) for (const n of talk.nodes) n.stop();
   const ctx = audio();
   const wait = Math.max(0, delay - (performance.now() - asked)) / 1000;
-  const node = playRobot(speech, ctx.currentTime + wait);
+  const node = playRobot(speech, ctx.currentTime + wait, style);
   if (!node) return;
   if (voice.subject) {
     stopSubject();
@@ -911,8 +912,13 @@ function hush() {
   for (const n of talk.nodes) n.stop();
 }
 
+// The countdown is sung down a scale, one key and tempo for all the numbers
+// (120 bpm: a beat every half second), and lands on the root at 1.
 function countdown(remaining) {
-  for (const c of Announcer.countdown(remaining)) say(c.text, c.delay, { keep: true });
+  const style = Voice.compose(Math.random, { bpm: 120, contour: 'drone', progression: [0] });
+  for (const c of Announcer.countdown(remaining)) {
+    say(c.text, c.delay, { keep: true, style: { ...style, transpose: c.n - 1 } });
+  }
 }
 
 function timerTalk(snap) {

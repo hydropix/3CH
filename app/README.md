@@ -260,7 +260,7 @@ every push. A `v*` tag also publishes a GitHub Release, with the matching
   attributes in `index.html`), the language list and the subject counts
   ("12 billion", "12 milliards", "120亿"), shared with the main process and the tests
 - `renderer/timer.js`: speed painting countdown, shared with the tests
-- `renderer/voice.js`: robot voice DSP (vocoder, glitches), shared with the tests
+- `renderer/voice.js`: robot voice DSP (a sung vocoder in a drawn key, glitches on the beat), shared with the tests
 - `renderer/announcer.js`: what the timer voice says and when (lines in
   every language, milestones, countdown), shared with the tests
 - `src/speech.js`: text to WAV with a system voice of the right language

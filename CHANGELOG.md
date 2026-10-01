@@ -2,6 +2,17 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [2.7.0] - 2026-10-01
+
+### Changed
+- **The robot voice sings.** Every reading draws a key (pentatonic, dorian,
+  phrygian, whole tone...), a tempo and a tune: a melody, sometimes with
+  harmony voices, slides and vibrato, still broken but in tune.
+- The words rush and drag without leaving the key, and the glitches fall on
+  the beat: rolls, frozen notes, gates, octave jumps, rests, sometimes a
+  metallic resonance or an echo in time.
+- The timer countdown is sung down a scale, 10 to 1, and lands on the root.
+
 ## [2.6.0] - 2026-10-01
 
 This release also ships 2.5.0, which was not published on its own: about

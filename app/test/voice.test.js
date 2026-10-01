@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { parseWav, robotize } = require('../renderer/voice');
+const { parseWav, compose, robotize } = require('../renderer/voice');
 
 function seeded(seed) {
   return () => {
@@ -70,4 +70,20 @@ test('the same seed breaks the voice the same way, another seed differently', ()
 
 test('silence stays silent', () => {
   assert.strictEqual(robotize(new Float32Array(22050), 22050, seeded(3)).length, 0);
+});
+
+test('every drawn style stays safe, shared ones too', () => {
+  const sampleRate = 16000;
+  const input = fakeSpeech(sampleRate, 1);
+  for (let seed = 0; seed < 40; seed++) {
+    const out = robotize(input, sampleRate, seeded(seed));
+    assert.ok(out.length && out.every((v) => Number.isFinite(v) && Math.abs(v) <= 0.9 + 1e-6), `seed ${seed}`);
+  }
+  const style = compose(seeded(5), { bpm: 120, contour: 'drone', progression: [0] });
+  assert.strictEqual(style.bpm, 120);
+  assert.strictEqual(style.step, 0.125);
+  for (let n = 10; n >= 1; n--) {
+    const out = robotize(input.subarray(0, 6000), sampleRate, seeded(n), { ...style, transpose: n - 1 });
+    assert.ok(out.length && out.every(Number.isFinite), `number ${n}`);
+  }
 });
