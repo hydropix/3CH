@@ -2,6 +2,35 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [2.4.0] - 2026-10-01
+
+### Added
+- **3CH speaks French.** A language menu in the top bar switches between
+  **English** and **Français**. It changes the themes, the interface and the
+  voice, and 3CH remembers your choice. On the first launch it follows the
+  language of your system. Switching keeps the same theme in the other
+  language, and bringing back a subject from the history switches the language
+  when it needs to.
+- **Six French themes**: Chimère, Constructeur, Darwin, Fantasy, Action
+  hollywoodienne and Urbain, with their sentence shapes rewritten for French.
+  Words agree like in real French ("une sorcière verte", "des yeux verts"),
+  and the sentence is fixed up afterwards: "le arbre" becomes "l'arbre", "de le"
+  becomes "du", "à les" becomes "aux".
+- **The robot voice speaks French.** The subject is read in the language of its
+  theme, with a voice of that language when the system has one. The timer
+  voice has its own French lines, with the same passive-aggressive tone.
+- Themes can say their language (`"lang"`) and link words so that adjectives and
+  articles agree with the noun (`{being#a}`, `{adj@a}`, `[un|une@a]`). See
+  [app/README.md](app/README.md).
+- `npm run sample -- themes/x.json` validates a theme and prints sample
+  subjects for every structure, to proofread a theme you write.
+
+### Changed
+- The whole interface, the dialogs and the notifications follow the language.
+- For French speech on Windows, install a French voice (Settings, Time &
+  language, Speech). Without one, the default voice reads the French text. On
+  macOS, 3CH picks a French voice from the ones installed.
+
 ## [2.3.0] - 2026-09-30
 
 ### Added

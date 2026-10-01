@@ -1,7 +1,7 @@
 {
   "name": "3ch",
   "productName": "3CH",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Random subject generator for concept art and speed painting, a modern rebuild of 3CH kilogeneratormorphic (2005).",
   "author": "Hydropix",
   "license": "MIT",
@@ -15,6 +15,7 @@
   "scripts": {
     "start": "electron .",
     "convert-legacy": "node scripts/convert-legacy.js",
+    "sample": "node scripts/sample-theme.js",
     "test": "node --test test/*.test.js",
     "icon": "python scripts/make-logo.py",
     "logo": "python scripts/make-logo.py gif",
