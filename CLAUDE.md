@@ -20,7 +20,7 @@ app, which is kept byte for byte in `Legacy/`.
 ```bash
 npm install
 npm start
-npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (45 tests)
+npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (48 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # ../Legacy -> JSON; skips the hand-reworked themes
@@ -64,6 +64,18 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   `convert-legacy` skips any existing file whose `source` is not `legacy`. A
   slot stores the entry (`raw`), the form is applied at render time by
   `inflect()`.
+- **Anti-repetition memory**: a pure random draw reused a word from the last
+  10 subjects in 20% (Chimera) to 60% (Darwin, Urban) of the rolls. The
+  generator now takes a `memory` (`createMemory()`, plain data saved in
+  `localStorage` as `3ch.memory`, per theme id): a word, or a structure, is
+  avoided until 75% of its list has been drawn since (`RECENT_SHARE`). Empty
+  entries keep their original share of the draw.
+- **Lexicon enrichment** (after 2.4.0): every list of every theme roughly
+  doubled, EN and FR together (Chimera ~1140 to ~1945 entries, the others to
+  950-1390), written by parallel subagents, then validated and proofread with
+  `npm run sample`. With the memory, words now almost never repeat within 50
+  subjects; the 31 to 36 structures of the legacy-reworked themes are the next
+  limit (Chimera has 99).
 - A local LLM mode (node-llama-cpp, Qwen 1.5B) was prototyped and dropped:
   asked to write or to be "wild", the model drifts back to plausible, clichéd
   associations or breaks the grammar. The LLM is only useful offline (writing

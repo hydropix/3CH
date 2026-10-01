@@ -2,6 +2,25 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [2.5.0] - 2026-10-01
+
+### Added
+- **About twice as many words** in every theme, in English and in French:
+  Chimera goes from about 1,140 to 1,950 words, the other themes from 400-750
+  to 950-1,390. The new words keep the spirit of the lists: creatures,
+  objects, places, materials, traits and actions you can draw, as weird and
+  spectacular as the originals.
+
+### Changed
+- **Repetitions are rare.** 3CH remembers the words it has drawn in each list
+  and keeps them aside until three quarters of the list has come up, so a word
+  almost never comes back within 50 subjects. Sentence shapes are drawn the
+  same way. The weights of the lists still apply, and the memory is kept for
+  each theme between sessions.
+- A few entries from 2005 were replaced: franchise names (a Jedi knight, a
+  famous giant robot, a caped superhero, a sportswear brand), people named by
+  their origin, a "Nazi" adjective and "very fat guy".
+
 ## [2.4.0] - 2026-10-01
 
 ### Added

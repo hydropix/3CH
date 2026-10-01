@@ -36,6 +36,8 @@ const state = {
   kept: false,
   selected: load('3ch.selected', []),
   history: load('3ch.history', []),
+  // Recent words and structures per theme id, so that they come back rarely.
+  memory: load('3ch.memory', {}),
 };
 
 // Storage can be unavailable or corrupted: the app must still work.
@@ -366,6 +368,14 @@ function logHistory() {
   renderHistory();
 }
 
+// The draws remembered for the theme in use, saved after every roll.
+function memory() {
+  if (!state.memory || typeof state.memory !== 'object' || Array.isArray(state.memory)) state.memory = {};
+  const m = state.memory[state.theme.id];
+  if (!m || typeof m !== 'object') state.memory[state.theme.id] = G.createMemory();
+  return state.memory[state.theme.id];
+}
+
 function applyShape({ structure, parts, locked }) {
   state.structure = structure;
   state.parts = parts;
@@ -377,10 +387,11 @@ function applyShape({ structure, parts, locked }) {
 function generate() {
   if (!state.theme) return;
   if (isMulti() && !state.structureLocked) {
-    applyShape(G.reshape(state.theme, state.parts, state.locked, { current: state.structure }));
+    applyShape(G.reshape(state.theme, state.parts, state.locked, { current: state.structure, memory: memory() }));
   } else {
-    state.parts = G.roll(shaped(), state.parts, state.locked);
+    state.parts = G.roll(shaped(), state.parts, state.locked, undefined, memory());
   }
+  save('3ch.memory', state.memory);
   state.kept = false;
   renderSubject();
   logHistory();
@@ -390,7 +401,8 @@ function generate() {
 function reshape() {
   if (!isMulti() || !state.parts) return;
   state.structureLocked = false;
-  applyShape(G.reshape(state.theme, state.parts, state.locked, { current: state.structure, keepAll: true }));
+  applyShape(G.reshape(state.theme, state.parts, state.locked, { current: state.structure, keepAll: true, memory: memory() }));
+  save('3ch.memory', state.memory);
   state.kept = false;
   renderSubject();
   logHistory();
@@ -404,7 +416,8 @@ function toggleShapeLock() {
 
 function rerollWord(index) {
   if (!state.parts || state.locked.has(index)) return;
-  state.parts = G.rerollSlot(shaped(), state.parts, index);
+  state.parts = G.rerollSlot(shaped(), state.parts, index, undefined, memory());
+  save('3ch.memory', state.memory);
   state.kept = false;
   renderSubject(index);
   logHistory();

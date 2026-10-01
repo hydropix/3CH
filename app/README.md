@@ -26,6 +26,11 @@ A theme is a JSON file:
 - `structure`: the words of the sentence, in order. A string names a list, and
   `{ "text": ... }` is a fixed word. A list can be used several times, and one
   subject never draws the same word twice.
+- Across rolls, the app remembers the words drawn from each list and avoids
+  them until three quarters of the list has come up (structures too), so
+  repetitions stay rare even with short lists. Weights still apply among the
+  words left, and empty entries keep their share. The memory is kept per
+  theme between sessions.
 - An entry is a string, or `{ "text", "weight" }` (a number above 0) to make it
   more likely. An empty `text` means "nothing here", which is useful for
   optional words.

@@ -203,8 +203,8 @@
         "g": "f"
       },
       {
-        "text": "guerrier africain",
-        "pl": "guerriers africains",
+        "text": "guerrier masqué",
+        "pl": "guerriers masqués",
         "g": "m"
       },
       {
@@ -528,8 +528,8 @@
         "g": "m"
       },
       {
-        "text": "ent",
-        "pl": "ents",
+        "text": "arbre vivant",
+        "pl": "arbres vivants",
         "g": "m"
       },
       {
@@ -833,8 +833,8 @@
         "g": "f"
       },
       {
-        "text": "sherpa",
-        "pl": "sherpas",
+        "text": "guide de haute montagne",
+        "pl": "guides de haute montagne",
         "g": "m"
       },
       {
@@ -888,8 +888,8 @@
         "g": "m"
       },
       {
-        "text": "chevalier Jedi",
-        "pl": "chevaliers Jedi",
+        "text": "chevalier de l'espace",
+        "pl": "chevaliers de l'espace",
         "g": "m"
       },
       {
@@ -1376,6 +1376,756 @@
         "text": "grue en origami",
         "pl": "grues en origami",
         "g": "f"
+      },
+      {
+        "text": "capybara",
+        "pl": "capybaras",
+        "g": "m"
+      },
+      {
+        "text": "tigre",
+        "pl": "tigres",
+        "g": "m"
+      },
+      {
+        "text": "lion",
+        "pl": "lions",
+        "g": "m"
+      },
+      {
+        "text": "bison",
+        "pl": "bison",
+        "g": "m"
+      },
+      {
+        "text": "perroquet",
+        "pl": "perroquets",
+        "g": "m"
+      },
+      {
+        "text": "phoque",
+        "pl": "phoques",
+        "g": "m"
+      },
+      {
+        "text": "dauphin",
+        "pl": "dauphins",
+        "g": "m"
+      },
+      {
+        "text": "ornithorynque",
+        "pl": "ornithorynques",
+        "g": "m"
+      },
+      {
+        "text": "pangolin",
+        "pl": "pangolins",
+        "g": "m"
+      },
+      {
+        "text": "oryctérope",
+        "pl": "oryctéropes",
+        "g": "m"
+      },
+      {
+        "text": "tatou",
+        "pl": "tatous",
+        "g": "m"
+      },
+      {
+        "text": "holothurie",
+        "pl": "holothuries",
+        "g": "f"
+      },
+      {
+        "text": "lamantin",
+        "pl": "lamantins",
+        "g": "m"
+      },
+      {
+        "text": "épaulard",
+        "pl": "épaulards",
+        "g": "m"
+      },
+      {
+        "text": "poisson-lune",
+        "pl": "poissons-lunes",
+        "g": "m"
+      },
+      {
+        "text": "poisson-globe",
+        "pl": "poissons-globes",
+        "g": "m"
+      },
+      {
+        "text": "anguille électrique",
+        "pl": "anguilles électriques",
+        "g": "f"
+      },
+      {
+        "text": "homard",
+        "pl": "homards",
+        "g": "m"
+      },
+      {
+        "text": "balane",
+        "pl": "balanes",
+        "g": "f"
+      },
+      {
+        "text": "oursin",
+        "pl": "oursins",
+        "g": "m"
+      },
+      {
+        "text": "nautile",
+        "pl": "nautiles",
+        "g": "m"
+      },
+      {
+        "text": "lucane",
+        "pl": "lucanes",
+        "g": "m"
+      },
+      {
+        "text": "luciole",
+        "pl": "lucioles",
+        "g": "f"
+      },
+      {
+        "text": "libellule",
+        "pl": "libellules",
+        "g": "f"
+      },
+      {
+        "text": "cigale",
+        "pl": "cigales",
+        "g": "f"
+      },
+      {
+        "text": "tarentule",
+        "pl": "tarentules",
+        "g": "f"
+      },
+      {
+        "text": "guêpe",
+        "pl": "guêpes",
+        "g": "f"
+      },
+      {
+        "text": "termite",
+        "pl": "termites",
+        "g": "m"
+      },
+      {
+        "text": "chenille",
+        "pl": "chenilles",
+        "g": "f"
+      },
+      {
+        "text": "crocodile",
+        "pl": "crocodiles",
+        "g": "m"
+      },
+      {
+        "text": "tortue",
+        "pl": "tortues",
+        "g": "f"
+      },
+      {
+        "text": "caméléon",
+        "pl": "caméléons",
+        "g": "m"
+      },
+      {
+        "text": "cobra",
+        "pl": "cobras",
+        "g": "m"
+      },
+      {
+        "text": "varan",
+        "pl": "varans",
+        "g": "m"
+      },
+      {
+        "text": "corbeau",
+        "pl": "corbeaux",
+        "g": "m"
+      },
+      {
+        "text": "toucan",
+        "pl": "toucans",
+        "g": "m"
+      },
+      {
+        "text": "autruche",
+        "pl": "autruches",
+        "g": "f"
+      },
+      {
+        "text": "albatros",
+        "pl": "albatros",
+        "g": "m"
+      },
+      {
+        "text": "cygne",
+        "pl": "cygnes",
+        "g": "m"
+      },
+      {
+        "text": "héron",
+        "pl": "hérons",
+        "g": "m"
+      },
+      {
+        "text": "pivert",
+        "pl": "piverts",
+        "g": "m"
+      },
+      {
+        "text": "coq",
+        "pl": "coqs",
+        "g": "m"
+      },
+      {
+        "text": "dinde",
+        "pl": "dindes",
+        "g": "f"
+      },
+      {
+        "text": "renard",
+        "pl": "renards",
+        "g": "m"
+      },
+      {
+        "text": "loup",
+        "pl": "loups",
+        "g": "m"
+      },
+      {
+        "text": "éléphant",
+        "pl": "éléphants",
+        "g": "m"
+      },
+      {
+        "text": "rhinocéros",
+        "pl": "rhinocéros",
+        "g": "m"
+      },
+      {
+        "text": "gorille",
+        "pl": "gorilles",
+        "g": "m"
+      },
+      {
+        "text": "kangourou",
+        "pl": "kangourous",
+        "g": "m"
+      },
+      {
+        "text": "koala",
+        "pl": "koalas",
+        "g": "m"
+      },
+      {
+        "text": "lama",
+        "pl": "lamas",
+        "g": "m"
+      },
+      {
+        "text": "chèvre",
+        "pl": "chèvres",
+        "g": "f"
+      },
+      {
+        "text": "bélier",
+        "pl": "béliers",
+        "g": "m"
+      },
+      {
+        "text": "cochon",
+        "pl": "cochons",
+        "g": "m"
+      },
+      {
+        "text": "âne",
+        "pl": "ânes",
+        "g": "m"
+      },
+      {
+        "text": "élan",
+        "pl": "élans",
+        "g": "m"
+      },
+      {
+        "text": "loutre",
+        "pl": "loutres",
+        "g": "f"
+      },
+      {
+        "text": "castor",
+        "pl": "castors",
+        "g": "m"
+      },
+      {
+        "text": "raton laveur",
+        "pl": "ratons laveurs",
+        "g": "m"
+      },
+      {
+        "text": "hyène",
+        "pl": "hyènes",
+        "g": "f"
+      },
+      {
+        "text": "souris",
+        "pl": "souris",
+        "g": "f"
+      },
+      {
+        "text": "carpe",
+        "pl": "carpes",
+        "g": "f"
+      },
+      {
+        "text": "raie",
+        "pl": "raies",
+        "g": "f"
+      },
+      {
+        "text": "seiche",
+        "pl": "seiches",
+        "g": "f"
+      },
+      {
+        "text": "limace",
+        "pl": "limaces",
+        "g": "f"
+      },
+      {
+        "text": "squille",
+        "pl": "squilles",
+        "g": "f"
+      },
+      {
+        "text": "mandrill",
+        "pl": "mandrills",
+        "g": "m"
+      },
+      {
+        "text": "bœuf",
+        "pl": "bœufs",
+        "g": "m"
+      },
+      {
+        "text": "salamandre",
+        "pl": "salamandres",
+        "g": "f"
+      },
+      {
+        "text": "mouette",
+        "pl": "mouettes",
+        "g": "f"
+      },
+      {
+        "text": "bourdon",
+        "pl": "bourdons",
+        "g": "m"
+      },
+      {
+        "text": "basilic",
+        "pl": "basilics",
+        "g": "m"
+      },
+      {
+        "text": "wyverne",
+        "pl": "wyvernes",
+        "g": "f"
+      },
+      {
+        "text": "phénix",
+        "pl": "phénix",
+        "g": "m"
+      },
+      {
+        "text": "manticore",
+        "pl": "manticores",
+        "g": "f"
+      },
+      {
+        "text": "banshee",
+        "pl": "banshees",
+        "g": "f"
+      },
+      {
+        "text": "gargouille",
+        "pl": "gargouilles",
+        "g": "f"
+      },
+      {
+        "text": "kappa",
+        "pl": "kappas",
+        "g": "m"
+      },
+      {
+        "text": "léviathan",
+        "pl": "léviathans",
+        "g": "m"
+      },
+      {
+        "text": "gorgone",
+        "pl": "gorgones",
+        "g": "f"
+      },
+      {
+        "text": "kelpie",
+        "pl": "kelpies",
+        "g": "m"
+      },
+      {
+        "text": "poltergeist",
+        "pl": "poltergeists",
+        "g": "m"
+      },
+      {
+        "text": "goule",
+        "pl": "goules",
+        "g": "f"
+      },
+      {
+        "text": "kobold",
+        "pl": "kobolds",
+        "g": "m"
+      },
+      {
+        "text": "gnome",
+        "pl": "gnomes",
+        "g": "m"
+      },
+      {
+        "text": "diablotin",
+        "pl": "diablotins",
+        "g": "m"
+      },
+      {
+        "text": "géant",
+        "pl": "géants",
+        "g": "m"
+      },
+      {
+        "text": "nain",
+        "pl": "nains",
+        "g": "m"
+      },
+      {
+        "text": "mandragore",
+        "pl": "mandragores",
+        "g": "f"
+      },
+      {
+        "text": "béhémoth",
+        "pl": "béhémoths",
+        "g": "m"
+      },
+      {
+        "text": "chien bicéphale",
+        "pl": "chiens bicéphales",
+        "g": "m"
+      },
+      {
+        "text": "monstre des marais",
+        "pl": "monstres des marais",
+        "g": "m"
+      },
+      {
+        "text": "serpent de mer",
+        "pl": "serpents de mer",
+        "g": "m"
+      },
+      {
+        "text": "elfe",
+        "pl": "elfes",
+        "g": "m"
+      },
+      {
+        "text": "cuisinier",
+        "pl": "cuisiniers",
+        "g": "m"
+      },
+      {
+        "text": "bûcheron",
+        "pl": "bûcherons",
+        "g": "m"
+      },
+      {
+        "text": "forgeron",
+        "pl": "forgerons",
+        "g": "m"
+      },
+      {
+        "text": "pêcheur",
+        "pl": "pêcheurs",
+        "g": "m"
+      },
+      {
+        "text": "berger",
+        "pl": "bergers",
+        "g": "m"
+      },
+      {
+        "text": "bibliothécaire",
+        "pl": "bibliothécaires",
+        "g": "f"
+      },
+      {
+        "text": "facteur",
+        "pl": "facteurs",
+        "g": "m"
+      },
+      {
+        "text": "pompier",
+        "pl": "pompiers",
+        "g": "m"
+      },
+      {
+        "text": "ramoneur",
+        "pl": "ramoneurs",
+        "g": "m"
+      },
+      {
+        "text": "coiffeur",
+        "pl": "coiffeurs",
+        "g": "m"
+      },
+      {
+        "text": "cornemuseur",
+        "pl": "cornemuseurs",
+        "g": "m"
+      },
+      {
+        "text": "archer",
+        "pl": "archers",
+        "g": "m"
+      },
+      {
+        "text": "moine",
+        "pl": "moines",
+        "g": "m"
+      },
+      {
+        "text": "ermite",
+        "pl": "ermites",
+        "g": "m"
+      },
+      {
+        "text": "mendiant",
+        "pl": "mendiants",
+        "g": "m"
+      },
+      {
+        "text": "infirmière",
+        "pl": "infirmières",
+        "g": "f"
+      },
+      {
+        "text": "charmeur de serpents",
+        "pl": "charmeurs de serpents",
+        "g": "m"
+      },
+      {
+        "text": "dompteur",
+        "pl": "dompteurs",
+        "g": "m"
+      },
+      {
+        "text": "lanceur de couteaux",
+        "pl": "lanceurs de couteaux",
+        "g": "m"
+      },
+      {
+        "text": "cartomancienne",
+        "pl": "cartomanciennes",
+        "g": "f"
+      },
+      {
+        "text": "alchimiste",
+        "pl": "alchimistes",
+        "g": "m"
+      },
+      {
+        "text": "marcheur sur échasses",
+        "pl": "marcheurs sur échasses",
+        "g": "m"
+      },
+      {
+        "text": "escrimeur",
+        "pl": "escrimeurs",
+        "g": "m"
+      },
+      {
+        "text": "alpiniste",
+        "pl": "alpinistes",
+        "g": "m"
+      },
+      {
+        "text": "mineur",
+        "pl": "mineurs",
+        "g": "m"
+      },
+      {
+        "text": "groom",
+        "pl": "grooms",
+        "g": "m"
+      },
+      {
+        "text": "jongleur",
+        "pl": "jongleurs",
+        "g": "m"
+      },
+      {
+        "text": "bambin",
+        "pl": "bambins",
+        "g": "m"
+      },
+      {
+        "text": "femme à barbe",
+        "pl": "femmes à barbe",
+        "g": "f"
+      },
+      {
+        "text": "théière ambulante",
+        "pl": "théières ambulantes",
+        "g": "f"
+      },
+      {
+        "text": "fauteuil vivant",
+        "pl": "fauteuils vivants",
+        "g": "m"
+      },
+      {
+        "text": "crâne parlant",
+        "pl": "crânes parlants",
+        "g": "m"
+      },
+      {
+        "text": "soldat de plomb",
+        "pl": "soldats de plomb",
+        "g": "m"
+      },
+      {
+        "text": "cheval à bascule",
+        "pl": "chevaux à bascule",
+        "g": "m"
+      },
+      {
+        "text": "automate à remontoir",
+        "pl": "automates à remontoir",
+        "g": "m"
+      },
+      {
+        "text": "diable en boîte",
+        "pl": "diables en boîte",
+        "g": "m"
+      },
+      {
+        "text": "canard en plastique",
+        "pl": "canards en plastique",
+        "g": "m"
+      },
+      {
+        "text": "statue vivante",
+        "pl": "statues vivantes",
+        "g": "f"
+      },
+      {
+        "text": "poupée hantée",
+        "pl": "poupées hantées",
+        "g": "f"
+      },
+      {
+        "text": "chaussette-marionnette",
+        "pl": "chaussettes-marionnettes",
+        "g": "f"
+      },
+      {
+        "text": "dragon de papier",
+        "pl": "dragons de papier",
+        "g": "m"
+      },
+      {
+        "text": "chien en ballon",
+        "pl": "chiens en ballon",
+        "g": "m"
+      },
+      {
+        "text": "cactus ambulant",
+        "pl": "cactus ambulants",
+        "g": "m"
+      },
+      {
+        "text": "champignon ambulant",
+        "pl": "champignons ambulants",
+        "g": "m"
+      },
+      {
+        "text": "armure animée",
+        "pl": "armures animées",
+        "g": "f"
+      },
+      {
+        "text": "chien-robot",
+        "pl": "chiens-robots",
+        "g": "m"
+      },
+      {
+        "text": "araignée mécanique",
+        "pl": "araignées mécaniques",
+        "g": "f"
+      },
+      {
+        "text": "golem à vapeur",
+        "pl": "golems à vapeur",
+        "g": "m"
+      },
+      {
+        "text": "oiseau mécanique",
+        "pl": "oiseaux mécaniques",
+        "g": "m"
+      },
+      {
+        "text": "golem de cristal",
+        "pl": "golems de cristal",
+        "g": "m"
+      },
+      {
+        "text": "dragon squelette",
+        "pl": "dragons squelettes",
+        "g": "m"
+      },
+      {
+        "text": "élémentaire de lave",
+        "pl": "élémentaires de lave",
+        "g": "m"
+      },
+      {
+        "text": "élémentaire de glace",
+        "pl": "élémentaires de glace",
+        "g": "m"
+      },
+      {
+        "text": "esprit des arbres",
+        "pl": "esprits des arbres",
+        "g": "m"
+      },
+      {
+        "text": "géant de mousse",
+        "pl": "géants de mousse",
+        "g": "m"
+      },
+      {
+        "text": "balayeur",
+        "pl": "balayeurs",
+        "g": "m"
       }
     ],
     "object": [
@@ -1948,6 +2698,576 @@
         "text": "gâteau d'anniversaire",
         "pl": "gâteaux d'anniversaire",
         "g": "m"
+      },
+      {
+        "text": "aéroglisseur",
+        "pl": "aéroglisseurs",
+        "g": "m"
+      },
+      {
+        "text": "hélicoptère",
+        "pl": "hélicoptères",
+        "g": "m"
+      },
+      {
+        "text": "camion de pompiers",
+        "pl": "camions de pompiers",
+        "g": "m"
+      },
+      {
+        "text": "camion de glacier",
+        "pl": "camions de glacier",
+        "g": "m"
+      },
+      {
+        "text": "pousse-pousse",
+        "pl": "pousse-pousse",
+        "g": "m"
+      },
+      {
+        "text": "gondole",
+        "pl": "gondoles",
+        "g": "f"
+      },
+      {
+        "text": "bateau à aubes",
+        "pl": "bateaux à aubes",
+        "g": "m"
+      },
+      {
+        "text": "vaisseau pirate",
+        "pl": "vaisseaux pirates",
+        "g": "m"
+      },
+      {
+        "text": "monocycle",
+        "pl": "monocycles",
+        "g": "m"
+      },
+      {
+        "text": "wagonnet de montagnes russes",
+        "pl": "wagonnets de montagnes russes",
+        "g": "m"
+      },
+      {
+        "text": "grande roue",
+        "pl": "grandes roues",
+        "g": "f"
+      },
+      {
+        "text": "château d'eau",
+        "pl": "châteaux d'eau",
+        "g": "m"
+      },
+      {
+        "text": "derrick",
+        "pl": "derricks",
+        "g": "m"
+      },
+      {
+        "text": "grue de chantier",
+        "pl": "grues de chantier",
+        "g": "f"
+      },
+      {
+        "text": "bulldozer",
+        "pl": "bulldozers",
+        "g": "m"
+      },
+      {
+        "text": "canon",
+        "pl": "canons",
+        "g": "m"
+      },
+      {
+        "text": "catapulte",
+        "pl": "catapultes",
+        "g": "f"
+      },
+      {
+        "text": "armure",
+        "pl": "armures",
+        "g": "f"
+      },
+      {
+        "text": "casque à plumet",
+        "pl": "casques à plumet",
+        "g": "m"
+      },
+      {
+        "text": "masse",
+        "pl": "masses",
+        "g": "f"
+      },
+      {
+        "text": "tronçonneuse",
+        "pl": "tronçonneuses",
+        "g": "f"
+      },
+      {
+        "text": "tondeuse",
+        "pl": "tondeuses",
+        "g": "f"
+      },
+      {
+        "text": "brouette",
+        "pl": "brouettes",
+        "g": "f"
+      },
+      {
+        "text": "réverbère",
+        "pl": "réverbères",
+        "g": "m"
+      },
+      {
+        "text": "banc public",
+        "pl": "bancs publics",
+        "g": "m"
+      },
+      {
+        "text": "pierre tombale",
+        "pl": "pierres tombales",
+        "g": "f"
+      },
+      {
+        "text": "girouette",
+        "pl": "girouettes",
+        "g": "f"
+      },
+      {
+        "text": "masque à gaz",
+        "pl": "masques à gaz",
+        "g": "m"
+      },
+      {
+        "text": "camisole",
+        "pl": "camisoles",
+        "g": "f"
+      },
+      {
+        "text": "haut-de-forme",
+        "pl": "hauts-de-forme",
+        "g": "m"
+      },
+      {
+        "text": "botte en caoutchouc",
+        "pl": "bottes en caoutchouc",
+        "g": "f"
+      },
+      {
+        "text": "chaussette tricotée",
+        "pl": "chaussettes tricotées",
+        "g": "f"
+      },
+      {
+        "text": "bougie",
+        "pl": "bougies",
+        "g": "f"
+      },
+      {
+        "text": "téléphone à cadran",
+        "pl": "téléphones à cadran",
+        "g": "m"
+      },
+      {
+        "text": "poste de radio",
+        "pl": "postes de radio",
+        "g": "m"
+      },
+      {
+        "text": "appareil photo à soufflet",
+        "pl": "appareils photo à soufflet",
+        "g": "m"
+      },
+      {
+        "text": "projecteur de cinéma",
+        "pl": "projecteurs de cinéma",
+        "g": "m"
+      },
+      {
+        "text": "haut-parleur",
+        "pl": "haut-parleurs",
+        "g": "m"
+      },
+      {
+        "text": "tuba",
+        "pl": "tubas",
+        "g": "m"
+      },
+      {
+        "text": "grosse caisse",
+        "pl": "grosses caisses",
+        "g": "f"
+      },
+      {
+        "text": "cornemuse",
+        "pl": "cornemuses",
+        "g": "f"
+      },
+      {
+        "text": "banjo",
+        "pl": "banjos",
+        "g": "m"
+      },
+      {
+        "text": "xylophone",
+        "pl": "xylophones",
+        "g": "m"
+      },
+      {
+        "text": "clavecin",
+        "pl": "clavecins",
+        "g": "m"
+      },
+      {
+        "text": "machine à sous",
+        "pl": "machines à sous",
+        "g": "f"
+      },
+      {
+        "text": "flipper",
+        "pl": "flippers",
+        "g": "m"
+      },
+      {
+        "text": "canard en plastique",
+        "pl": "canards en plastique",
+        "g": "m"
+      },
+      {
+        "text": "petit soldat de plomb",
+        "pl": "petits soldats de plomb",
+        "g": "m"
+      },
+      {
+        "text": "toupie",
+        "pl": "toupies",
+        "g": "f"
+      },
+      {
+        "text": "diable à ressort",
+        "pl": "diables à ressort",
+        "g": "m"
+      },
+      {
+        "text": "kaléidoscope",
+        "pl": "kaléidoscopes",
+        "g": "m"
+      },
+      {
+        "text": "boule à facettes",
+        "pl": "boules à facettes",
+        "g": "f"
+      },
+      {
+        "text": "lampe à lave",
+        "pl": "lampes à lave",
+        "g": "f"
+      },
+      {
+        "text": "château gonflable",
+        "pl": "châteaux gonflables",
+        "g": "m"
+      },
+      {
+        "text": "hamburger",
+        "pl": "hamburgers",
+        "g": "m"
+      },
+      {
+        "text": "pizza",
+        "pl": "pizzas",
+        "g": "f"
+      },
+      {
+        "text": "bretzel",
+        "pl": "bretzels",
+        "g": "m"
+      },
+      {
+        "text": "cornet de glace",
+        "pl": "cornets de glace",
+        "g": "m"
+      },
+      {
+        "text": "pastèque",
+        "pl": "pastèques",
+        "g": "f"
+      },
+      {
+        "text": "ananas",
+        "pl": "ananas",
+        "g": "m"
+      },
+      {
+        "text": "meule de fromage",
+        "pl": "meules de fromage",
+        "g": "f"
+      },
+      {
+        "text": "baguette",
+        "pl": "baguettes",
+        "g": "f"
+      },
+      {
+        "text": "dinde rôtie",
+        "pl": "dindes rôties",
+        "g": "f"
+      },
+      {
+        "text": "bocal de cornichons",
+        "pl": "bocaux de cornichons",
+        "g": "m"
+      },
+      {
+        "text": "soupière",
+        "pl": "soupières",
+        "g": "f"
+      },
+      {
+        "text": "chaudron",
+        "pl": "chaudrons",
+        "g": "m"
+      },
+      {
+        "text": "samovar",
+        "pl": "samovars",
+        "g": "m"
+      },
+      {
+        "text": "machine à expresso",
+        "pl": "machines à expresso",
+        "g": "f"
+      },
+      {
+        "text": "grille-pain",
+        "pl": "grille-pain",
+        "g": "m"
+      },
+      {
+        "text": "mixeur",
+        "pl": "mixeurs",
+        "g": "m"
+      },
+      {
+        "text": "poêle à frire",
+        "pl": "poêles à frire",
+        "g": "f"
+      },
+      {
+        "text": "hachoir à viande",
+        "pl": "hachoirs à viande",
+        "g": "m"
+      },
+      {
+        "text": "rouet",
+        "pl": "rouets",
+        "g": "m"
+      },
+      {
+        "text": "presse à imprimer",
+        "pl": "presses à imprimer",
+        "g": "f"
+      },
+      {
+        "text": "guillotine",
+        "pl": "guillotines",
+        "g": "f"
+      },
+      {
+        "text": "miroir sur pied",
+        "pl": "miroirs sur pied",
+        "g": "m"
+      },
+      {
+        "text": "cadran solaire",
+        "pl": "cadrans solaires",
+        "g": "m"
+      },
+      {
+        "text": "astrolabe",
+        "pl": "astrolabes",
+        "g": "m"
+      },
+      {
+        "text": "boussole",
+        "pl": "boussoles",
+        "g": "f"
+      },
+      {
+        "text": "carte au trésor",
+        "pl": "cartes au trésor",
+        "g": "f"
+      },
+      {
+        "text": "grimoire",
+        "pl": "grimoires",
+        "g": "m"
+      },
+      {
+        "text": "masque rituel",
+        "pl": "masques rituels",
+        "g": "m"
+      },
+      {
+        "text": "idole de pierre",
+        "pl": "idoles de pierre",
+        "g": "f"
+      },
+      {
+        "text": "obélisque",
+        "pl": "obélisques",
+        "g": "m"
+      },
+      {
+        "text": "fontaine",
+        "pl": "fontaines",
+        "g": "f"
+      },
+      {
+        "text": "pylône",
+        "pl": "pylônes",
+        "g": "m"
+      },
+      {
+        "text": "fusée",
+        "pl": "fusées",
+        "g": "f"
+      },
+      {
+        "text": "capsule spatiale",
+        "pl": "capsules spatiales",
+        "g": "f"
+      },
+      {
+        "text": "bras robotisé",
+        "pl": "bras robotisés",
+        "g": "m"
+      },
+      {
+        "text": "automate à rouages",
+        "pl": "automates à rouages",
+        "g": "m"
+      },
+      {
+        "text": "bobine à éclairs",
+        "pl": "bobines à éclairs",
+        "g": "f"
+      },
+      {
+        "text": "téléphérique",
+        "pl": "téléphériques",
+        "g": "m"
+      },
+      {
+        "text": "escalator",
+        "pl": "escalators",
+        "g": "m"
+      },
+      {
+        "text": "porte à tambour",
+        "pl": "portes à tambour",
+        "g": "f"
+      },
+      {
+        "text": "trampoline",
+        "pl": "trampolines",
+        "g": "m"
+      },
+      {
+        "text": "bâton sauteur",
+        "pl": "bâtons sauteurs",
+        "g": "m"
+      },
+      {
+        "text": "yoyo",
+        "pl": "yoyos",
+        "g": "m"
+      },
+      {
+        "text": "ballon de baudruche",
+        "pl": "ballons de baudruche",
+        "g": "m"
+      },
+      {
+        "text": "piñata",
+        "pl": "piñatas",
+        "g": "f"
+      },
+      {
+        "text": "parachute",
+        "pl": "parachutes",
+        "g": "m"
+      },
+      {
+        "text": "planche de surf",
+        "pl": "planches de surf",
+        "g": "f"
+      },
+      {
+        "text": "traîneau",
+        "pl": "traîneaux",
+        "g": "m"
+      },
+      {
+        "text": "transat",
+        "pl": "transats",
+        "g": "m"
+      },
+      {
+        "text": "tonneau",
+        "pl": "tonneaux",
+        "g": "m"
+      },
+      {
+        "text": "harpon",
+        "pl": "harpons",
+        "g": "m"
+      },
+      {
+        "text": "trident",
+        "pl": "tridents",
+        "g": "m"
+      },
+      {
+        "text": "épée à deux mains",
+        "pl": "épées à deux mains",
+        "g": "f"
+      },
+      {
+        "text": "enclume",
+        "pl": "enclumes",
+        "g": "f"
+      },
+      {
+        "text": "longue-vue",
+        "pl": "longues-vues",
+        "g": "f"
+      },
+      {
+        "text": "métronome",
+        "pl": "métronomes",
+        "g": "m"
+      },
+      {
+        "text": "tracteur",
+        "pl": "tracteurs",
+        "g": "m"
+      },
+      {
+        "text": "chasse-neige",
+        "pl": "chasse-neige",
+        "g": "m"
+      },
+      {
+        "text": "saxophone",
+        "pl": "saxophones",
+        "g": "m"
+      },
+      {
+        "text": "enseigne de barbier",
+        "pl": "enseignes de barbier",
+        "g": "f"
       }
     ],
     "part": [
@@ -2270,6 +3590,231 @@
         "text": "collerette",
         "pl": "collerettes",
         "g": "f"
+      },
+      {
+        "text": "patte",
+        "pl": "pattes",
+        "g": "f"
+      },
+      {
+        "text": "serre",
+        "pl": "serres",
+        "g": "f"
+      },
+      {
+        "text": "museau",
+        "pl": "museaux",
+        "g": "m"
+      },
+      {
+        "text": "palme",
+        "pl": "palmes",
+        "g": "f"
+      },
+      {
+        "text": "pied palmé",
+        "pl": "pieds palmés",
+        "g": "m"
+      },
+      {
+        "text": "évent",
+        "pl": "évents",
+        "g": "m"
+      },
+      {
+        "text": "aileron",
+        "pl": "ailerons",
+        "g": "m"
+      },
+      {
+        "text": "suçoir",
+        "pl": "suçoirs",
+        "g": "m"
+      },
+      {
+        "text": "poche ventrale",
+        "pl": "poches ventrales",
+        "g": "f"
+      },
+      {
+        "text": "pis",
+        "pl": "pis",
+        "g": "m"
+      },
+      {
+        "text": "caroncule",
+        "pl": "caroncules",
+        "g": "f"
+      },
+      {
+        "text": "épine",
+        "pl": "épines",
+        "g": "f"
+      },
+      {
+        "text": "nuque",
+        "pl": "nuques",
+        "g": "f"
+      },
+      {
+        "text": "poil",
+        "pl": "poils",
+        "g": "m"
+      },
+      {
+        "text": "bras",
+        "pl": "bras",
+        "g": "m"
+      },
+      {
+        "text": "jambe",
+        "pl": "jambes",
+        "g": "f"
+      },
+      {
+        "text": "coude",
+        "pl": "coudes",
+        "g": "m"
+      },
+      {
+        "text": "épaule",
+        "pl": "épaules",
+        "g": "f"
+      },
+      {
+        "text": "poignet",
+        "pl": "poignets",
+        "g": "m"
+      },
+      {
+        "text": "orteil",
+        "pl": "orteils",
+        "g": "m"
+      },
+      {
+        "text": "pouce",
+        "pl": "pouces",
+        "g": "m"
+      },
+      {
+        "text": "lèvre",
+        "pl": "lèvres",
+        "g": "f"
+      },
+      {
+        "text": "joue",
+        "pl": "joues",
+        "g": "f"
+      },
+      {
+        "text": "sourcil",
+        "pl": "sourcils",
+        "g": "m"
+      },
+      {
+        "text": "cil",
+        "pl": "cils",
+        "g": "m"
+      },
+      {
+        "text": "front",
+        "pl": "fronts",
+        "g": "m"
+      },
+      {
+        "text": "menton",
+        "pl": "mentons",
+        "g": "m"
+      },
+      {
+        "text": "poing",
+        "pl": "poings",
+        "g": "m"
+      },
+      {
+        "text": "globe oculaire",
+        "pl": "globes oculaires",
+        "g": "m"
+      },
+      {
+        "text": "verrue",
+        "pl": "verrues",
+        "g": "f"
+      },
+      {
+        "text": "cicatrice",
+        "pl": "cicatrices",
+        "g": "f"
+      },
+      {
+        "text": "tresse",
+        "pl": "tresses",
+        "g": "f"
+      },
+      {
+        "text": "mèche",
+        "pl": "mèches",
+        "g": "f"
+      },
+      {
+        "text": "vertèbre",
+        "pl": "vertèbres",
+        "g": "f"
+      },
+      {
+        "text": "cage thoracique",
+        "pl": "cages thoraciques",
+        "g": "f"
+      },
+      {
+        "text": "rotule",
+        "pl": "rotules",
+        "g": "f"
+      },
+      {
+        "text": "cheville",
+        "pl": "chevilles",
+        "g": "f"
+      },
+      {
+        "text": "talon",
+        "pl": "talons",
+        "g": "m"
+      },
+      {
+        "text": "nombril",
+        "pl": "nombrils",
+        "g": "m"
+      },
+      {
+        "text": "estomac",
+        "pl": "estomacs",
+        "g": "m"
+      },
+      {
+        "text": "intestin",
+        "pl": "intestins",
+        "g": "m"
+      },
+      {
+        "text": "foie",
+        "pl": "foies",
+        "g": "m"
+      },
+      {
+        "text": "rein",
+        "pl": "reins",
+        "g": "m"
+      },
+      {
+        "text": "éperon",
+        "pl": "éperons",
+        "g": "m"
+      },
+      {
+        "text": "ongle",
+        "pl": "ongles",
+        "g": "m"
       }
     ],
     "place": [
@@ -2827,6 +4372,431 @@
         "text": "station de lavage",
         "pl": "stations de lavage",
         "g": "f"
+      },
+      {
+        "text": "centre commercial",
+        "pl": "centres commerciaux",
+        "g": "m"
+      },
+      {
+        "text": "rayon du supermarché",
+        "pl": "rayons du supermarché",
+        "g": "m"
+      },
+      {
+        "text": "gymnase",
+        "pl": "gymnases",
+        "g": "m"
+      },
+      {
+        "text": "salle de classe",
+        "pl": "salles de classe",
+        "g": "f"
+      },
+      {
+        "text": "cantine",
+        "pl": "cantines",
+        "g": "f"
+      },
+      {
+        "text": "bureau de poste",
+        "pl": "bureaux de poste",
+        "g": "m"
+      },
+      {
+        "text": "commissariat",
+        "pl": "commissariats",
+        "g": "m"
+      },
+      {
+        "text": "cellule de prison",
+        "pl": "cellules de prison",
+        "g": "f"
+      },
+      {
+        "text": "tribunal",
+        "pl": "tribunaux",
+        "g": "m"
+      },
+      {
+        "text": "cathédrale",
+        "pl": "cathédrales",
+        "g": "f"
+      },
+      {
+        "text": "moulin à vent",
+        "pl": "moulins à vent",
+        "g": "m"
+      },
+      {
+        "text": "grange",
+        "pl": "granges",
+        "g": "f"
+      },
+      {
+        "text": "écurie",
+        "pl": "écuries",
+        "g": "f"
+      },
+      {
+        "text": "poulailler",
+        "pl": "poulaillers",
+        "g": "m"
+      },
+      {
+        "text": "verger",
+        "pl": "vergers",
+        "g": "m"
+      },
+      {
+        "text": "vignoble",
+        "pl": "vignobles",
+        "g": "m"
+      },
+      {
+        "text": "champ de maïs",
+        "pl": "champs de maïs",
+        "g": "m"
+      },
+      {
+        "text": "grotte",
+        "pl": "grottes",
+        "g": "f"
+      },
+      {
+        "text": "canyon",
+        "pl": "canyons",
+        "g": "m"
+      },
+      {
+        "text": "port",
+        "pl": "ports",
+        "g": "m"
+      },
+      {
+        "text": "crique",
+        "pl": "criques",
+        "g": "f"
+      },
+      {
+        "text": "oasis",
+        "pl": "oasis",
+        "g": "f"
+      },
+      {
+        "text": "clairière de jungle",
+        "pl": "clairières de jungle",
+        "g": "f"
+      },
+      {
+        "text": "bambouseraie",
+        "pl": "bambouseraies",
+        "g": "f"
+      },
+      {
+        "text": "cabane dans les arbres",
+        "pl": "cabanes dans les arbres",
+        "g": "f"
+      },
+      {
+        "text": "donjon",
+        "pl": "donjons",
+        "g": "m"
+      },
+      {
+        "text": "cachot",
+        "pl": "cachots",
+        "g": "m"
+      },
+      {
+        "text": "laboratoire d'alchimiste",
+        "pl": "laboratoires d'alchimiste",
+        "g": "m"
+      },
+      {
+        "text": "bureau du savant",
+        "pl": "bureaux du savant",
+        "g": "m"
+      },
+      {
+        "text": "bunker",
+        "pl": "bunkers",
+        "g": "m"
+      },
+      {
+        "text": "salle de contrôle",
+        "pl": "salles de contrôle",
+        "g": "f"
+      },
+      {
+        "text": "cockpit",
+        "pl": "cockpits",
+        "g": "m"
+      },
+      {
+        "text": "soute",
+        "pl": "soutes",
+        "g": "f"
+      },
+      {
+        "text": "terminal d'aéroport",
+        "pl": "terminaux d'aéroport",
+        "g": "m"
+      },
+      {
+        "text": "tunnel ferroviaire",
+        "pl": "tunnels ferroviaires",
+        "g": "m"
+      },
+      {
+        "text": "chambre de motel",
+        "pl": "chambres de motel",
+        "g": "f"
+      },
+      {
+        "text": "snack",
+        "pl": "snacks",
+        "g": "m"
+      },
+      {
+        "text": "taverne",
+        "pl": "tavernes",
+        "g": "f"
+      },
+      {
+        "text": "salon de coiffure",
+        "pl": "salons de coiffure",
+        "g": "m"
+      },
+      {
+        "text": "salon de tatouage",
+        "pl": "salons de tatouage",
+        "g": "m"
+      },
+      {
+        "text": "cabinet dentaire",
+        "pl": "cabinets dentaires",
+        "g": "m"
+      },
+      {
+        "text": "bloc opératoire",
+        "pl": "blocs opératoires",
+        "g": "m"
+      },
+      {
+        "text": "chambre à coucher",
+        "pl": "chambres à coucher",
+        "g": "f"
+      },
+      {
+        "text": "sous-sol",
+        "pl": "sous-sols",
+        "g": "m"
+      },
+      {
+        "text": "garde-manger",
+        "pl": "garde-manger",
+        "g": "m"
+      },
+      {
+        "text": "cheminée",
+        "pl": "cheminées",
+        "g": "f"
+      },
+      {
+        "text": "fête foraine",
+        "pl": "fêtes foraines",
+        "g": "f"
+      },
+      {
+        "text": "maison hantée",
+        "pl": "maisons hantées",
+        "g": "f"
+      },
+      {
+        "text": "parc d'attractions",
+        "pl": "parcs d'attractions",
+        "g": "m"
+      },
+      {
+        "text": "cinéma en plein air",
+        "pl": "cinémas en plein air",
+        "g": "m"
+      },
+      {
+        "text": "stade",
+        "pl": "stades",
+        "g": "m"
+      },
+      {
+        "text": "grotte de glace",
+        "pl": "grottes de glace",
+        "g": "f"
+      },
+      {
+        "text": "mine de sel",
+        "pl": "mines de sel",
+        "g": "f"
+      },
+      {
+        "text": "carrière",
+        "pl": "carrières",
+        "g": "f"
+      },
+      {
+        "text": "bazar",
+        "pl": "bazars",
+        "g": "m"
+      },
+      {
+        "text": "pagode",
+        "pl": "pagodes",
+        "g": "f"
+      },
+      {
+        "text": "sanctuaire shinto",
+        "pl": "sanctuaires shinto",
+        "g": "m"
+      },
+      {
+        "text": "abbaye en ruine",
+        "pl": "abbayes en ruine",
+        "g": "f"
+      },
+      {
+        "text": "amphithéâtre",
+        "pl": "amphithéâtres",
+        "g": "m"
+      },
+      {
+        "text": "village de pêcheurs",
+        "pl": "villages de pêcheurs",
+        "g": "m"
+      },
+      {
+        "text": "igloo",
+        "pl": "igloos",
+        "g": "m"
+      },
+      {
+        "text": "yourte",
+        "pl": "yourtes",
+        "g": "f"
+      },
+      {
+        "text": "parking souterrain",
+        "pl": "parkings souterrains",
+        "g": "m"
+      },
+      {
+        "text": "fonderie",
+        "pl": "fonderies",
+        "g": "f"
+      },
+      {
+        "text": "brasserie",
+        "pl": "brasseries",
+        "g": "f"
+      },
+      {
+        "text": "pharmacie",
+        "pl": "pharmacies",
+        "g": "f"
+      },
+      {
+        "text": "vestiaire",
+        "pl": "vestiaires",
+        "g": "m"
+      },
+      {
+        "text": "puits de mine",
+        "pl": "puits de mine",
+        "g": "m"
+      },
+      {
+        "text": "fort de neige",
+        "pl": "forts de neige",
+        "g": "m"
+      },
+      {
+        "text": "cuisine de navire",
+        "pl": "cuisines de navire",
+        "g": "f"
+      },
+      {
+        "text": "termitière",
+        "pl": "termitières",
+        "g": "f"
+      },
+      {
+        "text": "nid géant",
+        "pl": "nids géants",
+        "g": "m"
+      },
+      {
+        "text": "creux d'arbre",
+        "pl": "creux d'arbre",
+        "g": "m"
+      },
+      {
+        "text": "silo de lancement",
+        "pl": "silos de lancement",
+        "g": "m"
+      },
+      {
+        "text": "charcuterie",
+        "pl": "charcuteries",
+        "g": "f"
+      },
+      {
+        "text": "conserverie",
+        "pl": "conserveries",
+        "g": "f"
+      },
+      {
+        "text": "dôme sous-marin",
+        "pl": "dômes sous-marins",
+        "g": "m"
+      },
+      {
+        "text": "puits d'ascenseur",
+        "pl": "puits d'ascenseur",
+        "g": "m"
+      },
+      {
+        "text": "poste de secours",
+        "pl": "postes de secours",
+        "g": "m"
+      },
+      {
+        "text": "palais de glace",
+        "pl": "palais de glace",
+        "g": "m"
+      },
+      {
+        "text": "wagon-restaurant",
+        "pl": "wagons-restaurants",
+        "g": "m"
+      },
+      {
+        "text": "confiserie",
+        "pl": "confiseries",
+        "g": "f"
+      },
+      {
+        "text": "station de radio",
+        "pl": "stations de radio",
+        "g": "f"
+      },
+      {
+        "text": "gare de téléphérique",
+        "pl": "gares de téléphérique",
+        "g": "f"
+      },
+      {
+        "text": "central téléphonique",
+        "pl": "centraux téléphoniques",
+        "g": "m"
       }
     ],
     "setting": [
@@ -2990,7 +4960,140 @@
       "dans une cathédrale engloutie",
       "dans une forêt de mains géantes",
       "sur une montagne de dents",
-      "dans un cratère fleuri"
+      "dans un cratère fleuri",
+      "à l'intérieur d'un coquillage géant",
+      "sur le dos d'un dragon endormi",
+      "dans une bibliothèque de livres flottants",
+      "au fond d'un puits sans fond",
+      "sur un fil tendu au-dessus d'un volcan",
+      "dans la cage thoracique d'un squelette géant",
+      "dans un train qui traverse le ciel",
+      "dans un parc d'attractions abandonné",
+      "sur un manège qui s'emballe",
+      "dans une baignoire grande comme un lac",
+      "à l'intérieur d'une boîte à musique géante",
+      "sur un toit pendant un orage",
+      "dans un champ de pissenlits géants",
+      "sous une pluie de grenouilles",
+      "dans une tempête de neige en papier",
+      "sur un radeau fait de portes",
+      "dans une cathédrale en côtes de baleine",
+      "au sommet d'un escalier en colimaçon sans fin",
+      "dans une forêt d'arbres à l'envers",
+      "dans une ville construite dans un arbre",
+      "sur le pont d'un navire volant",
+      "dans une montgolfière au-dessus d'un champ de bataille",
+      "dans une galerie des glaces",
+      "dans un village de maisons-champignons",
+      "dans une bibliothèque en flammes",
+      "dans une serre pleine de plantes carnivores",
+      "à l'intérieur d'un immense bocal de poisson",
+      "sur une plage couverte de coquillages",
+      "à l'intérieur d'une lampe à lave grande comme une maison",
+      "sous un dôme de verre géant",
+      "dans une ville fantôme au milieu du désert",
+      "au bout d'une jetée dans le brouillard",
+      "sur un iceberg à la dérive",
+      "dans une cascade gelée",
+      "dans une grotte éclairée par des vers luisants",
+      "dans une ville mécanique",
+      "dans un bazar sur une autre planète",
+      "sur un pont de corde au-dessus d'une gorge",
+      "dans un phare au milieu d'une tempête",
+      "dans un moulin sur une colline de tulipes",
+      "sur un toit couvert d'antennes paraboliques",
+      "dans un théâtre abandonné",
+      "dans une station de métro inondée",
+      "dans une décharge de vieux robots",
+      "dans une maison de poupée",
+      "dans une cuisine géante entre d'énormes marmites",
+      "sur une table dressée pour le banquet d'un géant",
+      "à l'intérieur d'un volcan creux",
+      "dans un canyon de roche rouge",
+      "au bord d'une cascade flottante",
+      "dans un navire englouti",
+      "dans une fosse de goudron",
+      "sous un dôme d'aurores boréales",
+      "à l'intérieur d'une souche d'arbre creuse",
+      "à l'intérieur d'un œuf gigantesque",
+      "dans un monastère au-dessus des nuages",
+      "dans une pagode suspendue à une falaise",
+      "sur un tas de vieux téléviseurs",
+      "dans une bulle qui dérive dans l'espace",
+      "dans un labyrinthe de haies",
+      "dans un labyrinthe d'escaliers",
+      "sous la glace d'une mer gelée",
+      "dans une soucoupe volante écrasée",
+      "dans le cockpit d'un robot géant",
+      "dans une piscine vide gigantesque",
+      "près d'un feu de camp au bout du monde",
+      "dans un champ de bougies géantes",
+      "sur une mer de verre en fusion",
+      "dans une forêt de totems",
+      "dans une boulangerie à minuit",
+      "sous un chapiteau de cirque en flammes",
+      "sur des montagnes russes",
+      "sur une grande roue au coucher du soleil",
+      "dans un village sous la neige",
+      "dans un champ de blé sous une nuée de corbeaux",
+      "dans un jardin sur les toits",
+      "au milieu d'un feu d'artifice",
+      "dans un nuage de papillons",
+      "dans une bouteille sur une étagère",
+      "à l'intérieur d'une lanterne",
+      "sur une feuille géante sous la pluie",
+      "dans un lit d'algues",
+      "sur un récif de corail",
+      "dans une mare de lait",
+      "dans une rivière de miel",
+      "dans un lac de chocolat",
+      "dans une confiserie industrielle",
+      "dans un marché médiéval",
+      "dans une fosse de gladiateurs",
+      "dans une salle du trône sans toit",
+      "sur un trône d'ossements",
+      "sur un pont-levis au-dessus d'un fossé de lave",
+      "sur les remparts d'un château assiégé",
+      "dans un labyrinthe de maïs",
+      "dans un manoir hanté",
+      "à un bal masqué",
+      "sur la scène d'un opéra en ruine",
+      "dans un magasin de jouets la nuit",
+      "dans la poche d'un géant",
+      "sur l'épaule d'une statue colossale",
+      "sur la tête d'une statue géante",
+      "à l'ombre d'un robot géant",
+      "aux pieds d'une montagne qui marche",
+      "sur une falaise de glace",
+      "sur une lande couverte de brume",
+      "dans la canopée d'une forêt tropicale",
+      "au pied d'une cascade géante",
+      "dans une prairie pleine d'escargots géants",
+      "dans un désert de cactus hauts comme des tours",
+      "sur une dune sous deux lunes",
+      "sous un ciel à trois soleils",
+      "sur une planète faite d'eau",
+      "dans un cercle de menhirs",
+      "dans un ascenseur qui ne s'arrête jamais",
+      "sur un escalator dans un centre commercial désert",
+      "dans un snack au bord de la galaxie",
+      "dans les nuages d'orage d'une géante gazeuse",
+      "dans une tente pendant un blizzard",
+      "sur une passerelle entre deux gratte-ciel",
+      "sur une statue à moitié engloutie dans la mer",
+      "sous une pluie de pétales",
+      "pendant une fête des lanternes en papier",
+      "pendant une tempête de sable",
+      "sous la grêle",
+      "sous un ciel plein de cerfs-volants",
+      "dans un épais brouillard",
+      "sous un pont qui s'effondre",
+      "au milieu d'une débandade",
+      "sur un bateau dans la tempête",
+      "sur une île de pirates",
+      "dans un désert d'ossements",
+      "au milieu d'un essaim de lucioles",
+      "dans une mine aux veines lumineuses"
     ],
     "adj": [
       {
@@ -4798,6 +6901,948 @@
         "f": "plâtrée",
         "pl": "plâtrés",
         "fpl": "plâtrées"
+      },
+      {
+        "text": "couvert de balanes",
+        "f": "couverte de balanes",
+        "pl": "couverts de balanes",
+        "fpl": "couvertes de balanes"
+      },
+      {
+        "text": "mité",
+        "f": "mitée",
+        "pl": "mités",
+        "fpl": "mitées"
+      },
+      {
+        "text": "rapiécé",
+        "f": "rapiécée",
+        "pl": "rapiécés",
+        "fpl": "rapiécées"
+      },
+      {
+        "text": "craquelé",
+        "f": "craquelée",
+        "pl": "craquelés",
+        "fpl": "craquelées"
+      },
+      {
+        "text": "en velours",
+        "f": "en velours",
+        "pl": "en velours",
+        "fpl": "en velours"
+      },
+      {
+        "text": "bordé de dentelle",
+        "f": "bordée de dentelle",
+        "pl": "bordés de dentelle",
+        "fpl": "bordées de dentelle"
+      },
+      {
+        "text": "pailleté",
+        "f": "pailletée",
+        "pl": "pailletés",
+        "fpl": "pailletées"
+      },
+      {
+        "text": "terni",
+        "f": "ternie",
+        "pl": "ternis",
+        "fpl": "ternies"
+      },
+      {
+        "text": "serti de perles",
+        "f": "sertie de perles",
+        "pl": "sertis de perles",
+        "fpl": "serties de perles"
+      },
+      {
+        "text": "éclairé au néon",
+        "f": "éclairée au néon",
+        "pl": "éclairés au néon",
+        "fpl": "éclairées au néon"
+      },
+      {
+        "text": "duveteux",
+        "f": "duveteuse",
+        "pl": "duveteux",
+        "fpl": "duveteuses"
+      },
+      {
+        "text": "rayé façon sucre d'orge",
+        "f": "rayée façon sucre d'orge",
+        "pl": "rayés façon sucre d'orge",
+        "fpl": "rayées façon sucre d'orge"
+      },
+      {
+        "text": "à pois",
+        "f": "à pois",
+        "pl": "à pois",
+        "fpl": "à pois"
+      },
+      {
+        "text": "chromé",
+        "f": "chromée",
+        "pl": "chromés",
+        "fpl": "chromées"
+      },
+      {
+        "text": "plaqué cuivre",
+        "f": "plaquée cuivre",
+        "pl": "plaqués cuivre",
+        "fpl": "plaquées cuivre"
+      },
+      {
+        "text": "en laiton",
+        "f": "en laiton",
+        "pl": "en laiton",
+        "fpl": "en laiton"
+      },
+      {
+        "text": "ficelé",
+        "f": "ficelée",
+        "pl": "ficelés",
+        "fpl": "ficelées"
+      },
+      {
+        "text": "emmêlé",
+        "f": "emmêlée",
+        "pl": "emmêlés",
+        "fpl": "emmêlées"
+      },
+      {
+        "text": "dégoulinant",
+        "f": "dégoulinante",
+        "pl": "dégoulinants",
+        "fpl": "dégoulinantes"
+      },
+      {
+        "text": "givré",
+        "f": "givrée",
+        "pl": "givrés",
+        "fpl": "givrées"
+      },
+      {
+        "text": "saupoudré de neige",
+        "f": "saupoudrée de neige",
+        "pl": "saupoudrés de neige",
+        "fpl": "saupoudrées de neige"
+      },
+      {
+        "text": "éclairé aux bougies",
+        "f": "éclairée aux bougies",
+        "pl": "éclairés aux bougies",
+        "fpl": "éclairées aux bougies"
+      },
+      {
+        "text": "léché par les flammes",
+        "f": "léchée par les flammes",
+        "pl": "léchés par les flammes",
+        "fpl": "léchées par les flammes"
+      },
+      {
+        "text": "noirci de suie",
+        "f": "noircie de suie",
+        "pl": "noircis de suie",
+        "fpl": "noircies de suie"
+      },
+      {
+        "text": "taché d'encre",
+        "f": "tachée d'encre",
+        "pl": "tachés d'encre",
+        "fpl": "tachées d'encre"
+      },
+      {
+        "text": "éclaboussé de peinture",
+        "f": "éclaboussée de peinture",
+        "pl": "éclaboussés de peinture",
+        "fpl": "éclaboussées de peinture"
+      },
+      {
+        "text": "enduit de goudron",
+        "f": "enduite de goudron",
+        "pl": "enduits de goudron",
+        "fpl": "enduites de goudron"
+      },
+      {
+        "text": "glacé au miel",
+        "f": "glacée au miel",
+        "pl": "glacés au miel",
+        "fpl": "glacées au miel"
+      },
+      {
+        "text": "enrobé de sucre",
+        "f": "enrobée de sucre",
+        "pl": "enrobés de sucre",
+        "fpl": "enrobées de sucre"
+      },
+      {
+        "text": "trempé dans le chocolat",
+        "f": "trempée dans le chocolat",
+        "pl": "trempés dans le chocolat",
+        "fpl": "trempées dans le chocolat"
+      },
+      {
+        "text": "gélatineux",
+        "f": "gélatineuse",
+        "pl": "gélatineux",
+        "fpl": "gélatineuses"
+      },
+      {
+        "text": "bouillonnant",
+        "f": "bouillonnante",
+        "pl": "bouillonnants",
+        "fpl": "bouillonnantes"
+      },
+      {
+        "text": "écumant",
+        "f": "écumante",
+        "pl": "écumants",
+        "fpl": "écumantes"
+      },
+      {
+        "text": "foudroyé",
+        "f": "foudroyée",
+        "pl": "foudroyés",
+        "fpl": "foudroyées"
+      },
+      {
+        "text": "électrisé",
+        "f": "électrisée",
+        "pl": "électrisés",
+        "fpl": "électrisées"
+      },
+      {
+        "text": "ratatiné",
+        "f": "ratatinée",
+        "pl": "ratatinés",
+        "fpl": "ratatinées"
+      },
+      {
+        "text": "écrasé",
+        "f": "écrasée",
+        "pl": "écrasés",
+        "fpl": "écrasées"
+      },
+      {
+        "text": "aplati",
+        "f": "aplatie",
+        "pl": "aplatis",
+        "fpl": "aplaties"
+      },
+      {
+        "text": "plié",
+        "f": "pliée",
+        "pl": "pliés",
+        "fpl": "pliées"
+      },
+      {
+        "text": "froissé",
+        "f": "froissée",
+        "pl": "froissés",
+        "fpl": "froissées"
+      },
+      {
+        "text": "déchiqueté",
+        "f": "déchiquetée",
+        "pl": "déchiquetés",
+        "fpl": "déchiquetées"
+      },
+      {
+        "text": "à fermeture éclair",
+        "f": "à fermeture éclair",
+        "pl": "à fermeture éclair",
+        "fpl": "à fermeture éclair"
+      },
+      {
+        "text": "boutonné",
+        "f": "boutonnée",
+        "pl": "boutonnés",
+        "fpl": "boutonnées"
+      },
+      {
+        "text": "boulonné",
+        "f": "boulonnée",
+        "pl": "boulonnés",
+        "fpl": "boulonnées"
+      },
+      {
+        "text": "riveté",
+        "f": "rivetée",
+        "pl": "rivetés",
+        "fpl": "rivetées"
+      },
+      {
+        "text": "cadenassé",
+        "f": "cadenassée",
+        "pl": "cadenassés",
+        "fpl": "cadenassées"
+      },
+      {
+        "text": "scotché",
+        "f": "scotchée",
+        "pl": "scotchés",
+        "fpl": "scotchées"
+      },
+      {
+        "text": "rafistolé",
+        "f": "rafistolée",
+        "pl": "rafistolés",
+        "fpl": "rafistolées"
+      },
+      {
+        "text": "à fines rayures",
+        "f": "à fines rayures",
+        "pl": "à fines rayures",
+        "fpl": "à fines rayures"
+      },
+      {
+        "text": "écossais",
+        "f": "écossaise",
+        "pl": "écossais",
+        "fpl": "écossaises"
+      },
+      {
+        "text": "laqué",
+        "f": "laquée",
+        "pl": "laqués",
+        "fpl": "laquées"
+      },
+      {
+        "text": "verni",
+        "f": "vernie",
+        "pl": "vernis",
+        "fpl": "vernies"
+      },
+      {
+        "text": "émaillé",
+        "f": "émaillée",
+        "pl": "émaillés",
+        "fpl": "émaillées"
+      },
+      {
+        "text": "en vitrail",
+        "f": "en vitrail",
+        "pl": "en vitrail",
+        "fpl": "en vitrail"
+      },
+      {
+        "text": "en mosaïque",
+        "f": "en mosaïque",
+        "pl": "en mosaïque",
+        "fpl": "en mosaïque"
+      },
+      {
+        "text": "en marbre",
+        "f": "en marbre",
+        "pl": "en marbre",
+        "fpl": "en marbre"
+      },
+      {
+        "text": "en jade",
+        "f": "en jade",
+        "pl": "en jade",
+        "fpl": "en jade"
+      },
+      {
+        "text": "en ambre",
+        "f": "en ambre",
+        "pl": "en ambre",
+        "fpl": "en ambre"
+      },
+      {
+        "text": "en bronze",
+        "f": "en bronze",
+        "pl": "en bronze",
+        "fpl": "en bronze"
+      },
+      {
+        "text": "en fonte",
+        "f": "en fonte",
+        "pl": "en fonte",
+        "fpl": "en fonte"
+      },
+      {
+        "text": "couvert de feuilles d'or",
+        "f": "couverte de feuilles d'or",
+        "pl": "couverts de feuilles d'or",
+        "fpl": "couvertes de feuilles d'or"
+      },
+      {
+        "text": "vert-de-grisé",
+        "f": "vert-de-grisée",
+        "pl": "vert-de-grisés",
+        "fpl": "vert-de-grisées"
+      },
+      {
+        "text": "couvert de lichen",
+        "f": "couverte de lichen",
+        "pl": "couverts de lichen",
+        "fpl": "couvertes de lichen"
+      },
+      {
+        "text": "enlacé de lierre",
+        "f": "enlacée de lierre",
+        "pl": "enlacés de lierre",
+        "fpl": "enlacées de lierre"
+      },
+      {
+        "text": "couvert de champignons",
+        "f": "couverte de champignons",
+        "pl": "couverts de champignons",
+        "fpl": "couvertes de champignons"
+      },
+      {
+        "text": "incrusté de coraux",
+        "f": "incrustée de coraux",
+        "pl": "incrustés de coraux",
+        "fpl": "incrustées de coraux"
+      },
+      {
+        "text": "couvert de coquillages",
+        "f": "couverte de coquillages",
+        "pl": "couverts de coquillages",
+        "fpl": "couvertes de coquillages"
+      },
+      {
+        "text": "drapé d'algues",
+        "f": "drapée d'algues",
+        "pl": "drapés d'algues",
+        "fpl": "drapées d'algues"
+      },
+      {
+        "text": "aux yeux en boutons",
+        "f": "aux yeux en boutons",
+        "pl": "aux yeux en boutons",
+        "fpl": "aux yeux en boutons"
+      },
+      {
+        "text": "rembourré",
+        "f": "rembourrée",
+        "pl": "rembourrés",
+        "fpl": "rembourrées"
+      },
+      {
+        "text": "en feutre",
+        "f": "en feutre",
+        "pl": "en feutre",
+        "fpl": "en feutre"
+      },
+      {
+        "text": "au crochet",
+        "f": "au crochet",
+        "pl": "au crochet",
+        "fpl": "au crochet"
+      },
+      {
+        "text": "brodé",
+        "f": "brodée",
+        "pl": "brodés",
+        "fpl": "brodées"
+      },
+      {
+        "text": "perlé",
+        "f": "perlée",
+        "pl": "perlés",
+        "fpl": "perlées"
+      },
+      {
+        "text": "à pompons",
+        "f": "à pompons",
+        "pl": "à pompons",
+        "fpl": "à pompons"
+      },
+      {
+        "text": "empanaché",
+        "f": "empanachée",
+        "pl": "empanachés",
+        "fpl": "empanachées"
+      },
+      {
+        "text": "frangé",
+        "f": "frangée",
+        "pl": "frangés",
+        "fpl": "frangées"
+      },
+      {
+        "text": "plissé",
+        "f": "plissée",
+        "pl": "plissés",
+        "fpl": "plissées"
+      },
+      {
+        "text": "froufroutant",
+        "f": "froufroutante",
+        "pl": "froufroutants",
+        "fpl": "froufroutantes"
+      },
+      {
+        "text": "tie-and-dye",
+        "f": "tie-and-dye",
+        "pl": "tie-and-dye",
+        "fpl": "tie-and-dye"
+      },
+      {
+        "text": "camouflé",
+        "f": "camouflée",
+        "pl": "camouflés",
+        "fpl": "camouflées"
+      },
+      {
+        "text": "en fil de fer",
+        "f": "en fil de fer",
+        "pl": "en fil de fer",
+        "fpl": "en fil de fer"
+      },
+      {
+        "text": "pixellisé",
+        "f": "pixellisée",
+        "pl": "pixellisés",
+        "fpl": "pixellisées"
+      },
+      {
+        "text": "low-poly",
+        "f": "low-poly",
+        "pl": "low-poly",
+        "fpl": "low-poly"
+      },
+      {
+        "text": "holographique",
+        "f": "holographique",
+        "pl": "holographiques",
+        "fpl": "holographiques"
+      },
+      {
+        "text": "scintillant",
+        "f": "scintillante",
+        "pl": "scintillants",
+        "fpl": "scintillantes"
+      },
+      {
+        "text": "tapissé de miroirs",
+        "f": "tapissée de miroirs",
+        "pl": "tapissés de miroirs",
+        "fpl": "tapissées de miroirs"
+      },
+      {
+        "text": "surdimensionné",
+        "f": "surdimensionnée",
+        "pl": "surdimensionnés",
+        "fpl": "surdimensionnées"
+      },
+      {
+        "text": "émacié",
+        "f": "émaciée",
+        "pl": "émaciés",
+        "fpl": "émaciées"
+      },
+      {
+        "text": "squelettique",
+        "f": "squelettique",
+        "pl": "squelettiques",
+        "fpl": "squelettiques"
+      },
+      {
+        "text": "voûté",
+        "f": "voûtée",
+        "pl": "voûtés",
+        "fpl": "voûtées"
+      },
+      {
+        "text": "de guingois",
+        "f": "de guingois",
+        "pl": "de guingois",
+        "fpl": "de guingois"
+      },
+      {
+        "text": "noueux",
+        "f": "noueuse",
+        "pl": "noueux",
+        "fpl": "noueuses"
+      },
+      {
+        "text": "tressé",
+        "f": "tressée",
+        "pl": "tressés",
+        "fpl": "tressées"
+      },
+      {
+        "text": "frisé",
+        "f": "frisée",
+        "pl": "frisés",
+        "fpl": "frisées"
+      },
+      {
+        "text": "ébouriffé",
+        "f": "ébouriffée",
+        "pl": "ébouriffés",
+        "fpl": "ébouriffées"
+      },
+      {
+        "text": "laineux",
+        "f": "laineuse",
+        "pl": "laineux",
+        "fpl": "laineuses"
+      },
+      {
+        "text": "à piquants",
+        "f": "à piquants",
+        "pl": "à piquants",
+        "fpl": "à piquants"
+      },
+      {
+        "text": "à ramure",
+        "f": "à ramure",
+        "pl": "à ramure",
+        "fpl": "à ramure"
+      },
+      {
+        "text": "à défenses",
+        "f": "à défenses",
+        "pl": "à défenses",
+        "fpl": "à défenses"
+      },
+      {
+        "text": "à crocs",
+        "f": "à crocs",
+        "pl": "à crocs",
+        "fpl": "à crocs"
+      },
+      {
+        "text": "à sabots",
+        "f": "à sabots",
+        "pl": "à sabots",
+        "fpl": "à sabots"
+      },
+      {
+        "text": "à nageoires",
+        "f": "à nageoires",
+        "pl": "à nageoires",
+        "fpl": "à nageoires"
+      },
+      {
+        "text": "aux yeux multiples",
+        "f": "aux yeux multiples",
+        "pl": "aux yeux multiples",
+        "fpl": "aux yeux multiples"
+      },
+      {
+        "text": "à trois pattes",
+        "f": "à trois pattes",
+        "pl": "à trois pattes",
+        "fpl": "à trois pattes"
+      },
+      {
+        "text": "à six pattes",
+        "f": "à six pattes",
+        "pl": "à six pattes",
+        "fpl": "à six pattes"
+      },
+      {
+        "text": "aux longues jambes",
+        "f": "aux longues jambes",
+        "pl": "aux longues jambes",
+        "fpl": "aux longues jambes"
+      },
+      {
+        "text": "au long cou",
+        "f": "au long cou",
+        "pl": "au long cou",
+        "fpl": "au long cou"
+      },
+      {
+        "text": "aux grandes oreilles",
+        "f": "aux grandes oreilles",
+        "pl": "aux grandes oreilles",
+        "fpl": "aux grandes oreilles"
+      },
+      {
+        "text": "aux oreilles pendantes",
+        "f": "aux oreilles pendantes",
+        "pl": "aux oreilles pendantes",
+        "fpl": "aux oreilles pendantes"
+      },
+      {
+        "text": "aux yeux exorbités",
+        "f": "aux yeux exorbités",
+        "pl": "aux yeux exorbités",
+        "fpl": "aux yeux exorbités"
+      },
+      {
+        "text": "édenté",
+        "f": "édentée",
+        "pl": "édentés",
+        "fpl": "édentées"
+      },
+      {
+        "text": "moustachu",
+        "f": "moustachue",
+        "pl": "moustachus",
+        "fpl": "moustachues"
+      },
+      {
+        "text": "barbu",
+        "f": "barbue",
+        "pl": "barbus",
+        "fpl": "barbues"
+      },
+      {
+        "text": "chauve",
+        "f": "chauve",
+        "pl": "chauves",
+        "fpl": "chauves"
+      },
+      {
+        "text": "pris dans la glace",
+        "f": "prise dans la glace",
+        "pl": "pris dans la glace",
+        "fpl": "prises dans la glace"
+      },
+      {
+        "text": "mis sous vide",
+        "f": "mise sous vide",
+        "pl": "mis sous vide",
+        "fpl": "mises sous vide"
+      },
+      {
+        "text": "en bouteille",
+        "f": "en bouteille",
+        "pl": "en bouteille",
+        "fpl": "en bouteille"
+      },
+      {
+        "text": "en cage",
+        "f": "en cage",
+        "pl": "en cage",
+        "fpl": "en cage"
+      },
+      {
+        "text": "emballé dans du papier cadeau",
+        "f": "emballée dans du papier cadeau",
+        "pl": "emballés dans du papier cadeau",
+        "fpl": "emballées dans du papier cadeau"
+      },
+      {
+        "text": "emballé dans du papier bulle",
+        "f": "emballée dans du papier bulle",
+        "pl": "emballés dans du papier bulle",
+        "fpl": "emballées dans du papier bulle"
+      },
+      {
+        "text": "tranché",
+        "f": "tranchée",
+        "pl": "tranchés",
+        "fpl": "tranchées"
+      },
+      {
+        "text": "à moitié mangé",
+        "f": "à moitié mangé",
+        "pl": "à moitié mangé",
+        "fpl": "à moitié mangé"
+      },
+      {
+        "text": "évidé",
+        "f": "évidée",
+        "pl": "évidés",
+        "fpl": "évidées"
+      },
+      {
+        "text": "disséqué",
+        "f": "disséquée",
+        "pl": "disséqués",
+        "fpl": "disséquées"
+      },
+      {
+        "text": "grimaçant",
+        "f": "grimaçante",
+        "pl": "grimaçants",
+        "fpl": "grimaçantes"
+      },
+      {
+        "text": "rieur",
+        "f": "rieuse",
+        "pl": "rieurs",
+        "fpl": "rieuses"
+      },
+      {
+        "text": "bavant",
+        "f": "bavante",
+        "pl": "bavants",
+        "fpl": "bavantes"
+      },
+      {
+        "text": "transpirant",
+        "f": "transpirante",
+        "pl": "transpirants",
+        "fpl": "transpirantes"
+      },
+      {
+        "text": "frissonnant",
+        "f": "frissonnante",
+        "pl": "frissonnants",
+        "fpl": "frissonnantes"
+      },
+      {
+        "text": "bordé de fourrure",
+        "f": "bordée de fourrure",
+        "pl": "bordés de fourrure",
+        "fpl": "bordées de fourrure"
+      },
+      {
+        "text": "enveloppé de soie",
+        "f": "enveloppée de soie",
+        "pl": "enveloppés de soie",
+        "fpl": "enveloppées de soie"
+      },
+      {
+        "text": "noué d'un ruban",
+        "f": "nouée d'un ruban",
+        "pl": "noués d'un ruban",
+        "fpl": "nouées d'un ruban"
+      },
+      {
+        "text": "à nœud papillon",
+        "f": "à nœud papillon",
+        "pl": "à nœud papillon",
+        "fpl": "à nœud papillon"
+      },
+      {
+        "text": "fleuri",
+        "f": "fleurie",
+        "pl": "fleuris",
+        "fpl": "fleuries"
+      },
+      {
+        "text": "épineux",
+        "f": "épineuse",
+        "pl": "épineux",
+        "fpl": "épineuses"
+      },
+      {
+        "text": "couvert de toiles d'araignée",
+        "f": "couverte de toiles d'araignée",
+        "pl": "couverts de toiles d'araignée",
+        "fpl": "couvertes de toiles d'araignée"
+      },
+      {
+        "text": "enneigé",
+        "f": "enneigée",
+        "pl": "enneigés",
+        "fpl": "enneigées"
+      },
+      {
+        "text": "frangé de glaçons",
+        "f": "frangée de glaçons",
+        "pl": "frangés de glaçons",
+        "fpl": "frangées de glaçons"
+      },
+      {
+        "text": "veiné de lave",
+        "f": "veinée de lave",
+        "pl": "veinés de lave",
+        "fpl": "veinées de lave"
+      },
+      {
+        "text": "veiné d'or",
+        "f": "veinée d'or",
+        "pl": "veinés d'or",
+        "fpl": "veinées d'or"
+      },
+      {
+        "text": "incandescent",
+        "f": "incandescente",
+        "pl": "incandescents",
+        "fpl": "incandescentes"
+      },
+      {
+        "text": "érodé",
+        "f": "érodée",
+        "pl": "érodés",
+        "fpl": "érodées"
+      },
+      {
+        "text": "battu par les vents",
+        "f": "battue par les vents",
+        "pl": "battus par les vents",
+        "fpl": "battues par les vents"
+      },
+      {
+        "text": "gorgé d'eau",
+        "f": "gorgée d'eau",
+        "pl": "gorgés d'eau",
+        "fpl": "gorgées d'eau"
+      },
+      {
+        "text": "incrusté de sel",
+        "f": "incrustée de sel",
+        "pl": "incrustés de sel",
+        "fpl": "incrustées de sel"
+      },
+      {
+        "text": "clouté de crânes",
+        "f": "cloutée de crânes",
+        "pl": "cloutés de crânes",
+        "fpl": "cloutées de crânes"
+      },
+      {
+        "text": "clouté",
+        "f": "cloutée",
+        "pl": "cloutés",
+        "fpl": "cloutées"
+      },
+      {
+        "text": "transpercé de flèches",
+        "f": "transpercée de flèches",
+        "pl": "transpercés de flèches",
+        "fpl": "transpercées de flèches"
+      },
+      {
+        "text": "à monocle",
+        "f": "à monocle",
+        "pl": "à monocle",
+        "fpl": "à monocle"
+      },
+      {
+        "text": "à lunettes",
+        "f": "à lunettes",
+        "pl": "à lunettes",
+        "fpl": "à lunettes"
+      },
+      {
+        "text": "casqué",
+        "f": "casquée",
+        "pl": "casqués",
+        "fpl": "casquées"
+      },
+      {
+        "text": "à vapeur",
+        "f": "à vapeur",
+        "pl": "à vapeur",
+        "fpl": "à vapeur"
+      },
+      {
+        "text": "à ressort",
+        "f": "à ressort",
+        "pl": "à ressort",
+        "fpl": "à ressort"
+      },
+      {
+        "text": "à engrenages",
+        "f": "à engrenages",
+        "pl": "à engrenages",
+        "fpl": "à engrenages"
+      },
+      {
+        "text": "à hélice",
+        "f": "à hélice",
+        "pl": "à hélice",
+        "fpl": "à hélice"
+      },
+      {
+        "text": "à réaction",
+        "f": "à réaction",
+        "pl": "à réaction",
+        "fpl": "à réaction"
       }
     ],
     "vt": [
@@ -5416,6 +8461,496 @@
         "inf": "se tenir en équilibre sur",
         "ppr": "se tenant en équilibre sur",
         "rec": "font des acrobaties ensemble"
+      },
+      {
+        "text": "poignarde",
+        "pl": "poignardent",
+        "inf": "poignarder",
+        "ppr": "poignardant",
+        "rec": "se poignardent"
+      },
+      {
+        "text": "transperce",
+        "pl": "transpercent",
+        "inf": "transpercer",
+        "ppr": "transperçant",
+        "rec": "se transpercent"
+      },
+      {
+        "text": "harponne",
+        "pl": "harponnent",
+        "inf": "harponner",
+        "ppr": "harponnant",
+        "rec": "se harponnent"
+      },
+      {
+        "text": "récure",
+        "pl": "récurent",
+        "inf": "récurer",
+        "ppr": "récurant",
+        "rec": "se récurent mutuellement"
+      },
+      {
+        "text": "remorque",
+        "pl": "remorquent",
+        "inf": "remorquer",
+        "ppr": "remorquant",
+        "rec": "se remorquent"
+      },
+      {
+        "text": "hisse",
+        "pl": "hissent",
+        "inf": "hisser",
+        "ppr": "hissant",
+        "rec": "se hissent mutuellement"
+      },
+      {
+        "text": "recoud",
+        "pl": "recousent",
+        "inf": "recoudre",
+        "ppr": "recousant",
+        "rec": "se recousent"
+      },
+      {
+        "text": "panse",
+        "pl": "pansent",
+        "inf": "panser",
+        "ppr": "pansant",
+        "rec": "se pansent mutuellement"
+      },
+      {
+        "text": "plante un drapeau sur",
+        "pl": "plantent un drapeau sur",
+        "inf": "planter un drapeau sur",
+        "ppr": "plantant un drapeau sur",
+        "rec": "se plantent des drapeaux dessus"
+      },
+      {
+        "text": "sert du thé à",
+        "pl": "servent du thé à",
+        "inf": "servir du thé à",
+        "ppr": "servant du thé à",
+        "rec": "se servent du thé"
+      },
+      {
+        "text": "crache sur",
+        "pl": "crachent sur",
+        "inf": "cracher sur",
+        "ppr": "crachant sur",
+        "rec": "se crachent dessus"
+      },
+      {
+        "text": "lance des boules de neige sur",
+        "pl": "lancent des boules de neige sur",
+        "inf": "lancer des boules de neige sur",
+        "ppr": "lançant des boules de neige sur",
+        "rec": "se lancent des boules de neige"
+      },
+      {
+        "text": "dessine une moustache sur",
+        "pl": "dessinent une moustache sur",
+        "inf": "dessiner une moustache sur",
+        "ppr": "dessinant une moustache sur",
+        "rec": "se dessinent des moustaches"
+      },
+      {
+        "text": "gifle",
+        "pl": "giflent",
+        "inf": "gifler",
+        "ppr": "giflant",
+        "rec": "se giflent"
+      },
+      {
+        "text": "donne une pichenette à",
+        "pl": "donnent une pichenette à",
+        "inf": "donner une pichenette à",
+        "ppr": "donnant une pichenette à",
+        "rec": "se donnent des pichenettes"
+      },
+      {
+        "text": "pince",
+        "pl": "pincent",
+        "inf": "pincer",
+        "ppr": "pinçant",
+        "rec": "se pincent"
+      },
+      {
+        "text": "étrangle",
+        "pl": "étranglent",
+        "inf": "étrangler",
+        "ppr": "étranglant",
+        "rec": "s'étranglent"
+      },
+      {
+        "text": "piétine",
+        "pl": "piétinent",
+        "inf": "piétiner",
+        "ppr": "piétinant",
+        "rec": "se piétinent"
+      },
+      {
+        "text": "renverse",
+        "pl": "renversent",
+        "inf": "renverser",
+        "ppr": "renversant",
+        "rec": "se renversent"
+      },
+      {
+        "text": "lutte contre",
+        "pl": "luttent contre",
+        "inf": "lutter contre",
+        "ppr": "luttant contre",
+        "rec": "luttent"
+      },
+      {
+        "text": "plaque",
+        "pl": "plaquent",
+        "inf": "plaquer",
+        "ppr": "plaquant",
+        "rec": "se plaquent"
+      },
+      {
+        "text": "épingle une médaille sur",
+        "pl": "épinglent une médaille sur",
+        "inf": "épingler une médaille sur",
+        "ppr": "épinglant une médaille sur",
+        "rec": "s'épinglent des médailles"
+      },
+      {
+        "text": "ligote",
+        "pl": "ligotent",
+        "inf": "ligoter",
+        "ppr": "ligotant",
+        "rec": "se ligotent mutuellement"
+      },
+      {
+        "text": "bande les yeux de",
+        "pl": "bandent les yeux de",
+        "inf": "bander les yeux de",
+        "ppr": "bandant les yeux de",
+        "rec": "se bandent les yeux"
+      },
+      {
+        "text": "menotte",
+        "pl": "menottent",
+        "inf": "menotter",
+        "ppr": "menottant",
+        "rec": "se menottent"
+      },
+      {
+        "text": "muselle",
+        "pl": "musellent",
+        "inf": "museler",
+        "ppr": "muselant",
+        "rec": "se musellent"
+      },
+      {
+        "text": "selle",
+        "pl": "sellent",
+        "inf": "seller",
+        "ppr": "sellant",
+        "rec": "se sellent mutuellement"
+      },
+      {
+        "text": "harnache",
+        "pl": "harnachent",
+        "inf": "harnacher",
+        "ppr": "harnachant",
+        "rec": "se harnachent mutuellement"
+      },
+      {
+        "text": "apprivoise",
+        "pl": "apprivoisent",
+        "inf": "apprivoiser",
+        "ppr": "apprivoisant",
+        "rec": "s'apprivoisent"
+      },
+      {
+        "text": "trait",
+        "pl": "traient",
+        "inf": "traire",
+        "ppr": "trayant",
+        "rec": "se traient mutuellement"
+      },
+      {
+        "text": "tond",
+        "pl": "tondent",
+        "inf": "tondre",
+        "ppr": "tondant",
+        "rec": "se tondent"
+      },
+      {
+        "text": "plume",
+        "pl": "plument",
+        "inf": "plumer",
+        "ppr": "plumant",
+        "rec": "se plument"
+      },
+      {
+        "text": "épluche",
+        "pl": "épluchent",
+        "inf": "éplucher",
+        "ppr": "épluchant",
+        "rec": "s'épluchent"
+      },
+      {
+        "text": "tranche",
+        "pl": "tranchent",
+        "inf": "trancher",
+        "ppr": "tranchant",
+        "rec": "se tranchent en rondelles"
+      },
+      {
+        "text": "embroche",
+        "pl": "embrochent",
+        "inf": "embrocher",
+        "ppr": "embrochant",
+        "rec": "s'embrochent"
+      },
+      {
+        "text": "rôtit",
+        "pl": "rôtissent",
+        "inf": "rôtir",
+        "ppr": "rôtissant",
+        "rec": "se rôtissent mutuellement"
+      },
+      {
+        "text": "fait bouillir",
+        "pl": "font bouillir",
+        "inf": "faire bouillir",
+        "ppr": "faisant bouillir",
+        "rec": "se font bouillir mutuellement"
+      },
+      {
+        "text": "empile",
+        "pl": "empilent",
+        "inf": "empiler",
+        "ppr": "empilant",
+        "rec": "s'empilent"
+      },
+      {
+        "text": "ensevelit",
+        "pl": "ensevelissent",
+        "inf": "ensevelir",
+        "ppr": "ensevelissant",
+        "rec": "s'ensevelissent mutuellement"
+      },
+      {
+        "text": "noie",
+        "pl": "noient",
+        "inf": "noyer",
+        "ppr": "noyant",
+        "rec": "se noient"
+      },
+      {
+        "text": "trempe",
+        "pl": "trempent",
+        "inf": "tremper",
+        "ppr": "trempant",
+        "rec": "se trempent mutuellement"
+      },
+      {
+        "text": "fait la sérénade à",
+        "pl": "font la sérénade à",
+        "inf": "faire la sérénade à",
+        "ppr": "faisant la sérénade à",
+        "rec": "se font la sérénade"
+      },
+      {
+        "text": "donne un coup de tête à",
+        "pl": "donnent un coup de tête à",
+        "inf": "donner un coup de tête à",
+        "ppr": "donnant un coup de tête à",
+        "rec": "se donnent des coups de tête"
+      },
+      {
+        "text": "encorne",
+        "pl": "encornent",
+        "inf": "encorner",
+        "ppr": "encornant",
+        "rec": "s'encornent"
+      },
+      {
+        "text": "griffe",
+        "pl": "griffent",
+        "inf": "griffer",
+        "ppr": "griffant",
+        "rec": "se griffent"
+      },
+      {
+        "text": "ronge",
+        "pl": "rongent",
+        "inf": "ronger",
+        "ppr": "rongeant",
+        "rec": "se rongent"
+      },
+      {
+        "text": "mâche",
+        "pl": "mâchent",
+        "inf": "mâcher",
+        "ppr": "mâchant",
+        "rec": "se mâchent mutuellement"
+      },
+      {
+        "text": "grignote",
+        "pl": "grignotent",
+        "inf": "grignoter",
+        "ppr": "grignotant",
+        "rec": "se grignotent"
+      },
+      {
+        "text": "tape sur",
+        "pl": "tapent sur",
+        "inf": "taper sur",
+        "ppr": "tapant sur",
+        "rec": "se tapent dessus"
+      },
+      {
+        "text": "saisit",
+        "pl": "saisissent",
+        "inf": "saisir",
+        "ppr": "saisissant",
+        "rec": "se saisissent"
+      },
+      {
+        "text": "vole",
+        "pl": "volent",
+        "inf": "voler",
+        "ppr": "volant",
+        "rec": "se volent leurs affaires"
+      },
+      {
+        "text": "enferme",
+        "pl": "enferment",
+        "inf": "enfermer",
+        "ppr": "enfermant",
+        "rec": "s'enferment mutuellement"
+      },
+      {
+        "text": "catapulte",
+        "pl": "catapultent",
+        "inf": "catapulter",
+        "ppr": "catapultant",
+        "rec": "se catapultent"
+      },
+      {
+        "text": "retourne",
+        "pl": "retournent",
+        "inf": "retourner",
+        "ppr": "retournant",
+        "rec": "se retournent comme des crêpes"
+      },
+      {
+        "text": "manie",
+        "pl": "manient",
+        "inf": "manier",
+        "ppr": "maniant",
+        "rec": "se manient comme des armes"
+      },
+      {
+        "text": "brandit",
+        "pl": "brandissent",
+        "inf": "brandir",
+        "ppr": "brandissant",
+        "rec": "se brandissent"
+      },
+      {
+        "text": "adoube",
+        "pl": "adoubent",
+        "inf": "adouber",
+        "ppr": "adoubant",
+        "rec": "s'adoubent"
+      },
+      {
+        "text": "baptise",
+        "pl": "baptisent",
+        "inf": "baptiser",
+        "ppr": "baptisant",
+        "rec": "se baptisent mutuellement"
+      },
+      {
+        "text": "embrasse",
+        "pl": "embrassent",
+        "inf": "embrasser",
+        "ppr": "embrassant",
+        "rec": "s'embrassent"
+      },
+      {
+        "text": "répare",
+        "pl": "réparent",
+        "inf": "réparer",
+        "ppr": "réparant",
+        "rec": "se réparent mutuellement"
+      },
+      {
+        "text": "inspecte",
+        "pl": "inspectent",
+        "inf": "inspecter",
+        "ppr": "inspectant",
+        "rec": "s'inspectent"
+      },
+      {
+        "text": "poursuit",
+        "pl": "poursuivent",
+        "inf": "poursuivre",
+        "ppr": "poursuivant",
+        "rec": "se poursuivent"
+      },
+      {
+        "text": "traque",
+        "pl": "traquent",
+        "inf": "traquer",
+        "ppr": "traquant",
+        "rec": "se traquent"
+      },
+      {
+        "text": "kidnappe",
+        "pl": "kidnappent",
+        "inf": "kidnapper",
+        "ppr": "kidnappant",
+        "rec": "se kidnappent mutuellement"
+      },
+      {
+        "text": "tend une embuscade à",
+        "pl": "tendent une embuscade à",
+        "inf": "tendre une embuscade à",
+        "ppr": "tendant une embuscade à",
+        "rec": "se tendent des embuscades"
+      },
+      {
+        "text": "sauve",
+        "pl": "sauvent",
+        "inf": "sauver",
+        "ppr": "sauvant",
+        "rec": "se sauvent mutuellement"
+      },
+      {
+        "text": "tresse",
+        "pl": "tressent",
+        "inf": "tresser",
+        "ppr": "tressant",
+        "rec": "se tressent mutuellement"
+      },
+      {
+        "text": "momifie",
+        "pl": "momifient",
+        "inf": "momifier",
+        "ppr": "momifiant",
+        "rec": "se momifient mutuellement"
+      },
+      {
+        "text": "emballe",
+        "pl": "emballent",
+        "inf": "emballer",
+        "ppr": "emballant",
+        "rec": "s'emballent dans du papier cadeau"
+      },
+      {
+        "text": "fouette",
+        "pl": "fouettent",
+        "inf": "fouetter",
+        "ppr": "fouettant",
+        "rec": "se fouettent"
       }
     ],
     "vi": [
@@ -5706,6 +9241,306 @@
         "pl": "rugissent",
         "inf": "rugir",
         "ppr": "rugissant"
+      },
+      {
+        "text": "culbute",
+        "pl": "culbutent",
+        "inf": "culbuter",
+        "ppr": "culbutant"
+      },
+      {
+        "text": "fait la roue",
+        "pl": "font la roue",
+        "inf": "faire la roue",
+        "ppr": "faisant la roue"
+      },
+      {
+        "text": "chancelle",
+        "pl": "chancellent",
+        "inf": "chanceler",
+        "ppr": "chancelant"
+      },
+      {
+        "text": "galope",
+        "pl": "galopent",
+        "inf": "galoper",
+        "ppr": "galopant"
+      },
+      {
+        "text": "rampe",
+        "pl": "rampent",
+        "inf": "ramper",
+        "ppr": "rampant"
+      },
+      {
+        "text": "serpente",
+        "pl": "serpentent",
+        "inf": "serpenter",
+        "ppr": "serpentant"
+      },
+      {
+        "text": "marche sur la pointe des pieds",
+        "pl": "marchent sur la pointe des pieds",
+        "inf": "marcher sur la pointe des pieds",
+        "ppr": "marchant sur la pointe des pieds"
+      },
+      {
+        "text": "ronfle",
+        "pl": "ronflent",
+        "inf": "ronfler",
+        "ppr": "ronflant"
+      },
+      {
+        "text": "boude",
+        "pl": "boudent",
+        "inf": "bouder",
+        "ppr": "boudant"
+      },
+      {
+        "text": "voltige",
+        "pl": "voltigent",
+        "inf": "voltiger",
+        "ppr": "voltigeant"
+      },
+      {
+        "text": "fait des galipettes",
+        "pl": "font des galipettes",
+        "inf": "faire des galipettes",
+        "ppr": "faisant des galipettes"
+      },
+      {
+        "text": "se dandine",
+        "pl": "se dandinent",
+        "inf": "se dandiner",
+        "ppr": "se dandinant"
+      },
+      {
+        "text": "trépigne",
+        "pl": "trépignent",
+        "inf": "trépigner",
+        "ppr": "trépignant"
+      },
+      {
+        "text": "fait des claquettes",
+        "pl": "font des claquettes",
+        "inf": "faire des claquettes",
+        "ppr": "faisant des claquettes"
+      },
+      {
+        "text": "se plie en deux",
+        "pl": "se plient en deux",
+        "inf": "se plier en deux",
+        "ppr": "se pliant en deux"
+      },
+      {
+        "text": "s'effondre",
+        "pl": "s'effondrent",
+        "inf": "s'effondrer",
+        "ppr": "s'effondrant"
+      },
+      {
+        "text": "plane",
+        "pl": "planent",
+        "inf": "planer",
+        "ppr": "planant"
+      },
+      {
+        "text": "plonge",
+        "pl": "plongent",
+        "inf": "plonger",
+        "ppr": "plongeant"
+      },
+      {
+        "text": "renaît de ses cendres",
+        "pl": "renaissent de leurs cendres",
+        "inf": "renaître de ses cendres",
+        "ppr": "renaissant de ses cendres"
+      },
+      {
+        "text": "risque un œil",
+        "pl": "risquent un œil",
+        "inf": "risquer un œil",
+        "ppr": "risquant un œil"
+      },
+      {
+        "text": "sourit à pleines dents",
+        "pl": "sourient à pleines dents",
+        "inf": "sourire à pleines dents",
+        "ppr": "souriant à pleines dents"
+      },
+      {
+        "text": "montre les crocs",
+        "pl": "montrent les crocs",
+        "inf": "montrer les crocs",
+        "ppr": "montrant les crocs"
+      },
+      {
+        "text": "s'agenouille",
+        "pl": "s'agenouillent",
+        "inf": "s'agenouiller",
+        "ppr": "s'agenouillant"
+      },
+      {
+        "text": "s'incline",
+        "pl": "s'inclinent",
+        "inf": "s'incliner",
+        "ppr": "s'inclinant"
+      },
+      {
+        "text": "fait signe de la main",
+        "pl": "font signe de la main",
+        "inf": "faire signe de la main",
+        "ppr": "faisant signe de la main"
+      },
+      {
+        "text": "marche au pas",
+        "pl": "marchent au pas",
+        "inf": "marcher au pas",
+        "ppr": "marchant au pas"
+      },
+      {
+        "text": "boite",
+        "pl": "boitent",
+        "inf": "boiter",
+        "ppr": "boitant"
+      },
+      {
+        "text": "décolle",
+        "pl": "décollent",
+        "inf": "décoller",
+        "ppr": "décollant"
+      },
+      {
+        "text": "patine",
+        "pl": "patinent",
+        "inf": "patiner",
+        "ppr": "patinant"
+      },
+      {
+        "text": "surfe",
+        "pl": "surfent",
+        "inf": "surfer",
+        "ppr": "surfant"
+      },
+      {
+        "text": "glisse",
+        "pl": "glissent",
+        "inf": "glisser",
+        "ppr": "glissant"
+      },
+      {
+        "text": "se balance",
+        "pl": "se balancent",
+        "inf": "se balancer",
+        "ppr": "se balançant"
+      },
+      {
+        "text": "s'émiette",
+        "pl": "s'émiettent",
+        "inf": "s'émietter",
+        "ppr": "s'émiettant"
+      },
+      {
+        "text": "éclate comme une bulle",
+        "pl": "éclatent comme des bulles",
+        "inf": "éclater comme une bulle",
+        "ppr": "éclatant comme une bulle"
+      },
+      {
+        "text": "rebondit",
+        "pl": "rebondissent",
+        "inf": "rebondir",
+        "ppr": "rebondissant"
+      },
+      {
+        "text": "roule",
+        "pl": "roulent",
+        "inf": "rouler",
+        "ppr": "roulant"
+      },
+      {
+        "text": "se tortille",
+        "pl": "se tortillent",
+        "inf": "se tortiller",
+        "ppr": "se tortillant"
+      },
+      {
+        "text": "se débat",
+        "pl": "se débattent",
+        "inf": "se débattre",
+        "ppr": "se débattant"
+      },
+      {
+        "text": "clignote",
+        "pl": "clignotent",
+        "inf": "clignoter",
+        "ppr": "clignotant"
+      },
+      {
+        "text": "fait le mort",
+        "pl": "font les morts",
+        "inf": "faire le mort",
+        "ppr": "faisant le mort"
+      },
+      {
+        "text": "monte la garde",
+        "pl": "montent la garde",
+        "inf": "monter la garde",
+        "ppr": "montant la garde"
+      },
+      {
+        "text": "marche à reculons",
+        "pl": "marchent à reculons",
+        "inf": "marcher à reculons",
+        "ppr": "marchant à reculons"
+      },
+      {
+        "text": "fait le poirier",
+        "pl": "font le poirier",
+        "inf": "faire le poirier",
+        "ppr": "faisant le poirier"
+      },
+      {
+        "text": "pend la tête en bas",
+        "pl": "pendent la tête en bas",
+        "inf": "pendre la tête en bas",
+        "ppr": "pendant la tête en bas"
+      },
+      {
+        "text": "bombe le torse",
+        "pl": "bombent le torse",
+        "inf": "bomber le torse",
+        "ppr": "bombant le torse"
+      },
+      {
+        "text": "prend la pose",
+        "pl": "prennent la pose",
+        "inf": "prendre la pose",
+        "ppr": "prenant la pose"
+      },
+      {
+        "text": "bronze",
+        "pl": "bronzent",
+        "inf": "bronzer",
+        "ppr": "bronzant"
+      },
+      {
+        "text": "patauge",
+        "pl": "pataugent",
+        "inf": "patauger",
+        "ppr": "pataugeant"
+      },
+      {
+        "text": "se faufile",
+        "pl": "se faufilent",
+        "inf": "se faufiler",
+        "ppr": "se faufilant"
+      },
+      {
+        "text": "fait des pirouettes",
+        "pl": "font des pirouettes",
+        "inf": "faire des pirouettes",
+        "ppr": "faisant des pirouettes"
       }
     ]
   },

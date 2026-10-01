@@ -149,6 +149,56 @@ test('a subject never repeats a word drawn from the same list', () => {
   assert.strictEqual(next[0].raw, parts[0].raw, 'only one free word left: it must stay unique');
 });
 
+test('with a memory, a word comes back only once most of its list was drawn', () => {
+  const words = Array.from({ length: 20 }, (_, i) => `w${i}`);
+  const theme = { structure: ['a'], lists: { a: [...words, { text: '', weight: 20 }] } };
+  const memory = G.createMemory();
+  const seen = [];
+  let blanks = 0;
+  for (let i = 0; i < 4000; i++) {
+    const raw = G.roll(theme, null, new Set(), undefined, memory)[0].raw;
+    if (!raw) blanks++;
+    else seen.push(raw);
+  }
+  for (let i = 15; i < seen.length; i++) {
+    assert.ok(!seen.slice(i - 15, i).includes(seen[i]), `${seen[i]} came back within 15 draws`);
+  }
+  assert.ok(Math.abs(blanks / 4000 - 0.5) < 0.05, `empty entries keep their share (${blanks / 4000})`);
+  assert.strictEqual(memory.words.a.length, 15);
+  assert.ok(JSON.parse(JSON.stringify(memory)).words.a, 'the memory is plain data');
+});
+
+test('with a memory, reshape avoids recent structures and rerollSlot recent words', () => {
+  const memory = G.createMemory();
+  const shapes = [];
+  let current = null;
+  for (let i = 0; i < 300; i++) {
+    const next = G.reshape(chimera, null, new Set(), { current, memory });
+    current = next.structure;
+    shapes.push(current);
+  }
+  const window = Math.floor(chimera.structures.length * 0.75);
+  for (let i = window; i < shapes.length; i++) assert.ok(!shapes.slice(i - window, i).includes(shapes[i]));
+
+  const theme = { structure: ['a'], lists: { a: ['x', 'y', 'z', 'w'] } };
+  const words = G.createMemory();
+  let parts = G.roll(theme, null, new Set(), undefined, words);
+  const drawn = [parts[0].raw];
+  for (let i = 0; i < 40; i++) {
+    parts = G.rerollSlot(theme, parts, 0, undefined, words);
+    drawn.push(parts[0].raw);
+  }
+  for (let i = 3; i < drawn.length; i++) assert.ok(!drawn.slice(i - 3, i).includes(drawn[i]), drawn.join(' '));
+});
+
+test('a damaged memory is ignored, not fatal', () => {
+  const theme = { structure: ['a'], lists: { a: ['x', 'y'] } };
+  for (const memory of [{}, { words: null }, { words: { a: 'oops' } }, { words: [], structures: 'no' }]) {
+    assert.ok(['x', 'y'].includes(G.roll(theme, null, new Set(), undefined, memory)[0].raw));
+    assert.ok(G.reshape(chimera, null, new Set(), { memory }).parts.length);
+  }
+});
+
 test('theme validation rejects entries that would break a roll', () => {
   const theme = (lists, extra = {}) => ({ structure: ['a'], lists, ...extra });
   assert.strictEqual(G.validateTheme(theme({ a: ['x', { text: 'y', weight: 2 }, { text: '' }] })), null);

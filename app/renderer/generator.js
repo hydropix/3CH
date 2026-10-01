@@ -12,20 +12,63 @@
   }
 
   // Weighted draw. Entries whose text is in `exclude` are skipped when possible,
-  // so one subject never repeats a word ("ethereal ethereal fabrics").
+  // so one subject never repeats a word ("ethereal ethereal fabrics"). Empty
+  // entries ("nothing here") keep their share of the draw however many words
+  // are skipped.
   function pick(entries, rand = randomFloat, exclude = null) {
     let pool = entries;
+    let blankScale = 1;
     if (exclude && exclude.size) {
       const allowed = entries.filter((e) => !text(e) || !exclude.has(text(e)));
-      if (allowed.length) pool = allowed;
+      if (allowed.length) {
+        const words = (list) => list.reduce((sum, e) => sum + (text(e) ? weight(e) : 0), 0);
+        const before = words(entries);
+        if (before > 0) blankScale = words(allowed) / before;
+        pool = allowed;
+      }
     }
-    const total = pool.reduce((sum, e) => sum + weight(e), 0);
+    const w = (e) => (text(e) ? weight(e) : weight(e) * blankScale);
+    const total = pool.reduce((sum, e) => sum + w(e), 0);
     let r = rand() * total;
     for (const e of pool) {
-      r -= weight(e);
+      r -= w(e);
       if (r < 0) return text(e);
     }
     return text(pool[pool.length - 1]);
+  }
+
+  // Draws remembered across rolls: a word, or a structure, comes back only once
+  // most of its list has been drawn since (a shuffle bag that keeps the
+  // weights). Plain data, so the app can save it: { words: { list: [raw...] },
+  // structures: [index...] }, most recent last.
+  const RECENT_SHARE = 0.75;
+  const recentSize = (n) => Math.floor(n * RECENT_SHARE);
+  const createMemory = () => ({ words: {}, structures: [] });
+  const recentOf = (queue) => (Array.isArray(queue) ? queue : []);
+
+  function remember(queue, item, size) {
+    const i = queue.indexOf(item);
+    if (i !== -1) queue.splice(i, 1);
+    queue.push(item);
+    if (queue.length > size) queue.splice(0, queue.length - size);
+    return queue;
+  }
+
+  // One word for a slot of `list`: never one already in the subject (`used`),
+  // and not a recent one while the list has others.
+  function draw(theme, list, used, rand, memory) {
+    const entries = theme.lists[list];
+    if (!memory) return pick(entries, rand, used);
+    const recent = recentOf(memory.words?.[list]);
+    const avoid = new Set([...used, ...recent]);
+    const fresh = entries.some((e) => !text(e) || !avoid.has(text(e)));
+    const raw = pick(entries, rand, fresh ? avoid : used);
+    if (raw) {
+      if (!memory.words || typeof memory.words !== 'object' || Array.isArray(memory.words)) memory.words = {};
+      const size = recentSize(new Set(entries.map(text).filter(Boolean)).size);
+      memory.words[list] = remember([...recent], raw, size);
+    }
+    return raw;
   }
 
   // Slots describe the theme structure; literal words ("with", "and") are fixed.
@@ -97,8 +140,9 @@
 
   // Picks a structure and carries words into it. Locked words always move to
   // a slot of the same list (only structures with room for all of them are
-  // drawn); with keepAll, the other words follow where a slot is left.
-  function reshape(theme, previous = null, locked = new Set(), { current = null, keepAll = false } = {}, rand = randomFloat) {
+  // drawn); with keepAll, the other words follow where a slot is left. With a
+  // memory (createMemory), recent structures and words are avoided.
+  function reshape(theme, previous = null, locked = new Set(), { current = null, keepAll = false, memory = null } = {}, rand = randomFloat) {
     const words = (previous ?? []).filter((p) => !p.literal && (keepAll || locked.has(p.index)));
     words.sort((a, b) => locked.has(b.index) - locked.has(a.index));
     const need = count(words.filter((p) => locked.has(p.index)).map((p) => p.list));
@@ -109,7 +153,13 @@
     let candidates = theme.structures.map((_, i) => i).filter(fits);
     if (candidates.length > 1) candidates = candidates.filter((i) => i !== current);
     if (!candidates.length) candidates = theme.structures.map((_, i) => i);
+    if (memory) {
+      const recent = recentOf(memory.structures);
+      const fresh = candidates.filter((i) => !recent.includes(i));
+      if (fresh.length) candidates = fresh;
+    }
     const structure = candidates[Math.floor(rand() * candidates.length)];
+    if (memory) memory.structures = remember([...recentOf(memory.structures)], structure, recentSize(theme.structures.length));
 
     const shaped = shape(theme, structure);
     const slots = slotsOf(shaped);
@@ -123,7 +173,7 @@
       carried[slot.index] = { raw: w.raw };
       if (locked.has(w.index)) nextLocked.add(slot.index);
     }
-    return { structure, parts: roll(shaped, carried, taken, rand), locked: nextLocked };
+    return { structure, parts: roll(shaped, carried, taken, rand, memory), locked: nextLocked };
   }
 
   // Slots with a form show that form of their entry ("werewolf" -> "werewolves").
@@ -164,25 +214,25 @@
   }
 
   // Rolls every unlocked slot. `previous` keeps locked words across rolls.
-  function roll(theme, previous = null, locked = new Set(), rand = randomFloat) {
+  function roll(theme, previous = null, locked = new Set(), rand = randomFloat, memory = null) {
     const slots = slotsOf(theme);
     const keep = (slot) => !slot.literal && previous && locked.has(slot.index);
     const used = new Set(slots.filter(keep).map((slot) => previous[slot.index].raw));
     return slots.map((slot) => {
       if (slot.literal) return { ...slot, raw: slot.text };
       if (keep(slot)) return { ...slot, raw: previous[slot.index].raw };
-      const raw = pick(theme.lists[slot.list], rand, used);
+      const raw = draw(theme, slot.list, used, rand, memory);
       used.add(raw);
       return { ...slot, raw };
     });
   }
 
   // Rerolls one word, always to a different one when the list allows it.
-  function rerollSlot(theme, parts, index, rand = randomFloat) {
+  function rerollSlot(theme, parts, index, rand = randomFloat, memory = null) {
     const used = new Set(parts.filter((p) => !p.literal).map((p) => p.raw));
     const entries = theme.lists[parts[index].list];
     if (entries.every((e) => text(e) && used.has(text(e)))) return parts;
-    const raw = pick(entries, rand, used);
+    const raw = draw(theme, parts[index].list, used, rand, memory);
     return parts.map((p, i) => (i === index ? { ...p, raw } : p));
   }
 
@@ -387,7 +437,7 @@
 
   const api = {
     pick, slotsOf, roll, rerollSlot, render, fixArticles, combinations, validateTheme,
-    parseStructure, shape, reshape, inflect, elides,
+    parseStructure, shape, reshape, inflect, elides, createMemory,
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Generator = api;
