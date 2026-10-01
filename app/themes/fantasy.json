@@ -2,6 +2,7 @@
   "format": "3ch-theme/2",
   "id": "fantasy",
   "name": "Fantasy",
+  "lang": "en",
   "source": "legacy-reworked",
   "structures": [
     "a {adj} {being} {vt} a {being} {setting}",

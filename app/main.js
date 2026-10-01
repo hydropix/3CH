@@ -4,12 +4,19 @@ const path = require('path');
 const { loadThemes } = require('./src/themes');
 const { convertLegacyTheme, findLegacyThemes } = require('./src/legacy');
 const speech = require('./src/speech');
+const I18n = require('./renderer/i18n');
 
 const bundledThemesDir = path.join(__dirname, 'themes');
 const userThemesDir = () => path.join(app.getPath('userData'), 'themes');
 
 let win;
 let normalBounds = null;
+
+// The interface language, sent by the page: dialogs and the notification use it.
+let lang = 'en';
+const tr = (key, vars) => I18n.t(lang, key, vars);
+// "fr", "en"... the speech engine and the strings only take a language code.
+const langCode = (value) => (/^[a-z]{2,3}$/.test(String(value)) ? String(value) : 'en');
 
 const NORMAL_MIN = [900, 620];
 const MINI_SIZE = { width: 560, height: 210 };
@@ -52,7 +59,7 @@ ipcMain.handle('themes:list', () => loadThemes(bundledThemesDir, userThemesDir()
 
 ipcMain.handle('themes:importLegacy', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog(win, {
-    title: 'Import a legacy 3CH theme folder',
+    title: tr('importDialogTitle'),
     properties: ['openDirectory'],
   });
   if (canceled || !filePaths.length) return { imported: [], errors: [] };
@@ -62,8 +69,8 @@ ipcMain.handle('themes:importLegacy', async () => {
   let skipped = 0;
   try {
     const dirs = findLegacyThemes(filePaths[0], { onSkip: () => skipped++ });
-    if (!dirs.length) errors.push('No folder with a structure.txt was found.');
-    if (skipped) errors.push(`Skipped ${skipped} unreadable folder${skipped > 1 ? 's' : ''}.`);
+    if (!dirs.length) errors.push(tr('noLegacyFound'));
+    if (skipped) errors.push(tr('skippedFolders', { count: skipped }));
     if (dirs.length) fs.mkdirSync(userThemesDir(), { recursive: true });
     for (const dir of dirs) {
       try {
@@ -80,7 +87,7 @@ ipcMain.handle('themes:importLegacy', async () => {
       }
     }
   } catch (err) {
-    errors.push(`Import failed: ${err.message}`);
+    errors.push(tr('importFailed', { error: err.message }));
   }
   return { imported, errors };
 });
@@ -92,9 +99,9 @@ ipcMain.handle('themes:openFolder', () => {
 
 ipcMain.handle('export:text', async (_e, content, defaultName) => {
   const { canceled, filePath } = await dialog.showSaveDialog(win, {
-    title: 'Export selected subjects',
+    title: tr('exportDialogTitle'),
     defaultPath: defaultName,
-    filters: [{ name: 'Text', extensions: ['txt'] }],
+    filters: [{ name: tr('textFiles'), extensions: ['txt'] }],
   });
   if (canceled || !filePath) return null;
   fs.writeFileSync(filePath, String(content), 'utf8');
@@ -113,7 +120,7 @@ ipcMain.on('timer:done', (_e, body) => {
   if (win.isFocused()) return;
   win.flashFrame(true);
   if (Notification.isSupported()) {
-    const n = new Notification({ title: "Time's up", body: String(body || ''), silent: true });
+    const n = new Notification({ title: tr('timesUp'), body: String(body || ''), silent: true });
     n.on('click', () => {
       if (win.isMinimized()) win.restore();
       win.focus();
@@ -147,10 +154,14 @@ ipcMain.handle('window:mini', (_e, on) => {
   return Boolean(normalBounds);
 });
 
-ipcMain.handle('speech:synthesize', (_e, text, latest = true) =>
-  speech.synthesize(String(text).slice(0, 1000), { latest: latest !== false })
+ipcMain.handle('speech:synthesize', (_e, text, latest = true, textLang) =>
+  speech.synthesize(String(text).slice(0, 1000), { latest: latest !== false, lang: langCode(textLang) })
 );
-ipcMain.on('speech:warmUp', () => speech.warmUp());
+ipcMain.on('speech:warmUp', (_e, voiceLang) => speech.warmUp(langCode(voiceLang)));
+
+ipcMain.on('app:lang', (_e, value) => {
+  lang = langCode(value);
+});
 
 ipcMain.handle('clipboard:write', (_e, content) => clipboard.writeText(String(content)));
 

@@ -4,27 +4,30 @@ const G = window.Generator;
 const $ = (id) => document.getElementById(id);
 
 const HISTORY_MAX = 100;
-const HINT = 'Click a word to reroll it, lock it to keep it between rolls.';
-const HINT_MULTI = 'Every roll changes the sentence shape too. Locked words follow into the next one.';
 const ICONS = {
   lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
   unlock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/>',
   copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/>',
   remove: '<path d="M6 6l12 12M18 6 6 18"/>',
 };
+// Captions for the list names of the legacy themes (I18n keys).
 const LABELS = {
-  caracteristique: 'trait',
-  characteristic: 'trait',
-  trophie: 'diet',
-  adverbe: 'adverb',
-  partie: 'body part',
-  object: 'subject',
-  object2: 'target',
+  caracteristique: 'labelTrait',
+  characteristic: 'labelTrait',
+  trophie: 'labelDiet',
+  adverbe: 'labelAdverb',
+  partie: 'labelBodyPart',
+  object: 'labelSubject',
+  object2: 'labelTarget',
 };
 
 const state = {
+  // The language picks the interface strings, the themes shown and the voice.
+  lang: 'en',
   themes: [],
   theme: null,
+  // The last theme used in each language: { en: 'chimera', fr: 'chimera-fr' }.
+  lastTheme: load('3ch.themeByLang', {}),
   parts: null,
   locked: new Set(),
   // Themes with several structures: the one in use, and whether it is kept.
@@ -51,6 +54,9 @@ function save(key, value) {
     /* ignore */
   }
 }
+
+// The interface string `key` in the language in use.
+const tr = (key, vars) => I18n.t(state.lang, key, vars);
 
 function icon(name) {
   const span = document.createElement('span');
@@ -82,18 +88,80 @@ function toast(message, isError = false) {
   toastTimer = setTimeout(() => t.classList.remove('show'), isError ? 4000 : 1600);
 }
 
-const UNITS = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion'];
-function formatCombos(n) {
-  if (n < 1000000n) return Number(n).toLocaleString('en-US');
-  const digits = n.toString().length;
-  const group = Math.min(Math.floor((digits - 1) / 3), UNITS.length - 1);
-  const value = Number(n) / 10 ** (group * 3);
-  return `${value.toFixed(value < 10 ? 1 : 0)} ${UNITS[group]}`;
-}
-
 function labelFor(list) {
   if (state.theme.labels?.[list]) return state.theme.labels[list];
-  return LABELS[list] ?? list.replace(/\d+$/, '').replace(/[_-]+/g, ' ');
+  return LABELS[list] ? tr(LABELS[list]) : list.replace(/\d+$/, '').replace(/[_-]+/g, ' ');
+}
+
+// ---------- Languages ----------
+
+const langOf = (theme) => theme?.lang ?? 'en';
+const themesIn = (lang = state.lang) => state.themes.filter((t) => langOf(t) === lang);
+
+// The languages that have at least one theme, in the order of I18n.LANGUAGES.
+function languages() {
+  const order = I18n.LANGUAGES.map((l) => l.code);
+  const rank = (code) => (order.includes(code) ? order.indexOf(code) : order.length);
+  return [...new Set(state.themes.map(langOf))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+}
+
+// "chimera-fr" is "chimera" in French: same base id, other language.
+function baseId(theme) {
+  const suffix = `-${langOf(theme)}`;
+  return langOf(theme) !== 'en' && theme.id.endsWith(suffix) ? theme.id.slice(0, -suffix.length) : theme.id;
+}
+function counterpart(theme, lang) {
+  return theme ? themesIn(lang).find((t) => baseId(t) === baseId(theme)) : undefined;
+}
+
+function renderLangs() {
+  const codes = languages();
+  if (!codes.includes(state.lang)) codes.unshift(state.lang);
+  $('langSelect').replaceChildren(
+    ...codes.map((code) => el('option', { value: code, lang: code, text: I18n.languageName(code) }))
+  );
+  $('langSelect').value = state.lang;
+}
+
+// Every string of the interface: the data-i18n attributes of the page, then
+// what app.js writes itself.
+function applyLang() {
+  document.documentElement.lang = state.lang;
+  for (const node of document.querySelectorAll('[data-i18n]')) node.textContent = tr(node.dataset.i18n);
+  for (const attr of ['title', 'aria-label', 'placeholder']) {
+    for (const node of document.querySelectorAll(`[data-i18n-${attr}]`)) {
+      node.setAttribute(attr, tr(node.getAttribute(`data-i18n-${attr}`)));
+    }
+  }
+  window.ch3.setLang(state.lang);
+  renderLangs();
+  renderSelected();
+  renderHistory();
+  renderPresets();
+  renderTimer();
+  renderMini();
+}
+
+// Takes `preferId` when it is in that language, else the same theme in that
+// language, else the last one used in it, else its first theme.
+function setLang(lang, preferId) {
+  const changed = lang !== state.lang;
+  state.lang = lang;
+  applyLang();
+  const list = themesIn(lang);
+  const ids = [preferId, counterpart(state.theme, lang)?.id, state.lastTheme[lang]];
+  selectTheme(ids.find((id) => list.some((t) => t.id === id)) ?? list[0]?.id);
+  if (!changed) return;
+  if (voice.auto || timerUi.sound) window.ch3.speechWarmUp(lang);
+  // A session under way gets its lines again, in the new language.
+  const snap = timer.snapshot();
+  if (snap.status === 'running' || snap.status === 'paused') planSession(snap.duration);
+}
+
+// A language the user picked (the menu, a history entry): kept for next time.
+function chooseLang(lang, preferId) {
+  save('3ch.lang', lang);
+  setLang(lang, preferId);
 }
 
 // ---------- Themes ----------
@@ -101,7 +169,7 @@ function labelFor(list) {
 function renderThemes() {
   const bar = $('themes');
   bar.replaceChildren(
-    ...state.themes.map((t) =>
+    ...themesIn().map((t) =>
       el(
         'button',
         {
@@ -110,26 +178,31 @@ function renderThemes() {
           'aria-selected': String(t.id === state.theme?.id),
           onclick: () => selectTheme(t.id),
         },
-        [t.name, t.origin === 'user' ? el('span', { class: 'badge', text: 'mine' }) : null]
+        [t.name, t.origin === 'user' ? el('span', { class: 'badge', text: tr('mine') }) : null]
       )
     )
   );
   if (state.theme) {
     const shapes = state.theme.structures?.length;
+    const count = G.combinations(state.theme);
     $('combos').replaceChildren(
-      el('strong', { text: formatCombos(G.combinations(state.theme)) }),
-      ' possible subjects',
-      shapes ? ` · ${shapes} sentence shapes` : ''
+      el('strong', { text: I18n.formatCombos(count, state.lang) }),
+      ` ${tr('possibleSubjects', { count: Number(count) })}`,
+      shapes ? ` · ${tr('sentenceShapes', { count: shapes })}` : ''
     );
   }
 }
 
+// Only the themes of the language in use can be selected.
 function selectTheme(id, { keepParts = false } = {}) {
-  const theme = state.themes.find((t) => t.id === id) ?? state.themes[0];
+  const list = themesIn();
+  const theme = list.find((t) => t.id === id) ?? list[0];
   if (!theme) return;
   const changed = theme.id !== state.theme?.id;
   state.theme = theme;
+  state.lastTheme[state.lang] = theme.id;
   save('3ch.theme', theme.id);
+  save('3ch.themeByLang', state.lastTheme);
   if (changed && !keepParts) {
     state.parts = null;
     state.locked.clear();
@@ -141,20 +214,28 @@ function selectTheme(id, { keepParts = false } = {}) {
 }
 
 function cycleTheme(step) {
-  const i = state.themes.findIndex((t) => t.id === state.theme?.id);
-  const next = state.themes[(i + step + state.themes.length) % state.themes.length];
+  const list = themesIn();
+  const i = list.findIndex((t) => t.id === state.theme?.id);
+  const next = list[(i + step + list.length) % list.length];
   if (next) selectTheme(next.id);
 }
 
 async function refreshThemes(preferId) {
   const { themes, errors } = await window.ch3.listThemes();
   state.themes = themes;
-  if (errors.length) toast(`Some themes could not be loaded: ${errors.join(' · ')}`, true);
+  if (errors.length) toast(tr('themesNotLoaded', { errors: errors.join(' · ') }), true);
   if (!themes.length) {
-    $('subject').replaceChildren(el('span', { class: 'placeholder', text: 'No theme found.' }));
+    renderLangs();
+    $('subject').replaceChildren(el('span', { class: 'placeholder', text: tr('noTheme') }));
     return;
   }
-  selectTheme(preferId ?? state.theme?.id ?? load('3ch.theme', null));
+  // A theme just imported shows in its own language. Otherwise: the language
+  // in use, the one picked last time, the OS one, English.
+  const prefer = themes.find((t) => t.id === preferId);
+  const lang = prefer
+    ? langOf(prefer)
+    : I18n.pickLanguage(languages(), [state.theme ? state.lang : null, load('3ch.lang', null), ...navigator.languages]);
+  setLang(lang, preferId ?? state.theme?.id ?? state.lastTheme[lang] ?? load('3ch.theme', null));
 }
 
 // ---------- Subject ----------
@@ -167,7 +248,7 @@ function shaped() {
 }
 
 function current() {
-  return state.parts ? G.render(G.inflect(state.theme, state.parts)) : null;
+  return state.parts ? G.render(G.inflect(state.theme, state.parts), langOf(state.theme)) : null;
 }
 
 function wordSlots() {
@@ -187,11 +268,11 @@ function renderSubject(flashIndex = null) {
   $('reshapeBtn').hidden = $('shapeLockBtn').hidden = !isMulti();
   $('reshapeBtn').disabled = $('shapeLockBtn').disabled = !hasSubject;
   $('shapeLockBtn').setAttribute('aria-pressed', String(state.structureLocked));
-  $('hint').textContent = isMulti() ? HINT_MULTI : HINT;
+  $('hint').textContent = tr(isMulti() ? 'hintMulti' : 'hint');
   $('hint').style.visibility = hasSubject ? 'visible' : 'hidden';
 
   if (!view) {
-    box.replaceChildren(el('span', { class: 'placeholder', text: 'Press Space to roll a subject' }));
+    box.replaceChildren(el('span', { class: 'placeholder', text: tr('placeholder') }));
     return;
   }
 
@@ -200,14 +281,16 @@ function renderSubject(flashIndex = null) {
   box.replaceChildren(
     ...view.parts.map((p, i) => {
       const style = animate ? { '--i': String(i) } : { animation: 'none' };
-      if (p.literal) return el('span', { class: `literal${p.glue ? ' glue' : ''}`, text: p.display, style });
+      // `elided`: a French "l'" or "d'" that the next word sticks to.
+      const elided = p.elided ? ' elided' : '';
+      if (p.literal) return el('span', { class: `literal${p.glue ? ' glue' : ''}${elided}`, text: p.display, style });
 
       const n = slots.indexOf(p.index) + 1;
       const locked = state.locked.has(p.index);
       const lock = el('span', {
         class: 'lock',
         role: 'button',
-        title: locked ? 'Unlock' : 'Lock this word',
+        title: tr(locked ? 'unlockWord' : 'lockWord'),
         onclick: (e) => {
           e.stopPropagation();
           toggleLock(p.index);
@@ -218,9 +301,9 @@ function renderSubject(flashIndex = null) {
       const chip = el(
         'button',
         {
-          class: `chip${locked ? ' locked' : ''}${p.display ? '' : ' empty'}${p.index === flashIndex ? ' flash' : ''}`,
+          class: `chip${locked ? ' locked' : ''}${p.display ? '' : ' empty'}${p.index === flashIndex ? ' flash' : ''}${elided}`,
           style,
-          title: `${locked ? 'Locked' : 'Click to reroll'}${n <= 9 ? ` (${n})` : ''} · right-click to ${locked ? 'unlock' : 'lock'}`,
+          title: tr('chipTitle', { locked, n: n <= 9 ? n : 0 }),
           onclick: () => rerollWord(p.index),
           oncontextmenu: (e) => {
             e.preventDefault();
@@ -347,20 +430,21 @@ function keep() {
   save('3ch.selected', state.selected);
   renderSelected();
   renderSubject(-1);
-  toast('Kept');
+  toast(tr('kept'));
 }
 
-async function copy(textToCopy, message = 'Copied to clipboard') {
+async function copy(textToCopy, message = tr('copied')) {
   await window.ch3.copy(textToCopy);
   toast(message);
 }
 
 function restore(entry) {
   const theme = state.themes.find((t) => t.id === entry.themeId);
-  if (!theme) return toast(`Theme "${entry.themeName}" is not available any more`, true);
+  if (!theme) return toast(tr('themeGone', { name: entry.themeName }), true);
   const structure = theme.structures ? theme.structures.indexOf(entry.structure) : null;
   const slots = structure === -1 ? [] : G.slotsOf(G.shape(theme, structure ?? 0));
-  if (slots.length !== entry.raws.length) return toast('This theme has changed since that roll', true);
+  if (slots.length !== entry.raws.length) return toast(tr('themeChanged'), true);
+  if (langOf(theme) !== state.lang) chooseLang(langOf(theme), theme.id);
   selectTheme(theme.id, { keepParts: true });
   state.locked.clear();
   state.structure = structure;
@@ -376,8 +460,8 @@ function timeLabel(t) {
   const d = new Date(t);
   const today = new Date().toDateString() === d.toDateString();
   return today
-    ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    : d.toLocaleDateString([], { day: 'numeric', month: 'short' });
+    ? d.toLocaleTimeString(state.lang, { hour: '2-digit', minute: '2-digit' })
+    : d.toLocaleDateString(state.lang, { day: 'numeric', month: 'short' });
 }
 
 function rowButton(name, title, onclick) {
@@ -393,8 +477,8 @@ function renderSelected() {
       el('li', {}, [
         el('span', { class: 'text', text: s.sentence }),
         el('span', { class: 'tag', text: s.themeName }),
-        rowButton('copy', 'Copy', () => copy(s.sentence)),
-        rowButton('remove', 'Remove', () => {
+        rowButton('copy', tr('copy'), () => copy(s.sentence)),
+        rowButton('remove', tr('remove'), () => {
           state.selected = state.selected.filter((x) => x.id !== s.id);
           save('3ch.selected', state.selected);
           renderSelected();
@@ -412,12 +496,12 @@ function renderHistory() {
   list.replaceChildren(
     ...state.history.map((h) =>
       el('li', {}, [
-        el('button', { class: 'restore', title: 'Bring this subject back', onclick: () => restore(h) }, [
+        el('button', { class: 'restore', title: tr('bringBack'), onclick: () => restore(h) }, [
           el('span', { class: 'text', text: h.sentence }),
           el('span', { class: 'tag', text: h.themeName }),
           el('span', { class: 'meta', text: timeLabel(h.t) }),
         ]),
-        rowButton('copy', 'Copy', () => copy(h.sentence)),
+        rowButton('copy', tr('copy'), () => copy(h.sentence)),
       ])
     )
   );
@@ -438,14 +522,14 @@ $('copyBtn').addEventListener('click', () => current() && copy(current().sentenc
 $('unlockBtn').addEventListener('click', unlockAll);
 $('reshapeBtn').addEventListener('click', reshape);
 $('shapeLockBtn').addEventListener('click', toggleShapeLock);
-$('copyAllBtn').addEventListener('click', () => copy(selectedAsText(), `Copied ${state.selected.length} subjects`));
+$('copyAllBtn').addEventListener('click', () => copy(selectedAsText(), tr('copiedAll', { count: state.selected.length })));
 $('exportBtn').addEventListener('click', async () => {
   const stamp = new Date().toISOString().slice(0, 10);
-  const file = await window.ch3.exportText(selectedAsText(), `3ch-subjects-${stamp}.txt`);
-  if (file) toast('Exported');
+  const file = await window.ch3.exportText(selectedAsText(), tr('exportName', { date: stamp }));
+  if (file) toast(tr('exported'));
 });
 $('clearSelectedBtn').addEventListener('click', () => {
-  if (!confirm(`Remove all ${state.selected.length} selected subjects?`)) return;
+  if (!confirm(tr('clearSelectedConfirm', { count: state.selected.length }))) return;
   state.selected = [];
   save('3ch.selected', state.selected);
   renderSelected();
@@ -462,16 +546,20 @@ $('importBtn').addEventListener('click', async () => {
   try {
     result = await window.ch3.importLegacy();
   } catch (err) {
-    return toast(`Import failed: ${err.message}`, true);
+    return toast(tr('importFailed', { error: err.message }), true);
   }
   const { imported, errors } = result;
   if (imported.length) await refreshThemes(imported[0]);
   // One toast: a success message would otherwise hide the errors.
-  const done = imported.length ? `Imported ${imported.length} theme${imported.length > 1 ? 's' : ''}` : '';
+  const done = imported.length ? tr('imported', { count: imported.length }) : '';
   if (errors.length) toast([done, ...errors].filter(Boolean).join(' · '), true);
   else if (done) toast(done);
 });
 $('folderBtn').addEventListener('click', () => window.ch3.openThemesFolder());
+$('langSelect').addEventListener('change', (e) => {
+  chooseLang(e.target.value);
+  e.target.blur(); // Space, the arrows and the letters are shortcuts again
+});
 
 // ---------- Speed painting timer ----------
 
@@ -532,11 +620,11 @@ const timer = Timer.createTimer({
   onChange: renderTimer,
   onWarn: () => {
     playWarning();
-    toast('1 minute left');
+    toast(tr('oneMinuteLeft'));
   },
   onDone: () => {
     playChime();
-    toast("Time's up! Put the brush down.");
+    toast(tr('timesUpToast'));
     window.ch3.timerDone(current()?.sentence ?? '');
   },
 });
@@ -547,7 +635,7 @@ function renderPresets() {
   box.querySelectorAll('.preset').forEach((b) => b.remove());
   for (const m of PRESETS) {
     box.insertBefore(
-      el('button', { class: 'preset', 'data-minutes': String(m), title: `${m} minutes`, onclick: () => setMinutes(m) }, [
+      el('button', { class: 'preset', 'data-minutes': String(m), title: tr('presetTitle', { n: m }), onclick: () => setMinutes(m) }, [
         String(m),
       ]),
       custom
@@ -569,7 +657,9 @@ function renderTimer(snap = timer.snapshot()) {
   box.classList.toggle('ending', busy && snap.remaining <= Timer.WARN_BEFORE_MS);
   $('timerClock').textContent = clock;
   $('timerBar').style.setProperty('--p', String(snap.progress));
-  $('timerStartLabel').textContent = { idle: 'Start', running: 'Pause', paused: 'Resume', done: 'Restart' }[snap.status];
+  $('timerStartLabel').textContent = tr(
+    { idle: 'timerStart', running: 'timerPause', paused: 'timerResume', done: 'timerRestart' }[snap.status]
+  );
   $('timerResetBtn').disabled = snap.status === 'idle';
 
   const input = $('timerMinutes');
@@ -584,7 +674,7 @@ function renderTimer(snap = timer.snapshot()) {
     idle: '3CH',
     running: `${clock} · 3CH`,
     paused: `❚❚ ${clock} · 3CH`,
-    done: "Time's up · 3CH",
+    done: `${tr('timesUp')} · 3CH`,
   }[snap.status];
 
   // Taskbar progress: only talk to the main process when something visible changes.
@@ -603,9 +693,10 @@ function renderTimer(snap = timer.snapshot()) {
 // The system voice renders each text once (a few tens of ms once the engine
 // is up); every playback then breaks it in a new way. Two voices share the
 // speakers: the subject, and the timer, which always wins. A subject cut off
-// or held back by the timer is read once the timer is quiet.
+// or held back by the timer is read once the timer is quiet. The subject is
+// read in the language of its theme.
 const voice = {
-  recordings: new Map(),
+  recordings: new Map(), // "<lang> <sentence>" -> recording
   subject: null,
   request: 0,
   sentence: null,
@@ -636,14 +727,16 @@ async function speak() {
   stopSubject();
   if (timerTalking()) return void (voice.owed = true);
 
-  let speech = voice.recordings.get(view.sentence);
+  const lang = langOf(state.theme);
+  const key = `${lang} ${view.sentence}`;
+  let speech = voice.recordings.get(key);
   if (!speech) {
     $('speakBtn').classList.add('busy');
     let wav;
     try {
-      wav = await window.ch3.speak(view.sentence);
+      wav = await window.ch3.speak(view.sentence, lang);
     } catch (err) {
-      if (request === voice.request) toast(`No voice: ${err.message}`, true);
+      if (request === voice.request) toast(tr('noVoice', { error: err.message }), true);
       return;
     } finally {
       if (request === voice.request) $('speakBtn').classList.remove('busy');
@@ -651,7 +744,7 @@ async function speak() {
     if (!wav) return; // overtaken by a newer sentence
     speech = Voice.parseWav(wav);
     if (voice.recordings.size >= 20) voice.recordings.delete(voice.recordings.keys().next().value);
-    voice.recordings.set(view.sentence, speech);
+    voice.recordings.set(key, speech);
   }
   // Pressed again, or moved on to another sentence, while waiting.
   if (request !== voice.request) return;
@@ -691,7 +784,7 @@ function toggleAutoSpeak() {
   save('3ch.voice.auto', voice.auto);
   renderAutoSpeak();
   if (voice.auto) {
-    window.ch3.speechWarmUp();
+    window.ch3.speechWarmUp(state.lang);
     speak();
   } else {
     voice.request++;
@@ -711,9 +804,10 @@ $('autoSpeakBtn').addEventListener('click', toggleAutoSpeak);
 
 // The facility AI comments on the session (see announcer.js), with a 10 to 1
 // countdown timed on the audio clock. Part of the sound alerts: muted with them.
+// It speaks the interface language.
 const COUNTDOWN_AT = (Announcer.COUNTDOWN_FROM + 1.5) * 1000;
 const talk = {
-  lines: new Map(), // text -> Promise of a recording
+  lines: new Map(), // "<lang> <text>" -> Promise of a recording ("10" is "dix" in French)
   nodes: new Set(),
   plan: [],
   done: '',
@@ -726,18 +820,30 @@ function timerTalking() {
   return talk.nodes.size > 0;
 }
 
-function recording(text) {
-  if (!talk.lines.has(text)) {
+function recording(text, lang = state.lang) {
+  const key = `${lang} ${text}`;
+  if (!talk.lines.has(key)) {
     const rec = window.ch3
-      .speakLine(text)
+      .speakLine(text, lang)
       .then((wav) => (wav ? Voice.parseWav(wav) : null))
       .catch(() => {
-        talk.lines.delete(text);
+        talk.lines.delete(key);
         return null;
       });
-    talk.lines.set(text, rec);
+    talk.lines.set(key, rec);
   }
-  return talk.lines.get(text);
+  return talk.lines.get(key);
+}
+
+const line = (kind) => Announcer.pickLine(kind, Math.random, state.lang);
+
+// Draws the lines of a session and renders them ahead of time.
+function planSession(duration) {
+  talk.plan = Announcer.milestones(duration, Math.random, state.lang);
+  talk.done = line('done');
+  for (const m of talk.plan) recording(m.text);
+  for (let n = Announcer.COUNTDOWN_FROM; n >= 1; n--) recording(String(n));
+  recording(talk.done);
 }
 
 // Says `text` in `delay` ms. A line cuts off the previous ones, except for
@@ -787,15 +893,10 @@ function timerTalk(snap) {
 
   if (snap.status === 'running' && prev !== 'running') {
     if (prev === 'paused') {
-      say(Announcer.pickLine('resume'));
+      say(line('resume'));
     } else {
-      // A new session: draw its lines now and render them ahead of time.
-      talk.plan = Announcer.milestones(snap.duration);
-      talk.done = Announcer.pickLine('done');
-      say(Announcer.pickLine('start'));
-      for (const m of talk.plan) recording(m.text);
-      for (let n = Announcer.COUNTDOWN_FROM; n >= 1; n--) recording(String(n));
-      recording(talk.done);
+      say(line('start'));
+      planSession(snap.duration);
     }
     if (snap.remaining <= COUNTDOWN_AT) countdown(snap.remaining);
   } else if (snap.status === 'running') {
@@ -808,7 +909,7 @@ function timerTalk(snap) {
     if (before > COUNTDOWN_AT && snap.remaining <= COUNTDOWN_AT) countdown(snap.remaining);
   } else if (snap.status === 'paused') {
     hush();
-    say(Announcer.pickLine('pause'));
+    say(line('pause'));
   } else if (snap.status === 'done') {
     say(talk.done, 1200); // after the first chime
   } else {
@@ -829,7 +930,11 @@ async function setMini(on) {
   timerUi.mini = await window.ch3.setMini(on);
   document.body.classList.toggle('mini', timerUi.mini);
   fitSubject();
-  $('miniLabel').textContent = timerUi.mini ? 'Exit mini' : 'Mini';
+  renderMini();
+}
+
+function renderMini() {
+  $('miniLabel').textContent = tr(timerUi.mini ? 'exitMini' : 'mini');
 }
 
 $('timerStartBtn').addEventListener('click', toggleTimer);
@@ -844,7 +949,7 @@ $('soundBtn').addEventListener('click', () => {
   renderSound();
   if (timerUi.sound) {
     tone(988, 0, 0.25, 0.12);
-    window.ch3.speechWarmUp();
+    window.ch3.speechWarmUp(state.lang);
   } else {
     hush();
   }
@@ -853,7 +958,8 @@ $('miniBtn').addEventListener('click', () => setMini(!timerUi.mini));
 
 document.addEventListener('keydown', (e) => {
   if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
-  if (e.target instanceof HTMLInputElement) return; // typing minutes, not shortcuts
+  // Typing minutes or picking a language, not shortcuts.
+  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) return;
   const onButton = e.target instanceof HTMLButtonElement;
   if (e.key === 't' || e.key === 'T') {
     toggleTimer();
@@ -890,14 +996,17 @@ document.addEventListener('keydown', (e) => {
 
 // Space already generated on keydown: stop it from also clicking a focused button.
 document.addEventListener('keyup', (e) => {
-  if (e.code === 'Space' && !(e.target instanceof HTMLInputElement)) e.preventDefault();
+  if (e.code === 'Space' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement)) {
+    e.preventDefault();
+  }
 });
 
-renderSelected();
-renderHistory();
-renderPresets();
+// The language picked last time (or the OS one) until the themes are in: the
+// page then never shows English first.
+state.lang = I18n.pickLanguage(I18n.LANGUAGES.map((l) => l.code), [load('3ch.lang', null), ...navigator.languages]);
+applyLang();
 renderSound();
 renderAutoSpeak();
-if (voice.auto || timerUi.sound) window.ch3.speechWarmUp();
+if (voice.auto || timerUi.sound) window.ch3.speechWarmUp(state.lang);
 setMinutes(timerUi.minutes);
 refreshThemes();

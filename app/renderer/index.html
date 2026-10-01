@@ -17,65 +17,70 @@
       </div>
     </div>
     <div class="topbar-actions">
-      <button class="btn ghost" id="importBtn" title="Convert a legacy theme folder (structure.txt + lists)">
+      <label class="lang-pick" data-i18n-title="languageTitle" title="Language of the interface, the themes and the voice">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3"/></svg>
+        <span class="sr-only" data-i18n="language">Language</span>
+        <select id="langSelect"></select>
+      </label>
+      <button class="btn ghost" id="importBtn" data-i18n-title="importLegacyTitle" title="Convert a legacy theme folder (structure.txt + lists)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg>
-        Import legacy theme
+        <span data-i18n="importLegacy">Import legacy theme</span>
       </button>
-      <button class="btn ghost" id="folderBtn" title="Open the folder holding your own themes">
+      <button class="btn ghost" id="folderBtn" data-i18n-title="themesFolderTitle" title="Open the folder holding your own themes">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        Themes folder
+        <span data-i18n="themesFolder">Themes folder</span>
       </button>
     </div>
   </header>
 
   <nav class="themebar">
-    <div class="themes" id="themes" role="tablist" aria-label="Theme"></div>
-    <div class="combos" id="combos" title="Distinct subjects this theme can produce"></div>
+    <div class="themes" id="themes" role="tablist" data-i18n-aria-label="themeTabs" aria-label="Theme"></div>
+    <div class="combos" id="combos" data-i18n-title="combosTitle" title="Distinct subjects this theme can produce"></div>
   </nav>
 
   <main>
-    <section class="stage" aria-label="Subject">
+    <section class="stage" data-i18n-aria-label="stage" aria-label="Subject">
       <div class="subject" id="subject" aria-live="polite"></div>
       <p class="hint" id="hint">Click a word to reroll it, lock it to keep it between rolls.</p>
       <div class="actions">
         <button class="btn primary" id="generateBtn">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg>
-          Generate <kbd>Space</kbd>
+          <span data-i18n="generate">Generate</span> <kbd data-i18n="kbdSpace">Space</kbd>
         </button>
         <button class="btn" id="keepBtn" disabled>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 4 2.47 5 5.53.8-4 3.9.94 5.5L12 16.6l-4.94 2.6.94-5.5-4-3.9 5.53-.8z"/></svg>
-          Keep <kbd>Enter</kbd>
+          <span data-i18n="keep">Keep</span> <kbd data-i18n="kbdEnter">Enter</kbd>
         </button>
         <button class="btn" id="copyBtn" disabled>
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>
-          Copy <kbd>C</kbd>
+          <span data-i18n="copy">Copy</span> <kbd>C</kbd>
         </button>
-        <button class="btn" id="speakBtn" disabled title="Read the subject aloud, with a broken robot voice (V)">
+        <button class="btn" id="speakBtn" disabled data-i18n-title="speakTitle" title="Read the subject aloud, with a broken robot voice (V)">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M8 14h1m2 0h2m2 0h1M9 10h.01M15 10h.01M12 3v3"/></svg>
-          Speak <kbd>V</kbd>
+          <span data-i18n="speak">Speak</span> <kbd>V</kbd>
         </button>
-        <button class="btn" id="autoSpeakBtn" aria-pressed="true" title="Read every new subject aloud as soon as it is rolled (Shift+V)">
-          Auto voice
+        <button class="btn" id="autoSpeakBtn" aria-pressed="true" data-i18n-title="autoVoiceTitle" title="Read every new subject aloud as soon as it is rolled (Shift+V)">
+          <span data-i18n="autoVoice">Auto voice</span>
         </button>
         <button class="btn" id="unlockBtn" disabled>
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg>
-          Unlock all <kbd>U</kbd>
+          <span data-i18n="unlockAll">Unlock all</span> <kbd>U</kbd>
         </button>
-        <button class="btn" id="reshapeBtn" hidden title="New sentence shape, keeping the words that fit (S)">
+        <button class="btn" id="reshapeBtn" hidden data-i18n-title="reshapeTitle" title="New sentence shape, keeping the words that fit (S)">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg>
-          Reshape <kbd>S</kbd>
+          <span data-i18n="reshape">Reshape</span> <kbd>S</kbd>
         </button>
-        <button class="btn" id="shapeLockBtn" hidden aria-pressed="false" title="Keep this sentence shape: Generate only changes the words">
+        <button class="btn" id="shapeLockBtn" hidden aria-pressed="false" data-i18n-title="lockShapeTitle" title="Keep this sentence shape: Generate only changes the words">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          Lock shape
+          <span data-i18n="lockShape">Lock shape</span>
         </button>
       </div>
 
       <div class="timer" id="timer" data-status="idle">
-        <div class="timer-presets" id="timerPresets" role="group" aria-label="Session length">
-          <label class="timer-custom" title="Custom length, in minutes">
-            <input type="number" id="timerMinutes" min="1" max="240" step="1" aria-label="Minutes">
-            <span>min</span>
+        <div class="timer-presets" id="timerPresets" role="group" data-i18n-aria-label="sessionLength" aria-label="Session length">
+          <label class="timer-custom" data-i18n-title="customLength" title="Custom length, in minutes">
+            <input type="number" id="timerMinutes" min="1" max="240" step="1" data-i18n-aria-label="minutes" aria-label="Minutes">
+            <span data-i18n="min">min</span>
           </label>
         </div>
         <div class="timer-clock" id="timerClock" aria-live="off">30:00</div>
@@ -85,15 +90,15 @@
             <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
             <span id="timerStartLabel">Start</span> <kbd>T</kbd>
           </button>
-          <button class="btn" id="timerResetBtn" title="Reset the timer (R)" aria-label="Reset the timer">
+          <button class="btn" id="timerResetBtn" data-i18n-title="resetTimerTitle" title="Reset the timer (R)" data-i18n-aria-label="resetTimer" aria-label="Reset the timer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66M4 4v5h5"/></svg>
             <kbd>R</kbd>
           </button>
-          <button class="btn" id="soundBtn" aria-pressed="true" title="Sound alerts and timer voice on / off" aria-label="Sound alerts and timer voice">
+          <button class="btn" id="soundBtn" aria-pressed="true" data-i18n-title="soundTitle" title="Sound alerts and timer voice on / off" data-i18n-aria-label="sound" aria-label="Sound alerts and timer voice">
             <svg class="i-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
             <svg class="i-mute" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM17 10l4 4m0-4-4 4"/></svg>
           </button>
-          <button class="btn" id="miniBtn" title="Small always-on-top window, to keep the subject and time in sight while painting (M)">
+          <button class="btn" id="miniBtn" data-i18n-title="miniTitle" title="Small always-on-top window, to keep the subject and time in sight while painting (M)">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><rect x="12" y="12" width="6" height="5" rx="1"/></svg>
             <span id="miniLabel">Mini</span> <kbd>M</kbd>
           </button>
@@ -105,36 +110,37 @@
     <section class="panels">
       <div class="panel">
         <div class="panel-head">
-          <h2>History <span class="count" id="historyCount">0</span></h2>
+          <h2><span data-i18n="history">History</span> <span class="count" id="historyCount">0</span></h2>
           <div class="panel-actions">
-            <button class="btn small danger" id="clearHistoryBtn">Clear</button>
+            <button class="btn small danger" id="clearHistoryBtn" data-i18n="clear">Clear</button>
           </div>
         </div>
         <ol class="list" id="historyList"></ol>
-        <p class="empty" id="historyEmpty">Every roll is logged here. Click one to bring it back.</p>
+        <p class="empty" id="historyEmpty" data-i18n="historyEmpty">Every roll is logged here. Click one to bring it back.</p>
       </div>
       <div class="panel">
         <div class="panel-head">
-          <h2>Selected <span class="count" id="selectedCount">0</span></h2>
+          <h2><span data-i18n="selected">Selected</span> <span class="count" id="selectedCount">0</span></h2>
           <div class="panel-actions">
-            <button class="btn small" id="copyAllBtn">Copy all</button>
-            <button class="btn small" id="exportBtn">Export .txt</button>
-            <button class="btn small danger" id="clearSelectedBtn">Clear</button>
+            <button class="btn small" id="copyAllBtn" data-i18n="copyAll">Copy all</button>
+            <button class="btn small" id="exportBtn" data-i18n="exportTxt">Export .txt</button>
+            <button class="btn small danger" id="clearSelectedBtn" data-i18n="clear">Clear</button>
           </div>
         </div>
         <ol class="list" id="selectedList"></ol>
-        <p class="empty" id="selectedEmpty">Subjects you keep land here, and stay after you close the app.</p>
+        <p class="empty" id="selectedEmpty" data-i18n="selectedEmpty">Subjects you keep land here, and stay after you close the app.</p>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <span>Original 3CH kilogeneratormorphic v1.0 (2005) · Credits: Hydropix, Vyle, Viag, Sparth, BARoNTiERi</span>
-    <span class="shortcuts"><kbd>1</kbd>–<kbd>9</kbd> reroll word · <kbd>Shift</kbd>+<kbd>1</kbd>–<kbd>9</kbd> lock · <kbd>S</kbd> reshape · <kbd>←</kbd><kbd>→</kbd> theme · <kbd>Esc</kbd> leave mini</span>
+    <span data-i18n="footerCredits">Original 3CH kilogeneratormorphic v1.0 (2005) · Credits: Hydropix, Vyle, Viag, Sparth, BARoNTiERi</span>
+    <span class="shortcuts"><kbd>1</kbd>–<kbd>9</kbd> <span data-i18n="scReroll">reroll word</span> · <kbd data-i18n="kbdShift">Shift</kbd>+<kbd>1</kbd>–<kbd>9</kbd> <span data-i18n="scLock">lock</span> · <kbd>S</kbd> <span data-i18n="scReshape">reshape</span> · <kbd>←</kbd><kbd>→</kbd> <span data-i18n="scTheme">theme</span> · <kbd data-i18n="kbdEsc">Esc</kbd> <span data-i18n="scLeaveMini">leave mini</span></span>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="i18n.js"></script>
   <script src="generator.js"></script>
   <script src="timer.js"></script>
   <script src="voice.js"></script>

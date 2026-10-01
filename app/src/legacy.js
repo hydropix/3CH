@@ -103,6 +103,7 @@ function convertLegacyTheme(dir) {
     format: '3ch-theme/2',
     id: slugify(name),
     name,
+    lang: 'en',
     source: 'legacy',
     structure,
     lists,

@@ -76,7 +76,42 @@ kbd {
 .version { color: var(--accent); font-weight: 700; }
 
 @keyframes flicker { 10%, 30% { opacity: 0.35; } 20%, 40% { opacity: 1; } 60% { opacity: 0.6; } 70% { opacity: 1; } }
-.topbar-actions { display: flex; gap: 8px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+/* Language picker: a ghost button holding a native select (keyboard and screen readers for free). */
+.lang-pick {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  border-radius: 9px;
+  color: var(--text-2);
+  transition: color 0.15s, background 0.15s;
+}
+.lang-pick:hover { color: var(--text); background: var(--surface); }
+.lang-pick > svg { position: absolute; left: 12px; pointer-events: none; }
+.lang-pick select {
+  appearance: none;
+  height: 36px;
+  padding: 0 30px 0 36px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b3a8ae' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 10px center / 14px;
+  color: inherit;
+  font: 500 13px var(--font);
+  cursor: pointer;
+}
+.lang-pick select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lang-pick select option { background: var(--surface-2); color: var(--text); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 /* Buttons */
 .btn {
@@ -237,6 +272,12 @@ main {
 }
 /* Punctuation sits right after the previous word, across the chip padding and the gap. */
 .literal.glue { margin-left: -21px; }
+/* French "l'", "d'"...: the next word sticks to it, across both paddings and the gap. */
+.literal.elided { margin-right: -10px; }
+.chip.elided { margin-right: -20px; }
+.elided + .literal { margin-left: -2px; }
+/* Left-aligned, so a caption wider than the word does not push it away. */
+.elided + .chip { margin-left: -12px; align-items: flex-start; }
 .chip.flash .word { animation: flash 0.35s ease; }
 
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -355,6 +396,10 @@ body.mini .chip { padding: 3px 6px; gap: 0; }
 body.mini .chip .word, body.mini .literal { font-size: calc(18px * var(--fit, 1)); }
 body.mini .literal { padding: 3px 0; }
 body.mini .literal.glue { margin-left: -9px; }
+body.mini .literal.elided { margin-right: -4px; }
+body.mini .chip.elided { margin-right: -10px; }
+body.mini .elided + .literal { margin-left: 0; }
+body.mini .elided + .chip { margin-left: -6px; }
 body.mini .chip .label, body.mini .chip .lock { display: none; }
 body.mini .timer { grid-template-columns: auto 1fr; margin: 0 -16px; padding: 10px 16px 12px; gap: 12px; }
 body.mini .timer-clock { font-size: 30px; }

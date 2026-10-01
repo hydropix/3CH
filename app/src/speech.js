@@ -9,37 +9,61 @@ const path = require('path');
 const TIMEOUT_MS = 15000;
 
 // One PowerShell process kept alive: starting it takes about a second, a
-// sentence then takes 20-80 ms. Requests come in as base64 UTF-8 lines, WAV
-// files go out the same way. An English voice when there is one: the
-// subjects are English, and a French Windows speaks with Hortense by default.
-// Rate 2 (and 225 words a minute with `say`) talks about 1.3 times faster than normal.
+// sentence then takes 20-80 ms. Requests come in as "<lang> <base64 UTF-8>"
+// lines, WAV files go out the same way; a line with the language alone only
+// loads that voice. Each language gets the first enabled voice of its culture
+// (Hortense for "fr", Zira or David for "en"...), picked once, and the
+// default voice when it has none: a French Windows would otherwise read
+// English with Hortense. Rate 2 (and 225 words a minute with `say`) talks
+// about 1.3 times faster than normal.
 const WINDOWS_ENGINE = `
 $ProgressPreference = 'SilentlyContinue'
 Add-Type -AssemblyName System.Speech
 $s = New-Object System.Speech.Synthesis.SpeechSynthesizer
-$v = $s.GetInstalledVoices() | Where-Object { $_.Enabled -and $_.VoiceInfo.Culture.Name -like 'en*' } | Select-Object -First 1
-if ($v) { $s.SelectVoice($v.VoiceInfo.Name) }
+$fallback = $s.Voice.Name
+$voices = @{}
+function Use-Voice($lang) {
+  if (-not $voices.ContainsKey($lang)) {
+    $v = $s.GetInstalledVoices() | Where-Object { $_.Enabled -and $_.VoiceInfo.Culture.Name -like "$lang*" } | Select-Object -First 1
+    $voices[$lang] = if ($v) { $v.VoiceInfo.Name } else { $fallback }
+  }
+  if ($s.Voice.Name -ne $voices[$lang]) { $s.SelectVoice($voices[$lang]) }
+}
 $s.Rate = 2
 $s.SetOutputToNull()
+Use-Voice '__WARM__'
 $s.Speak('ready')
 while ($null -ne ($line = [Console]::In.ReadLine())) {
   try {
-    $text = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($line))
+    $lang, $data = $line.Split(' ', 2)
+    Use-Voice $lang
+    if (-not $data) {
+      $s.Speak('ready')
+      [Console]::Out.WriteLine('ok')
+      continue
+    }
+    $text = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($data))
     $m = New-Object System.IO.MemoryStream
     $s.SetOutputToWaveStream($m)
     $s.Speak($text)
     $s.SetOutputToNull()
     [Console]::Out.WriteLine('ok ' + [Convert]::ToBase64String($m.ToArray()))
   } catch {
+    $s.SetOutputToNull()
     [Console]::Out.WriteLine('err ' + $_.Exception.Message)
   }
 }
 `;
 
+// "fr", "en"... anything else (or nothing) is English.
+const langOf = (lang) => (/^[a-z]{2,3}$/.test(lang ?? '') ? lang : 'en');
+
 let engine = null;
 
-function startWindowsEngine() {
-  const encoded = Buffer.from(WINDOWS_ENGINE, 'utf16le').toString('base64');
+// The engine loads the voice of `lang` while it starts.
+function startWindowsEngine(lang) {
+  const script = WINDOWS_ENGINE.replace('__WARM__', langOf(lang));
+  const encoded = Buffer.from(script, 'utf16le').toString('base64');
   const child = spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', encoded], {
     windowsHide: true,
   });
@@ -57,19 +81,22 @@ function startWindowsEngine() {
       buffer = buffer.slice(end + 1);
       const w = waiting.shift();
       if (!w) continue;
-      if (line.startsWith('ok ')) w.resolve(Buffer.from(line.slice(3), 'base64'));
+      if (line === 'ok' || line.startsWith('ok ')) w.resolve(Buffer.from(line.slice(3), 'base64'));
       else w.reject(new Error(line.replace(/^err /, '') || 'speech failed'));
     }
   });
   child.stderr.resume();
   child.on('error', fail);
   child.on('exit', () => fail(new Error('the speech engine stopped')));
+  // Without `text`, only loads the voice (the answer is an empty buffer).
   return {
     child,
-    ask: (text) =>
+    warm: new Set([langOf(lang)]),
+    ask: (lang, text) =>
       new Promise((resolve, reject) => {
         waiting.push({ resolve, reject });
-        child.stdin.write(Buffer.from(text, 'utf8').toString('base64') + '\n');
+        const data = text === undefined ? '' : ' ' + Buffer.from(text, 'utf8').toString('base64');
+        child.stdin.write(langOf(lang) + data + '\n');
       }),
   };
 }
@@ -103,30 +130,38 @@ function run(command, args, { input } = {}) {
   });
 }
 
-let macVoice;
-async function pickMacVoice() {
-  if (macVoice !== undefined) return macVoice;
-  const list = await run('say', ['-v', '?']).catch(() => '');
-  const english = list
+// `say -v ?` lists "Name   fr_FR   # sample". Each language takes a preferred
+// voice when it is installed, else the first one of its locale, else the
+// default voice (null).
+const MAC_PREFERRED = {
+  en: ['Samantha', 'Alex', 'Daniel', 'Fred'],
+  fr: ['Thomas', 'Amélie', 'Audrey', 'Aurélie', 'Marie'],
+};
+let macList = null;
+const macVoices = new Map();
+async function pickMacVoice(lang) {
+  if (macVoices.has(lang)) return macVoices.get(lang);
+  macList ??= run('say', ['-v', '?']).catch(() => '');
+  const voices = (await macList)
     .split('\n')
-    .map((line) => line.match(/^(.+?)\s+(en[_-]\w+)\s+#/))
-    .filter(Boolean)
+    .map((line) => line.match(/^(.+?)\s+([a-z]{2,3})[_-]\w+\s+#/))
+    .filter((m) => m && m[2] === lang)
     .map((m) => m[1].trim());
-  const preferred = ['Samantha', 'Alex', 'Daniel', 'Fred'];
-  macVoice = preferred.find((v) => english.includes(v)) ?? english[0] ?? null;
-  return macVoice;
+  const voice = (MAC_PREFERRED[lang] ?? []).find((v) => voices.includes(v)) ?? voices[0] ?? null;
+  macVoices.set(lang, voice);
+  return voice;
 }
 
-async function render(text) {
+async function render(text, lang) {
   if (process.platform === 'win32') {
-    engine ??= startWindowsEngine();
+    engine ??= startWindowsEngine(lang);
     const { child, ask } = engine;
-    return withTimeout(ask(text), () => child.kill());
+    return withTimeout(ask(lang, text), () => child.kill());
   }
   if (process.platform === 'darwin') {
     const out = path.join(os.tmpdir(), `3ch-speech-${process.pid}-${Date.now()}.wav`);
     try {
-      const voice = await pickMacVoice();
+      const voice = await pickMacVoice(lang);
       const args = ['-r', '225', '--file-format=WAVE', '--data-format=LEI16@22050', '-o', out, '-f', '-'];
       await run('say', voice ? ['-v', voice, ...args] : args, { input: text });
       return fs.readFileSync(out);
@@ -139,17 +174,18 @@ async function render(text) {
 
 // One sentence at a time. Subjects (`latest`) keep only the newest one in the
 // queue, so rolling fast never builds up a backlog: a subject overtaken by a
-// newer one resolves to null. Timer lines all wait their turn.
+// newer one resolves to null. Timer lines all wait their turn. `lang` picks
+// the voice ("en", "fr"...).
 let busy = false;
 const queue = [];
 
-function synthesize(text, { latest = true } = {}) {
+function synthesize(text, { latest = true, lang = 'en' } = {}) {
   return new Promise((resolve, reject) => {
     if (latest) {
       const old = queue.findIndex((job) => job.latest);
       if (old >= 0) queue.splice(old, 1)[0].resolve(null);
     }
-    queue.push({ text, latest, resolve, reject });
+    queue.push({ text, latest, lang: langOf(lang), resolve, reject });
     pump();
   });
 }
@@ -159,7 +195,7 @@ async function pump() {
   const job = queue.shift();
   busy = true;
   try {
-    job.resolve(await render(job.text));
+    job.resolve(await render(job.text, job.lang));
   } catch (err) {
     job.reject(err);
   } finally {
@@ -168,9 +204,16 @@ async function pump() {
   }
 }
 
-// Starts the Windows engine ahead of the first sentence.
-function warmUp() {
-  if (process.platform === 'win32') engine ??= startWindowsEngine();
+// Starts the Windows engine ahead of the first sentence, and loads the voice
+// of `lang` once per engine.
+function warmUp(lang) {
+  if (process.platform !== 'win32') return;
+  lang = langOf(lang);
+  if (!engine) return void (engine = startWindowsEngine(lang));
+  if (engine.warm.has(lang)) return;
+  engine.warm.add(lang);
+  const { child, ask } = engine;
+  withTimeout(ask(lang), () => child.kill()).catch(() => {});
 }
 
 function stop() {

@@ -29,12 +29,14 @@
   }
 
   // Slots describe the theme structure; literal words ("with", "and") are fixed.
-  // A slot can ask for a form of its word: { list: "being", form: "pl" }.
+  // A slot can ask for a form of its word: { list: "being", form: "pl" }, be
+  // named so other words agree with it (tag), or agree with a named slot (agree).
   function slotsOf(theme) {
     return theme.structure.map((item, index) => {
       if (typeof item === 'string') return { index, list: item, literal: false };
-      if (item.list) return { index, list: item.list, form: item.form, literal: false };
-      return { index, list: null, literal: true, text: item.text, glue: Boolean(item.glue) };
+      if (item.list) return { index, list: item.list, form: item.form, tag: item.tag, agree: item.agree, literal: false };
+      const slot = { index, list: null, literal: true, text: item.text, glue: Boolean(item.glue) };
+      return item.variants ? { ...slot, variants: item.variants, agree: item.agree } : slot;
     });
   }
 
@@ -42,7 +44,13 @@
   // "while a {being} {vi}, a {adj} {being.pl} ...". {list} draws a word,
   // {list.form} shows one of its forms. Leading punctuation sticks to the
   // previous word.
-  const SLOT = /\{([^{}.\s]+)(?:\.([^{}.\s]+))?\}/g;
+  // Agreement, for languages with genders: {being#a} names a slot, {adj@a}
+  // shows the form of its word that agrees with slot a (gender and number),
+  // and [un|une@a] is a fixed word, masculine or feminine after slot a.
+  const NAME = '[^{}\\[\\].\\s#@|]+';
+  const SLOT = new RegExp(`\\{(${NAME})(?:\\.(${NAME}))?(?:#(${NAME}))?(?:@(${NAME}))?\\}`, 'g');
+  const VARIANT = new RegExp(`\\[([^\\[\\]{}|@]*)\\|([^\\[\\]{}|@]*)@(${NAME})\\]`, 'g');
+  const TOKEN = new RegExp(`${SLOT.source}|${VARIANT.source}`, 'g');
   function parseStructure(source) {
     const items = [];
     const literal = (chunk) => {
@@ -55,9 +63,18 @@
       if (t) items.push({ text: t });
     };
     let last = 0;
-    for (const m of source.matchAll(SLOT)) {
+    for (const m of source.matchAll(TOKEN)) {
       literal(source.slice(last, m.index));
-      items.push(m[2] ? { list: m[1], form: m[2] } : m[1]);
+      const [, list, form, tag, agree, masc, fem, variantAgree] = m;
+      if (list) {
+        const slot = { list };
+        if (form) slot.form = form;
+        if (tag) slot.tag = tag;
+        if (agree) slot.agree = agree;
+        items.push(Object.keys(slot).length > 1 ? slot : list);
+      } else {
+        items.push({ text: masc.trim(), variants: [masc.trim(), fem.trim()], agree: variantAgree });
+      }
       last = m.index + m[0].length;
     }
     literal(source.slice(last));
@@ -115,10 +132,33 @@
     if (!entryMaps.has(list)) entryMaps.set(list, new Map(list.map((e) => [text(e), e])));
     return entryMaps.get(list).get(raw);
   }
-  function inflect(theme, parts) {
-    return parts.map((p) => {
-      if (p.literal || !p.form) return p;
+  // A named slot ({being#a}) passes on the gender of its entry ("g": "m" or
+  // "f") and its number (plural when the slot shows the "pl" form).
+  function agreementOf(theme, parts) {
+    const tags = new Map();
+    for (const p of parts) {
+      if (p.literal || !p.tag) continue;
       const entry = entryOf(theme.lists[p.list] ?? [], p.raw);
+      tags.set(p.tag, { f: entry?.g === 'f', pl: p.form === 'pl' });
+    }
+    return tags;
+  }
+
+  // The form an agreeing entry shows: "text" (masculine singular), "f", "pl"
+  // or "fpl". A string entry never changes.
+  function agreedForm(entry, raw, agreement) {
+    if (!agreement || typeof entry !== 'object') return raw;
+    const key = agreement.f ? (agreement.pl ? 'fpl' : 'f') : agreement.pl ? 'pl' : null;
+    return key && typeof entry[key] === 'string' ? entry[key] : raw;
+  }
+
+  function inflect(theme, parts) {
+    const tags = parts.some((p) => p.agree) ? agreementOf(theme, parts) : null;
+    return parts.map((p) => {
+      if (p.literal) return p.variants ? { ...p, word: p.variants[tags.get(p.agree)?.f ? 1 : 0] } : p;
+      const entry = p.agree || p.form ? entryOf(theme.lists[p.list] ?? [], p.raw) : null;
+      if (p.agree) return { ...p, word: agreedForm(entry, p.raw, tags.get(p.agree)) };
+      if (!p.form) return p;
       return { ...p, word: typeof entry?.[p.form] === 'string' ? entry[p.form] : p.raw };
     });
   }
@@ -177,16 +217,84 @@
     }));
   }
 
-  function render(parts) {
-    const fixed = fixArticles(parts);
+  // French: elision ("le arbre" -> "l'arbre", "de un" -> "d'un") and the
+  // contracted articles ("de le" -> "du", "à les" -> "aux"). A word starting
+  // with an h aspiré keeps the vowel before it ("le hibou", "de huit").
+  const H_ASPIRE = new RegExp(
+    '^h(?:' +
+      [
+        'ach', 'aie', 'aill', 'ain', 'aï', 'alet', 'alèt', 'alls?$', 'alle$', 'alles$', 'alleb', 'alo', 'alte$',
+        'altes$', 'amac', 'amma', 'aub', 'ameau', 'amster', 'amburger', 'anch', 'andi', 'anga', 'anne', 'ant', 'app', 'arc',
+        'ard', 'are', 'arg', 'ari', 'arn', 'arp', 'as', 'ât', 'auss', 'aut', 'avr', 'enn', 'ern', 'ers',
+        'ériss', 'éron', 'éros$', 'êtr', 'eurt', 'ibou', 'ideu', 'iérarch', 'igh', 'iss', 'och', 'ockey', 'old',
+        'ollandais', 'omard', 'oo', 'ippie', 'usk', 'ongr', 'ont', 'oqu', 'orde', 'ors', 'otte', 'ot-dog', 'ou', 'ublot', 'uche', 'ue$',
+        'ues$', 'uée', 'uer', 'uit', 'ulott', 'upp', 'url', 'uss', 'utt', 'yène',
+      ].join('|') +
+      ')'
+  );
+  const FR_VOWEL = /^[aeiouàâäéèêëîïôöùûüœæ]/;
+  function elides(word) {
+    const w = word.toLowerCase().replace(/^[^a-zà-ÿœæ]+/, '');
+    if (w[0] === 'h') return !H_ASPIRE.test(w);
+    if (w[0] === 'y') return w === 'y' || w.startsWith('yeu');
+    return FR_VOWEL.test(w);
+  }
+
+  const ELIDED = {
+    le: "l'", la: "l'", de: "d'", que: "qu'", ne: "n'", se: "s'", me: "m'", te: "t'", je: "j'",
+    jusque: "jusqu'", lorsque: "lorsqu'", puisque: "puisqu'", ce: 'cet', ma: 'mon', ta: 'ton', sa: 'son',
+  };
+  const CONTRACTED = { 'de le': 'du', 'à le': 'au', 'de les': 'des', 'à les': 'aux' };
+  const sameCase = (from, to) => (from[0] === from[0].toUpperCase() ? to[0].toUpperCase() + to.slice(1) : to);
+  const elided = (s) => s.endsWith("'");
+  const joinWords = (words) => words.reduce((s, w) => (!s ? w : elided(s) ? s + w : `${s} ${w}`), '');
+
+  function fixFrench(parts) {
+    const words = [];
+    parts.forEach((p, pi) => {
+      (p.word ?? p.raw).split(' ').filter(Boolean).forEach((w) => words.push({ pi, w }));
+    });
+    const elide = (which) => {
+      for (let i = 0; i < words.length - 1; i++) {
+        const lower = words[i].w.toLowerCase();
+        if (which.includes(lower) && elides(words[i + 1].w)) words[i].w = sameCase(words[i].w, ELIDED[lower]);
+      }
+    };
+    // "à le arbre" -> "à l'arbre" first, so that only "à le hibou" -> "au hibou".
+    elide(['le', 'la']);
+    for (let i = 0; i < words.length - 1; i++) {
+      const pair = CONTRACTED[`${words[i].w.toLowerCase()} ${words[i + 1].w.toLowerCase()}`];
+      if (!pair) continue;
+      words[i].w = sameCase(words[i].w, pair);
+      words.splice(i + 1, 1);
+    }
+    elide(['de', 'que', 'ne', 'se', 'me', 'te', 'je', 'jusque', 'lorsque', 'puisque', 'ce', 'ma', 'ta', 'sa']);
+    for (let i = 0; i < words.length - 1; i++) {
+      if (/^si$/i.test(words[i].w) && /^ils?$/i.test(words[i + 1].w)) words[i].w = sameCase(words[i].w, "s'");
+    }
+    return parts.map((p, pi) => ({ ...p, display: joinWords(words.filter((x) => x.pi === pi).map((x) => x.w)) }));
+  }
+
+  // A language without its own fix-up shows the words as they are.
+  const asWritten = (parts) => parts.map((p) => ({ ...p, display: (p.word ?? p.raw).split(' ').filter(Boolean).join(' ') }));
+  const FIXES = { en: fixArticles, fr: fixFrench };
+
+  function render(parts, lang = 'en') {
+    const fixed = (FIXES[lang] ?? asWritten)(parts);
     const visible = fixed.filter((p) => p.display);
-    let sentence = visible.reduce((s, p) => (s && !p.glue ? `${s} ${p.display}` : s + p.display), '');
+    const french = lang === 'fr';
+    let sentence = visible.reduce(
+      (s, p) => (s && !p.glue && !(french && elided(s)) ? `${s} ${p.display}` : s + p.display),
+      ''
+    );
     sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
     if (sentence && !/[.!?)]$/.test(sentence)) sentence += '.';
     if (visible.length) {
       const first = visible[0];
       first.display = first.display.charAt(0).toUpperCase() + first.display.slice(1);
     }
+    // "l'", "d'"... at the end of a part: the next word sticks to it.
+    if (french) for (const p of visible) if (elided(p.display)) p.elided = true;
     return { parts: fixed, sentence };
   }
 
@@ -210,9 +318,19 @@
     return w === undefined || (typeof w === 'number' && Number.isFinite(w) && w > 0);
   }
 
+  const hasGender = (e) => typeof e === 'object' && (e.g === 'm' || e.g === 'f');
+  const AGREED_FORMS = ['f', 'pl', 'fpl'];
+
   function checkStructure(structure, lists) {
+    const tags = new Set();
+    for (const item of structure) {
+      if (!item?.tag) continue;
+      if (tags.has(item.tag)) return `#${item.tag} names two slots`;
+      tags.add(item.tag);
+    }
     for (const item of structure) {
       const name = listOf(item);
+      if (item?.agree && !tags.has(item.agree)) return `@${item.agree} agrees with no {slot#${item.agree}}`;
       if (name) {
         const list = Object.hasOwn(lists, name) ? lists[name] : undefined;
         if (!Array.isArray(list) || list.length === 0) return `list "${name}" is missing or empty`;
@@ -220,9 +338,18 @@
         if (bad !== -1) {
           return `list "${name}", entry ${bad + 1}: expected a string or { "text", "weight" } with a weight above 0`;
         }
+        if (item.form && item.agree) return `{${name}.${item.form}@${item.agree}}: a slot takes a form or agrees, not both`;
         if (item.form) {
           const missing = list.findIndex((e) => typeof e !== 'object' || typeof e[item.form] !== 'string');
           if (missing !== -1) return `list "${name}", entry ${missing + 1}: no "${item.form}" form`;
+        }
+        if (item.tag) {
+          const missing = list.findIndex((e) => !hasGender(e));
+          if (missing !== -1) return `list "${name}", entry ${missing + 1}: no gender ("g": "m" or "f") for #${item.tag}`;
+        }
+        if (item.agree) {
+          const missing = list.findIndex((e) => typeof e === 'object' && AGREED_FORMS.some((f) => typeof e[f] !== 'string'));
+          if (missing !== -1) return `list "${name}", entry ${missing + 1}: an agreeing entry needs "f", "pl" and "fpl" forms`;
         }
       } else if (!item || typeof item.text !== 'string') {
         return 'literal structure items need a "text" field';
@@ -237,7 +364,7 @@
     if (!theme || !(many || Array.isArray(theme.structure)) || !theme.lists || typeof theme.lists !== 'object') {
       return 'missing "structure" or "lists"';
     }
-    for (const key of ['id', 'name']) {
+    for (const key of ['id', 'name', 'lang']) {
       if (theme[key] !== undefined && typeof theme[key] !== 'string') return `"${key}" must be a string`;
     }
     if (!many) {
@@ -248,7 +375,8 @@
     for (const [i, source] of theme.structures.entries()) {
       const where = `structure ${i + 1}`;
       if (typeof source !== 'string') return `${where}: expected text`;
-      if (/[{}]/.test(source.replace(SLOT, ''))) return `${where}: unmatched { or }`;
+      if (/[{}]/.test(source.replace(TOKEN, ''))) return `${where}: unmatched { or }`;
+      if (/[[\]]/.test(source.replace(TOKEN, ''))) return `${where}: unmatched [ or ], or [masc|fem] without @tag`;
       const structure = parseStructure(source);
       if (!structure.some(listOf)) return `${where}: no {slot}`;
       const problem = checkStructure(structure, theme.lists);
@@ -259,7 +387,7 @@
 
   const api = {
     pick, slotsOf, roll, rerollSlot, render, fixArticles, combinations, validateTheme,
-    parseStructure, shape, reshape, inflect,
+    parseStructure, shape, reshape, inflect, elides,
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Generator = api;

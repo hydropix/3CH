@@ -55,10 +55,20 @@ Press **Space** and 3CH gives you a subject to paint:
 
 > *While a wild boar crashes to pieces, a nauseous old god dissects the tentacles of a penguin.*
 
-- **6 themes**: Fantasy, Urban, Hollywood action, Darwin (creatures),
-  Constructor (environments) and Chimera.
-- **Every roll changes the shape of the sentence**, not only the words: 31 to
-  34 sentence shapes per theme, 99 for Chimera, which mixes the words of every
+It also speaks French:
+
+> *Une mouche abyssale jaillit d'une idole sur la tombe d'un géant.*
+
+- **English and French**: pick the language in the top bar (**English** /
+  **Français**). It changes the themes, the interface and the voice at once,
+  and your choice is saved. The first time, 3CH follows the language of your
+  system. Switching keeps the same theme in the other language. In French,
+  adjectives and articles agree with the noun ("une plante carnivore
+  minuscule"), and "le arbre" becomes "l'arbre".
+- **6 themes** in each language: Fantasy, Urban, Hollywood action, Darwin
+  (creatures), Constructor (environments) and Chimera.
+- **Every roll changes the shape of the sentence**, not only the words: over
+  30 sentence shapes per theme, 99 for Chimera, which mixes the words of every
   theme so nothing makes sense except the grammar. Locked words follow into the
   next shape, **Reshape** keeps the words and changes the shape, and **Lock
   shape** keeps the shape.
@@ -66,16 +76,20 @@ Press **Space** and 3CH gives you a subject to paint:
   everything else changes.
 - **Keep** the subjects you like. They stay saved, and you can copy them or export
   them to a `.txt` file. The last 100 rolls are in the history.
-- **A broken robot voice** reads every new subject aloud as soon as it is
-  rolled: the system's own voice, vocoded, stuttering and glitching
-  differently every time. **Auto voice** turns it off, **Speak** replays it.
+- **A broken robot voice** reads the subject aloud: the system's own voice,
+  vocoded, stuttering and glitching differently every time. **Speak** reads it,
+  **Auto voice** (on by default) reads every new subject as soon as it is
+  rolled. It reads the subject in the language of its theme. For French
+  speech, install a French voice in Windows (Settings → Time & language →
+  Speech); without one, the default voice reads the French text.
 - **Speed painting timer** (5 to 60 min, or any length up to 4 hours):
   - The time left shows in the taskbar.
   - A very soft tick on every minute, a beep for the last one, and a chime
     plus a notification at the end.
   - The same robot voice runs the session like a passive-aggressive lab AI:
     it announces the time left, puts on the pressure, counts down from 10 and
-    calls the end. The sound button mutes it with the other alerts.
+    calls the end, in the language of the interface. The sound button mutes
+    it with the other alerts.
 - **Mini mode**: a small always-on-top window with just the subject and the
   clock, so they stay in sight over Photoshop, Krita or Procreate.
 
@@ -100,10 +114,12 @@ Press **Space** and 3CH gives you a subject to paint:
 ## Make your own themes
 
 A theme is a small JSON file: the sentence structure plus word lists, with
-optional weights, or several structures like the bundled themes. Drop it in
-the folder opened by **Themes folder**, or use
-**Import legacy theme** to convert a theme folder from the original 2005 app. See
-[app/README.md](app/README.md) for the format.
+optional weights, or several structures like the bundled themes. A theme
+says its language (`"lang": "fr"`) and shows up under that language in the
+top bar. Themes in a language with genders can link words so that adjectives
+and articles agree with the noun. Drop it in the folder opened by
+**Themes folder**, or use **Import legacy theme** to convert a theme folder
+from the original 2005 app. See [app/README.md](app/README.md) for the format.
 
 ## Build from source
 

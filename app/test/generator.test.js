@@ -15,12 +15,23 @@ test('every bundled theme is valid and rolls a full sentence', () => {
     const shapes = theme.structures ? theme.structures.map((_, i) => G.shape(theme, i)) : [theme];
     for (const shaped of shapes) {
       for (let i = 0; i < 200 / shapes.length + 1; i++) {
-        const { sentence } = G.render(G.inflect(theme, G.roll(shaped)));
-        assert.match(sentence, /^[A-Z(].*[.)]$/, `${theme.name}: ${sentence}`);
-        assert.doesNotMatch(sentence, /\s{2}|\s[,;:]|\n|[{}]/, `${theme.name}: ${sentence}`);
+        const { sentence } = G.render(G.inflect(theme, G.roll(shaped)), theme.lang);
+        assert.match(sentence, /^[A-ZÀÂÉÈÊÎÔÙÛÇ(].*[.)]$/, `${theme.name}: ${sentence}`);
+        assert.doesNotMatch(sentence, /\s{2}|\s[,;:]|\n|[{}[\]|@#]/, `${theme.name}: ${sentence}`);
+        if (theme.lang === 'fr') {
+          // Elision and contracted articles went through: no "le arbre", "de le", "' ".
+          assert.doesNotMatch(sentence, /(^|[\s'])(le|la|de|que|ne|se) [aeiouàâéèêîôûœ]/i, `${theme.name}: ${sentence}`);
+          assert.doesNotMatch(sentence, /(^|\s)(de|à) les?\s|'\s/i, `${theme.name}: ${sentence}`);
+        }
       }
     }
   }
+});
+
+test('every bundled theme says its language, and every language has the same themes', () => {
+  const ids = (lang) => themes.filter((t) => t.lang === lang).map((t) => t.id.replace(/-[a-z]{2}$/, '')).sort();
+  for (const theme of themes) assert.match(theme.lang ?? '', /^[a-z]{2}$/, theme.name);
+  assert.deepStrictEqual(ids('fr'), ids('en'));
 });
 
 test('structures parse into slots, forms and glued punctuation', () => {
@@ -150,4 +161,77 @@ test('theme validation rejects entries that would break a roll', () => {
   assert.match(G.validateTheme({ structure: [], lists: {} }), /empty/);
   assert.match(G.validateTheme(theme({ a: ['x'] }, { name: 3 })), /"name"/);
   assert.match(G.validateTheme({ structure: ['a'], lists: null }), /missing/);
+});
+
+const french = {
+  lang: 'fr',
+  structures: [
+    '[un|une@a] {being#a} {adj@a} {vt} [le|la@b] {being#b}',
+    'des {being.pl#a} [couverts|couvertes@a] de {part.pl} {vi.pl} près de le {being}',
+  ],
+  lists: {
+    being: [
+      { text: 'loup', pl: 'loups', g: 'm' },
+      { text: 'sorcière', pl: 'sorcières', g: 'f' },
+      { text: 'hibou', pl: 'hiboux', g: 'm' },
+      { text: 'araignée', pl: 'araignées', g: 'f' },
+    ],
+    adj: [{ text: 'vert', f: 'verte', pl: 'verts', fpl: 'vertes' }, 'en bois'],
+    vt: [{ text: 'dévore', pl: 'dévorent' }],
+    vi: [{ text: 'dort', pl: 'dorment' }],
+    part: [{ text: 'œil', pl: 'yeux' }, { text: 'écaille', pl: 'écailles' }],
+  },
+};
+
+test('agreement syntax parses into tags, agreeing slots and variants', () => {
+  assert.deepStrictEqual(G.parseStructure('[un|une@a] {being.pl#a} {adj@a}'), [
+    { text: 'un', variants: ['un', 'une'], agree: 'a' },
+    { list: 'being', form: 'pl', tag: 'a' },
+    { list: 'adj', agree: 'a' },
+  ]);
+});
+
+test('French words agree with the slot they follow, even after a reroll', () => {
+  const say = (parts) => G.render(G.inflect(french, parts), 'fr').sentence;
+  const parts = G.roll(G.shape(french, 0), null, new Set(), seq(0.3, 0, 0, 0.6));
+  assert.strictEqual(say(parts), 'Une sorcière verte dévore le hibou.');
+  const rerolled = parts.map((p) => (p.tag === 'a' ? { ...p, raw: 'loup' } : p));
+  assert.strictEqual(say(rerolled), 'Un loup vert dévore le hibou.');
+  const other = parts.map((p) => (p.tag === 'b' ? { ...p, raw: 'araignée' } : p.list === 'adj' ? { ...p, raw: 'en bois' } : p));
+  assert.strictEqual(say(other), "Une sorcière en bois dévore l'araignée.");
+  const plural = G.roll(G.shape(french, 1), null, new Set(), seq(0.3, 0, 0, 0.6));
+  assert.strictEqual(say(plural), "Des sorcières couvertes d'yeux dorment près du hibou.");
+});
+
+test('French elision and contracted articles', () => {
+  const parts = (...raws) => raws.map((raw, index) => ({ index, raw, literal: false }));
+  const say = (...raws) => G.render(parts(...raws), 'fr').sentence;
+  assert.strictEqual(say('le', 'arbre'), "L'arbre.");
+  assert.strictEqual(say('la', 'hydre'), "L'hydre.");
+  assert.strictEqual(say('le', 'hibou'), 'Le hibou.');
+  assert.strictEqual(say('près de le', 'loup'), 'Près du loup.');
+  assert.strictEqual(say('près de le', 'ogre'), "Près de l'ogre.");
+  assert.strictEqual(say('à les', 'hiboux'), 'Aux hiboux.');
+  assert.strictEqual(say('de les', 'yeux'), 'Des yeux.');
+  assert.strictEqual(say('à le', 'héros'), 'Au héros.');
+  assert.strictEqual(say('couvert de', 'écailles'), "Couvert d'écailles.");
+  assert.strictEqual(say('couvert de', 'huit', 'yeux'), 'Couvert de huit yeux.');
+  assert.strictEqual(say('un loup que', 'il', 'avale'), "Un loup qu'il avale.");
+  assert.strictEqual(say('ce', 'homme'), 'Cet homme.');
+  assert.strictEqual(say('le', 'yéti'), 'Le yéti.');
+  assert.strictEqual(say('sa', 'aile'), 'Son aile.');
+  assert.ok(G.elides('humain') && G.elides('herbe') && G.elides('héroïne'));
+  assert.ok(!G.elides('hache') && !G.elides('hérisson') && !G.elides('héros') && !G.elides('hurlement'));
+});
+
+test('agreement validation names what is missing', () => {
+  const theme = (structures, lists = french.lists) => ({ lang: 'fr', structures, lists });
+  assert.strictEqual(G.validateTheme(french), null);
+  assert.match(G.validateTheme(theme(['{being} {adj@a}'])), /@a agrees with no \{slot#a\}/);
+  assert.match(G.validateTheme(theme(['{being#a} {being#a}'])), /#a names two slots/);
+  assert.match(G.validateTheme(theme(['{adj#a} {being}'])), /list "adj", entry 1: no gender/);
+  assert.match(G.validateTheme(theme(['{being#a} {vt@a}'])), /list "vt", entry 1: an agreeing entry needs/);
+  assert.match(G.validateTheme(theme(['{being#a} {adj.pl@a}'])), /form or agrees, not both/);
+  assert.match(G.validateTheme(theme(['[un|une] {being#a}'])), /unmatched \[/);
+  assert.match(G.validateTheme({ ...french, lang: 3 }), /"lang"/);
 });

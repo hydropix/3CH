@@ -20,10 +20,11 @@ app, which is kept byte for byte in `Legacy/`.
 ```bash
 npm install
 npm start
-npm test                 # node:test: generator, timer, voice, announcer, themes, legacy parser (30 tests)
+npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (45 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # ../Legacy -> JSON; skips the hand-reworked themes
+npm run sample -- themes/chimera-fr.json 4   # validate a theme, print 4 subjects per structure (proofreading)
 npm run icon             # build/icon.png + icon.ico + renderer/logo.png (Python)
 npm run logo             # same, plus docs/logo.gif (needs ffmpeg)
 ```
@@ -67,13 +68,31 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   asked to write or to be "wild", the model drifts back to plausible, clichéd
   associations or breaks the grammar. The LLM is only useful offline (writing
   structures, sorting and inflecting the lexicon), never at runtime.
-- **Robot voice** (auto by default, `V` replays, `Shift`+`V` toggles auto):
+- **Multilingual** (2.4.0): a theme has a `lang` field (`"en"` when missing;
+  the legacy conversion writes `"en"`). The language menu in the top bar picks
+  the themes shown, the UI strings (`renderer/i18n.js`) and the voices: the
+  subject voice follows the theme language, the timer voice the UI language.
+  The French themes are hand-edited sources (`"source": "translated"`) with
+  `-fr` ids (`chimera-fr`) and the same list names as the English twin, which
+  is how switching language finds the same theme. The agreement syntax lives in
+  `generator.js`: `{list#a}` names a slot (entries need `"g"`), `{list@a}` takes
+  the form that agrees (`text`/`f`/`pl`/`fpl`), `[masc|fem@a]` is a fixed word
+  chosen by the gender of slot a. `render(parts, lang)` then does the French
+  fix-up (elision with an h aspiré list, contractions); `npm run sample` and
+  the tests catch what it misses. French rules we follow: adjectives go after
+  the noun only (no pre-noun adjective handling), never `de les` before a verb
+  (it would become "des"), no `;` or `:`, and a being with a complement makes
+  the following adjective ambiguous ("un loup couvert d'écailles vert": which
+  one is green?).
+- **Robot voice** (auto on by default, `V` replays, `Shift`+`V` toggles auto):
   `speechSynthesis` cannot be routed into Web Audio, so the main process
-  renders the system voice to a WAV (`src/speech.js`, an English voice when one
-  is installed) and `renderer/voice.js` breaks it in JS (vocoder on a stepped
-  sawtooth, then stutters, bitcrush, reverse, dropouts). On Windows one
-  PowerShell process stays alive, warmed up at launch: one process per sentence
-  cost ~1 s, a sentence now takes 20-80 ms. Only the latest request waits
+  renders the system voice to a WAV (`src/speech.js`, one voice per language:
+  on Windows the first enabled SAPI voice of the culture, else the default
+  voice; on macOS a preferred `say` voice, else the first of the locale, else
+  the default, untested on a real Mac) and `renderer/voice.js` breaks it in JS
+  (vocoder on a stepped sawtooth, then stutters, bitcrush, reverse, dropouts).
+  On Windows one PowerShell process stays alive, warmed up at launch: one
+  process per sentence cost ~1 s, a sentence now takes 20-80 ms. Only the latest request waits
   (older ones resolve to null), and a new sentence cuts the voice off. The
   recording is cached per sentence; the glitches are redrawn every time.
 - **Timer voice**: `renderer/announcer.js` holds the lines (original ones in
@@ -102,6 +121,5 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
 - The co-authors have not been asked to agree to the MIT license for the word
   lists. They are credited in `CREDITS.md`.
 - Ideas not started: fixing the English typos in the legacy-derived word lists
-  ("trough", "menacant"...; Chimera's lists are already fixed), a French
-  Chimera (needs gender and agreement links between slots), an in-app theme editor, linking timer sessions to the
-  history, code signing.
+  ("trough", "menacant"...; Chimera's lists are already fixed), an in-app
+  theme editor, linking timer sessions to the history, code signing.

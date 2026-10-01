@@ -2,6 +2,7 @@
   "format": "3ch-theme/2",
   "id": "hollywood-action",
   "name": "Hollywood action",
+  "lang": "en",
   "source": "legacy-reworked",
   "structures": [
     "a {adj} {being} {vt} a {being} {setting}",

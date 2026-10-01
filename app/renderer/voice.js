@@ -132,7 +132,7 @@
   }
 
   // A few notes around the base pitch, so the robot "sings" off key.
-  const STEPS = [0, 0, 0, 0, -2, 3, 5, -5, 7, -7, 12];
+  const STEPS = [0, 0, 0, 0, 0, 0, -2, 3, 5, -5, 7];
 
   // Sawtooth whose pitch jumps (and sometimes slides) every 80-340 ms.
   function carrier(length, sampleRate, rand) {
@@ -145,7 +145,7 @@
     while (i < length) {
       const n = Math.min(length - i, Math.round(sampleRate * (0.08 + rand() * 0.26)));
       const to = note();
-      const slide = rand() < 0.18;
+      const slide = rand() < 0.12;
       for (let k = 0; k < n; k++, i++) {
         const f = slide ? from + ((to - from) * k) / n : to;
         phase += f / sampleRate;
@@ -159,7 +159,7 @@
 
   // Channel vocoder: the speech's spectral envelope, played by a sawtooth
   // (plus noise in the top bands so that s, t and f survive). A bit of the
-  // ring-modulated original is mixed back in for intelligibility.
+  // original, ring-modulated and plain, is mixed back in for intelligibility.
   function vocode(x, sampleRate, rand) {
     const saw = carrier(x.length, sampleRate, rand);
     const low = new Float32Array(x.length);
@@ -185,7 +185,7 @@
     const ring = 40 + rand() * 30;
     const dry = normalize(Float32Array.from(x));
     for (let i = 0; i < out.length; i++) {
-      out[i] += 0.3 * dry[i] * Math.sin((2 * Math.PI * ring * i) / sampleRate);
+      out[i] += 0.15 * dry[i] * Math.sin((2 * Math.PI * ring * i) / sampleRate) + 0.15 * dry[i];
     }
     return out;
   }
@@ -195,7 +195,7 @@
   // "d-d-d-devours": the head of the segment, repeated.
   function stutter(seg, sampleRate, rand) {
     const head = fade(seg.slice(0, Math.round(sampleRate * (0.025 + rand() * 0.05))), 20);
-    const times = 2 + Math.floor(rand() * 4);
+    const times = 1 + Math.floor(rand() * 2);
     return concat([...Array(times).fill(head), seg]);
   }
 
@@ -209,8 +209,8 @@
 
   // Fewer bits and a lower sample rate.
   function crush(seg, rand) {
-    const levels = 2 ** (2 + Math.floor(rand() * 3));
-    const hold = 2 + Math.floor(rand() * 8);
+    const levels = 2 ** (4 + Math.floor(rand() * 2));
+    const hold = 2 + Math.floor(rand() * 3);
     const out = new Float32Array(seg.length);
     let v = 0;
     for (let i = 0; i < seg.length; i++) {
@@ -235,15 +235,11 @@
   // Signal lost: a gap, sometimes filled with a burst of digital noise.
   function dropout(seg, sampleRate, rand) {
     const out = Float32Array.from(seg);
-    const gap = Math.min(out.length, Math.round(sampleRate * (0.02 + rand() * 0.05)));
+    const gap = Math.min(out.length, Math.round(sampleRate * (0.015 + rand() * 0.025)));
     const at = Math.floor(rand() * (out.length - gap + 1));
-    const burst = rand() < 0.5 ? 0.25 : 0;
+    const burst = rand() < 0.3 ? 0.08 : 0;
     for (let i = at; i < at + gap; i++) out[i] = burst * (rand() < 0.5 ? -1 : 1);
     return out;
-  }
-
-  function clip(seg) {
-    return seg.map((v) => Math.max(-0.35, Math.min(0.35, v * 4)));
   }
 
   // The machine running out of power.
@@ -261,30 +257,29 @@
     return concat([head, Float32Array.from(out)]);
   }
 
-  // Cuts the sound into 50-270 ms segments and breaks about a third of them.
+  // Cuts the sound into 80-380 ms segments and breaks about one in seven.
   function glitch(x, sampleRate, rand) {
     const chunks = [];
     for (let i = 0; i < x.length; ) {
-      const len = Math.min(x.length - i, Math.round(sampleRate * (0.05 + rand() * 0.22)));
+      const len = Math.min(x.length - i, Math.round(sampleRate * (0.08 + rand() * 0.3)));
       let seg = x.slice(i, i + len);
       i += len;
       const r = rand();
-      if (r < 0.1) seg = stutter(seg, sampleRate, rand);
-      else if (r < 0.15) seg = freeze(seg, sampleRate, rand);
-      else if (r < 0.22) seg = crush(seg, rand);
-      else if (r < 0.26) seg = seg.reverse();
-      else if (r < 0.32) seg = resample(seg, rand() < 0.5 ? 0.6 : 1.7);
-      else if (r < 0.36) seg = dropout(seg, sampleRate, rand);
-      else if (r < 0.39) seg = clip(seg);
+      if (r < 0.05) seg = stutter(seg, sampleRate, rand);
+      else if (r < 0.07) seg = freeze(seg, sampleRate, rand);
+      else if (r < 0.1) seg = crush(seg, rand);
+      else if (r < 0.11) seg = seg.reverse();
+      else if (r < 0.13) seg = resample(seg, rand() < 0.5 ? 0.85 : 1.2);
+      else if (r < 0.15) seg = dropout(seg, sampleRate, rand);
       chunks.push(seg);
     }
     const out = concat(chunks);
-    return rand() < 0.3 ? tapeStop(out, sampleRate) : out;
+    return rand() < 0.15 ? tapeStop(out, sampleRate) : out;
   }
 
-  // Soft clipping for grit, then a safe level.
+  // Light soft clipping, then a safe level.
   function finish(x, sampleRate) {
-    for (let i = 0; i < x.length; i++) x[i] = Math.tanh(x[i] * 1.8);
+    for (let i = 0; i < x.length; i++) x[i] = Math.tanh(x[i] * 1.2);
     return fade(normalize(x, 0.9), Math.round(sampleRate * 0.005));
   }
 

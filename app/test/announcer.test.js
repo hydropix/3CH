@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { LINES, milestones, minutePassed, crossed, countdown } = require('../renderer/announcer');
+const { LINES, LINES_BY_LANG, pickLine, timeLeft, milestones, minutePassed, crossed, countdown } = require('../renderer/announcer');
 
 const MIN = 60 * 1000;
 const first = () => 0;
@@ -49,4 +49,32 @@ test('a tick on every whole minute left, not at the start nor the end', () => {
   assert.strictEqual(minutePassed(4 * MIN - 150, 4 * MIN - 400), 0);
   assert.strictEqual(minutePassed(MIN + 50, MIN - 200), 1);
   assert.strictEqual(minutePassed(200, 0), 0);
+});
+
+test('French lines: every kind, at least as many lines as in English', () => {
+  const fr = LINES_BY_LANG.fr;
+  assert.deepStrictEqual(Object.keys(fr).sort(), Object.keys(LINES).sort());
+  for (const kind of Object.keys(LINES)) {
+    assert.ok(fr[kind].length >= LINES[kind].length, kind);
+    for (const line of fr[kind]) {
+      // Written for the ear: no digits, no abbreviations, a full stop at the end.
+      assert.doesNotMatch(line, /\d|%|\b(env|etc|min|sec)\./, line);
+      assert.match(line, /[.!?]$/, line);
+    }
+  }
+  assert.strictEqual(LINES_BY_LANG.en, LINES);
+});
+
+test('a French session speaks French, time left included', () => {
+  const list = milestones(30 * MIN, first, 'fr');
+  assert.strictEqual(list[0].text, `15 minutes restantes. ${LINES_BY_LANG.fr.pressure[0]}`);
+  assert.strictEqual(list[4].text, `1 minute restante. ${LINES_BY_LANG.fr.lastMinute[0]}`);
+  assert.strictEqual(list[5].text, `30 secondes restantes. ${LINES_BY_LANG.fr.lastSeconds[0]}`);
+  assert.ok(milestones(45 * MIN, first, 'fr').some((m) => m.kind === 'halfway' && m.text === LINES_BY_LANG.fr.halfway[0]));
+  assert.strictEqual(timeLeft(60 * MIN, 'fr'), '1 heure restante.');
+  assert.strictEqual(timeLeft(120 * MIN, 'fr'), '2 heures restantes.');
+  assert.strictEqual(pickLine('done', first, 'fr'), LINES_BY_LANG.fr.done[0]);
+  // English stays the default, and a language without lines speaks English.
+  assert.strictEqual(pickLine('done', first), LINES.done[0]);
+  assert.strictEqual(milestones(30 * MIN, first, 'de')[0].text, `15 minutes remaining. ${LINES.pressure[0]}`);
 });

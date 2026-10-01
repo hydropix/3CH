@@ -2,6 +2,7 @@
   "format": "3ch-theme/2",
   "id": "constructor",
   "name": "Constructor",
+  "lang": "en",
   "source": "legacy-reworked",
   "structures": [
     "a {trait} {space} with {adj} {adj} {element.pl} and {adj} {adj} {element.pl}",

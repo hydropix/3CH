@@ -2,6 +2,7 @@
   "format": "3ch-theme/2",
   "id": "darwin",
   "name": "Darwin",
+  "lang": "en",
   "source": "legacy-reworked",
   "structures": [
     "a {trait} {diet} {type} with {adverb} {adj} {part.pl} and {adverb} {adj} {part.pl}",
