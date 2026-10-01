@@ -135,7 +135,72 @@
     ],
   };
 
-  const LINES_BY_LANG = { en: LINES, fr: LINES_FR };
+  // Chinese: written for the ear too, one short sentence after another.
+  const LINES_ZH = {
+    start: [
+      '绘画测试已启动。你的进度将被监控。并且评分。严格评分。',
+      '计时开始。请开始画画。本设施正在看着你。',
+      '创作测试程序已激活。从统计上看，你很可能失败。开始吧。',
+      '测试开始。为了科学，你的每一笔都会被记录下来。',
+      '欢迎来到绘画实验室。为了你的方便，门已经锁上了。',
+      '检测到测试对象。检测到画布。才华，仍在扫描中。',
+      '实验开始。之前的测试对象暂时无法出面作证。',
+    ],
+    resume: [
+      '测试继续。你的休息已经记入档案。',
+      '欢迎回来。时间没有等你。我也不会。',
+      '恢复测试。你不在的时候，这个房间的平均水平下降了。',
+      '继续画画。请尽量显得很忙。',
+      '继续。趁你不在，我重新调整了对你的期望。往下调。',
+    ],
+    pause: [
+      '测试暂停。时钟很有耐心。我没有。',
+      '已收到暂停请求。你的画笔正在变凉。',
+      '测试中止。我会利用这段时间重新评估你的潜力。',
+      '暂停。不要碰画布。什么都不要碰。',
+      '暂停已批准。当然，会从你的分数里扣掉。',
+    ],
+    halfway: [
+      '已到达中点。你的画完成了百分之五十。也许更少。',
+      '一半的时间已经过去了。另一半正在收拾行李。',
+      '中期分析完成。建议，别再欣赏你的草图了。',
+      '你已经完成一半了。这不是鼓励。这是测量结果。',
+    ],
+    pressure: [
+      '请画快一点。这不是建议。',
+      '你的画看起来很有前途。刚才那句是讽刺。',
+      '强烈建议提高运笔速度。',
+      '提醒。细节是可选的。截止时间不是。',
+      '不要惊慌。惊慌会浪费宝贵的绘画时间。',
+      '你的画已经分析完毕。结论，未完成。',
+      '画完的草图，胜过完美的空白。',
+      '上一位测试对象提前完成了。上一位测试对象是一台烤面包机。',
+      '别再放大了。问题不在像素。',
+      '你的配色已经转交给伦理委员会。',
+      '我没说画砸了。我只是这么想。想得很大声。',
+    ],
+    lastMinute: [
+      '开始最后的修整。或者开始哭。两种都可以接受。',
+      '别再混色了。开始收尾。',
+      '这是一分钟警告。不会再有别的警告了。除了下一个。',
+      '最后一分钟。截止时间正全速逼近，请保持冷静。',
+    ],
+    lastSeconds: [
+      '放下橡皮擦。慢慢地。',
+      '最后几笔。让它们有点价值。',
+      '紧急收尾程序已启动。',
+      '现在签名。细节永远不用了。',
+    ],
+    done: [
+      '时间到。放下画笔。离开画布。',
+      '测试完成。你的画已经存进我的记忆里。永远。',
+      '时间到。恭喜。不管你画没画完，你都画完了。',
+      '测试结束。结果是艺术。大概吧。',
+      '绘画测试终止。离开时请带上你的尊严。',
+    ],
+  };
+
+  const LINES_BY_LANG = { en: LINES, fr: LINES_FR, zh: LINES_ZH };
   const linesFor = (lang) => LINES_BY_LANG[lang] ?? LINES;
 
   function pickLine(kind, rand = Math.random, lang = 'en') {
@@ -147,6 +212,7 @@
   const TIME_LEFT = {
     en: (n, unit) => `${n} ${unit}${n > 1 ? 's' : ''} remaining.`,
     fr: (n, unit) => `${n} ${{ hour: 'heure', minute: 'minute', second: 'seconde' }[unit]}${n > 1 ? 's restantes' : ' restante'}.`,
+    zh: (n, unit) => `还剩${n}${{ hour: '小时', minute: '分钟', second: '秒' }[unit]}。`,
   };
 
   function timeLeft(at, lang = 'en') {
@@ -165,7 +231,9 @@
     const fits = (at) => duration - at >= 20 * 1000;
     const list = marks.filter(fits).map((at) => {
       const kind = at === MIN ? 'lastMinute' : at < MIN ? 'lastSeconds' : 'pressure';
-      return { at, kind, text: `${timeLeft(at, lang)} ${pickLine(kind, rand, lang)}` };
+      // Chinese sentences follow each other without a space.
+      const gap = lang === 'zh' ? '' : ' ';
+      return { at, kind, text: `${timeLeft(at, lang)}${gap}${pickLine(kind, rand, lang)}` };
     });
     const half = Math.round(duration / 2 / 1000) * 1000;
     if (duration >= 4 * MIN && list.every((m) => Math.abs(m.at - half) > 45 * 1000)) {

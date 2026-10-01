@@ -16,7 +16,7 @@ test('every language has every string, of the same kind', () => {
     assert.deepStrictEqual(Object.keys(strings).sort(), keys, code);
     for (const key of keys) {
       assert.strictEqual(typeof strings[key], typeof I18n.STRINGS.en[key], `${code}.${key}`);
-      const text = I18n.t(code, key, { count: 2, n: 3, locked: false, name: 'X', error: 'E', errors: 'E', date: 'D' });
+      const text = I18n.t(code, key, { count: 2, n: 3, locked: false, name: 'X', error: 'E', errors: 'E', date: 'D', language: 'L' });
       assert.ok(text && !/\{\w+\}|undefined/.test(text), `${code}.${key}: ${text}`);
     }
   }
@@ -67,16 +67,32 @@ test('subject counts: French long scale, French digits and plurals', () => {
   assert.strictEqual(f(999700000n), '1,0 milliard');
 });
 
+test('subject counts: Chinese groups of four digits', () => {
+  const f = (n) => I18n.formatCombos(n, 'zh');
+  assert.strictEqual(f(7n), '7');
+  assert.strictEqual(f(1234n), '1,234');
+  assert.strictEqual(f(45000n), '4.5万');
+  assert.strictEqual(f(123456789n), '1.2亿');
+  assert.strictEqual(f(999970000n), '10亿');
+  assert.strictEqual(f(99999000n), '1.0亿');
+  assert.strictEqual(f(12345678901234n), '12万亿');
+  assert.strictEqual(I18n.t('zh', 'sentenceShapes', { count: 99 }), '99 种句式');
+  // 9.97 million rounds to 10, not "10.0".
+  assert.strictEqual(I18n.formatCombos(9970000n, 'en'), '10 million');
+});
+
 test('the start language follows the OS when there are themes for it', () => {
   assert.strictEqual(I18n.pickLanguage(['en', 'fr'], ['fr-FR', 'en-US']), 'fr');
   assert.strictEqual(I18n.pickLanguage(['en', 'fr'], ['de-DE']), 'en');
   assert.strictEqual(I18n.pickLanguage(['en'], ['fr-FR']), 'en');
   assert.strictEqual(I18n.pickLanguage(['en', 'fr'], [null, 'fr_CA']), 'fr');
   assert.strictEqual(I18n.pickLanguage(['fr'], []), 'fr');
+  assert.strictEqual(I18n.pickLanguage(['en', 'fr', 'zh'], ['zh-CN']), 'zh');
 });
 
 test('languages are named in their own language', () => {
   assert.strictEqual(I18n.languageName('en'), 'English');
   assert.strictEqual(I18n.languageName('fr'), 'Français');
+  assert.strictEqual(I18n.languageName('zh'), '中文');
   assert.strictEqual(I18n.languageName('de'), 'Deutsch');
 });

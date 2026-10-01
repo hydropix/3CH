@@ -51,18 +51,28 @@ test('a tick on every whole minute left, not at the start nor the end', () => {
   assert.strictEqual(minutePassed(200, 0), 0);
 });
 
-test('French lines: every kind, at least as many lines as in English', () => {
-  const fr = LINES_BY_LANG.fr;
-  assert.deepStrictEqual(Object.keys(fr).sort(), Object.keys(LINES).sort());
-  for (const kind of Object.keys(LINES)) {
-    assert.ok(fr[kind].length >= LINES[kind].length, kind);
-    for (const line of fr[kind]) {
-      // Written for the ear: no digits, no abbreviations, a full stop at the end.
-      assert.doesNotMatch(line, /\d|%|\b(env|etc|min|sec)\./, line);
-      assert.match(line, /[.!?]$/, line);
+test('French and Chinese lines: every kind, at least as many lines as in English', () => {
+  for (const [lang, end] of [['fr', /[.!?]$/], ['zh', /[。！？]$/]]) {
+    const lines = LINES_BY_LANG[lang];
+    assert.deepStrictEqual(Object.keys(lines).sort(), Object.keys(LINES).sort(), lang);
+    for (const kind of Object.keys(LINES)) {
+      assert.ok(lines[kind].length >= LINES[kind].length, `${lang} ${kind}`);
+      for (const line of lines[kind]) {
+        // Written for the ear: no digits, no abbreviations, a full stop at the end.
+        assert.doesNotMatch(line, /\d|%|\b(env|etc|min|sec)\./, line);
+        assert.match(line, end, line);
+        if (lang === 'zh') assert.doesNotMatch(line, /[A-Za-z\s,.]/, line);
+      }
     }
   }
   assert.strictEqual(LINES_BY_LANG.en, LINES);
+});
+
+test('a Chinese session speaks Chinese, without spaces', () => {
+  const list = milestones(30 * MIN, first, 'zh');
+  assert.strictEqual(list[0].text, `还剩15分钟。${LINES_BY_LANG.zh.pressure[0]}`);
+  assert.strictEqual(list[5].text, `还剩30秒。${LINES_BY_LANG.zh.lastSeconds[0]}`);
+  assert.strictEqual(timeLeft(120 * MIN, 'zh'), '还剩2小时。');
 });
 
 test('a French session speaks French, time left included', () => {

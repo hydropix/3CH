@@ -25,6 +25,11 @@
   --mono: "Cascadia Mono", Consolas, ui-monospace, monospace;
   color-scheme: dark;
 }
+/* Chinese glyphs: the system CJK fonts, after the Latin ones. */
+:root:lang(zh) {
+  --font: "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", "PingFang SC", system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", "Microsoft YaHei UI", "PingFang SC", system-ui, sans-serif;
+}
 
 * { box-sizing: border-box; }
 
@@ -279,6 +284,11 @@ main {
 /* Left-aligned, so a caption wider than the word does not push it away. */
 .elided + .chip { margin-left: -12px; align-items: flex-start; }
 .chip.flash .word { animation: flash 0.35s ease; }
+/* Chinese has no spaces between words: the chips sit closer, the fixed words touch them. */
+.subject:lang(zh) { column-gap: 0; }
+.subject:lang(zh) .chip { padding-left: 5px; padding-right: 5px; }
+.subject:lang(zh) .literal { padding-left: 0; padding-right: 0; }
+.subject:lang(zh) .literal.glue { margin-left: -5px; }
 
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes flash { 0% { opacity: 0.2; } 100% { opacity: 1; } }
@@ -401,6 +411,9 @@ body.mini .chip.elided { margin-right: -10px; }
 body.mini .elided + .literal { margin-left: 0; }
 body.mini .elided + .chip { margin-left: -6px; }
 body.mini .chip .label, body.mini .chip .lock { display: none; }
+body.mini .subject:lang(zh) { column-gap: 0; }
+body.mini .subject:lang(zh) .chip { padding-left: 3px; padding-right: 3px; }
+body.mini .subject:lang(zh) .literal.glue { margin-left: -3px; }
 body.mini .timer { grid-template-columns: auto 1fr; margin: 0 -16px; padding: 10px 16px 12px; gap: 12px; }
 body.mini .timer-clock { font-size: 30px; }
 body.mini .timer-start { min-width: 0; }

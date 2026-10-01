@@ -11,10 +11,12 @@ const TIMEOUT_MS = 15000;
 // One PowerShell process kept alive: starting it takes about a second, a
 // sentence then takes 20-80 ms. Requests come in as "<lang> <base64 UTF-8>"
 // lines, WAV files go out the same way; a line with the language alone only
-// loads that voice. Each language gets the first enabled voice of its culture
-// (Hortense for "fr", Zira or David for "en"...), picked once, and the
-// default voice when it has none: a French Windows would otherwise read
-// English with Hortense. Rate 2 (and 225 words a minute with `say`) talks
+// loads that voice. Each language gets the first enabled voice of its main
+// culture (zh-CN before zh-HK or zh-TW), else of any culture of that language
+// (Hortense for "fr", Zira or David for "en", Huihui for "zh"...), picked
+// once, and the default voice when it has none: a French Windows would
+// otherwise read English with Hortense. A voice of another script (Hortense
+// reading Chinese) says nothing: the WAV comes back empty. Rate 2 (and 225 words a minute with `say`) talks
 // about 1.3 times faster than normal.
 const WINDOWS_ENGINE = `
 $ProgressPreference = 'SilentlyContinue'
@@ -22,9 +24,12 @@ Add-Type -AssemblyName System.Speech
 $s = New-Object System.Speech.Synthesis.SpeechSynthesizer
 $fallback = $s.Voice.Name
 $voices = @{}
+$main = @{ en = 'en-US'; fr = 'fr-FR'; zh = 'zh-CN' }
 function Use-Voice($lang) {
   if (-not $voices.ContainsKey($lang)) {
-    $v = $s.GetInstalledVoices() | Where-Object { $_.Enabled -and $_.VoiceInfo.Culture.Name -like "$lang*" } | Select-Object -First 1
+    $all = $s.GetInstalledVoices() | Where-Object { $_.Enabled }
+    $v = $all | Where-Object { $_.VoiceInfo.Culture.Name -eq $main[$lang] } | Select-Object -First 1
+    if (-not $v) { $v = $all | Where-Object { $_.VoiceInfo.Culture.Name -like "$lang*" } | Select-Object -First 1 }
     $voices[$lang] = if ($v) { $v.VoiceInfo.Name } else { $fallback }
   }
   if ($s.Voice.Name -ne $voices[$lang]) { $s.SelectVoice($voices[$lang]) }
@@ -131,12 +136,14 @@ function run(command, args, { input } = {}) {
 }
 
 // `say -v ?` lists "Name   fr_FR   # sample". Each language takes a preferred
-// voice when it is installed, else the first one of its locale, else the
-// default voice (null).
+// voice when it is installed, else the first one of its main locale, else of
+// any of its locales, else the default voice (null).
 const MAC_PREFERRED = {
   en: ['Samantha', 'Alex', 'Daniel', 'Fred'],
   fr: ['Thomas', 'Amélie', 'Audrey', 'Aurélie', 'Marie'],
+  zh: ['Tingting', 'Ting-Ting', 'Lili', 'Yu-shu'],
 };
+const MAC_MAIN = { en: 'US', fr: 'FR', zh: 'CN' };
 let macList = null;
 const macVoices = new Map();
 async function pickMacVoice(lang) {
@@ -144,10 +151,11 @@ async function pickMacVoice(lang) {
   macList ??= run('say', ['-v', '?']).catch(() => '');
   const voices = (await macList)
     .split('\n')
-    .map((line) => line.match(/^(.+?)\s+([a-z]{2,3})[_-]\w+\s+#/))
-    .filter((m) => m && m[2] === lang)
-    .map((m) => m[1].trim());
-  const voice = (MAC_PREFERRED[lang] ?? []).find((v) => voices.includes(v)) ?? voices[0] ?? null;
+    .map((line) => line.match(/^(.+?)\s+([a-z]{2,3})[_-](\w+)\s+#/))
+    .filter((m) => m && m[2] === lang);
+  const names = voices.map((m) => m[1].trim());
+  const main = voices.find((m) => m[3] === MAC_MAIN[lang]);
+  const voice = (MAC_PREFERRED[lang] ?? []).find((v) => names.includes(v)) ?? main?.[1].trim() ?? names[0] ?? null;
   macVoices.set(lang, voice);
   return voice;
 }

@@ -280,6 +280,7 @@ function renderSubject(flashIndex = null) {
 
   const slots = wordSlots();
   const animate = flashIndex === null;
+  box.lang = langOf(state.theme);
   box.replaceChildren(
     ...view.parts.map((p, i) => {
       const style = animate ? { '--i': String(i) } : { animation: 'none' };
@@ -717,6 +718,21 @@ const voice = {
   auto: load('3ch.voice.auto', true),
 };
 
+// A system voice of another script says nothing (Hortense reading Chinese):
+// the recording comes back empty. Tell it once per language.
+const voiceless = new Set();
+function checkVoice(speech, lang) {
+  if (!speech || speech.samples.length || voiceless.has(lang)) return;
+  voiceless.add(lang);
+  let language = lang;
+  try {
+    language = new Intl.DisplayNames([state.lang], { type: 'language' }).of(lang) ?? lang;
+  } catch {
+    /* not a language code Intl knows */
+  }
+  toast(tr('noVoiceLang', { language }), true);
+}
+
 function playRobot(speech, when = 0) {
   const ctx = audio();
   const samples = Voice.robotize(speech.samples, speech.sampleRate);
@@ -756,6 +772,7 @@ async function speak() {
     }
     if (!wav) return; // overtaken by a newer sentence
     speech = Voice.parseWav(wav);
+    checkVoice(speech, lang);
     if (voice.recordings.size >= 20) voice.recordings.delete(voice.recordings.keys().next().value);
     voice.recordings.set(key, speech);
   }
@@ -839,6 +856,7 @@ function recording(text, lang = state.lang) {
     const rec = window.ch3
       .speakLine(text, lang)
       .then((wav) => (wav ? Voice.parseWav(wav) : null))
+      .then((speech) => (checkVoice(speech, lang), speech))
       .catch(() => {
         talk.lines.delete(key);
         return null;

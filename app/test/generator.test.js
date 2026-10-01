@@ -16,6 +16,14 @@ test('every bundled theme is valid and rolls a full sentence', () => {
     for (const shaped of shapes) {
       for (let i = 0; i < 200 / shapes.length + 1; i++) {
         const { sentence } = G.render(G.inflect(theme, G.roll(shaped)), theme.lang);
+        if (theme.lang === 'zh') {
+          assert.match(sentence, /^[一-鿿（].*[。）]$/u, `${theme.name}: ${sentence}`);
+          // No spaces, no Latin letters (but the names of the 2005 team), no
+          // half-width punctuation, no stray 的.
+          const checked = sentence.replace(/Viag|Rainart|BARoNTiERi|Vyle|Feerik/g, '人');
+          assert.doesNotMatch(checked, /[\sA-Za-z,.;:!?()；：]|的的|的[，。]/, `${theme.name}: ${sentence}`);
+          continue;
+        }
         assert.match(sentence, /^[A-ZÀÂÉÈÊÎÔÙÛÇ(].*[.)]$/, `${theme.name}: ${sentence}`);
         assert.doesNotMatch(sentence, /\s{2}|\s[,;:]|\n|[{}[\]|@#]/, `${theme.name}: ${sentence}`);
         if (theme.lang === 'fr') {
@@ -32,6 +40,13 @@ test('every bundled theme says its language, and every language has the same the
   const ids = (lang) => themes.filter((t) => t.lang === lang).map((t) => t.id.replace(/-[a-z]{2}$/, '')).sort();
   for (const theme of themes) assert.match(theme.lang ?? '', /^[a-z]{2}$/, theme.name);
   assert.deepStrictEqual(ids('fr'), ids('en'));
+  assert.deepStrictEqual(ids('zh'), ids('en'));
+  // Twins share their list names: switching language finds the same lists.
+  const lists = (t) => Object.keys(t.lists).sort();
+  for (const theme of themes.filter((t) => t.lang !== 'en')) {
+    const twin = themes.find((t) => t.id === theme.id.replace(/-[a-z]{2}$/, ''));
+    assert.deepStrictEqual(lists(theme), lists(twin), theme.id);
+  }
 });
 
 test('structures parse into slots, forms and glued punctuation', () => {
@@ -272,6 +287,48 @@ test('French elision and contracted articles', () => {
   assert.strictEqual(say('sa', 'aile'), 'Son aile.');
   assert.ok(G.elides('humain') && G.elides('herbe') && G.elides('héroïne'));
   assert.ok(!G.elides('hache') && !G.elides('hérisson') && !G.elides('héros') && !G.elides('hurlement'));
+});
+
+const chinese = {
+  lang: 'zh',
+  structures: ['一[.mw@a]{adj}{being#a}在{place}里{vt}一[.mw@b]{being#b}', '{being}的{part}，像一[.mw@c]{being#c}'],
+  lists: {
+    being: [
+      { text: '狼', mw: '只' },
+      { text: '龙', mw: '条' },
+      { text: '巫师', mw: '个' },
+    ],
+    adj: ['巨大的', { text: '', weight: 1 }],
+    place: ['沼泽'],
+    vt: ['吞噬'],
+    part: ['触角'],
+  },
+};
+
+test('Chinese: measure words follow their noun, no spaces, a full-width stop', () => {
+  assert.deepStrictEqual(G.parseStructure('一[.mw@a]{being#a}，'), [
+    { text: '一' },
+    { text: '', field: 'mw', agree: 'a' },
+    { list: 'being', tag: 'a' },
+    { text: '，', glue: true },
+  ]);
+  const say = (parts) => G.render(G.inflect(chinese, parts), 'zh').sentence;
+  const parts = G.roll(G.shape(chinese, 0), null, new Set(), seq(0, 0, 0, 0, 0));
+  assert.strictEqual(say(parts), '一只巨大的狼在沼泽里吞噬一条龙。');
+  const rerolled = parts.map((p) => (p.tag === 'a' ? { ...p, raw: '巫师' } : p.list === 'adj' ? { ...p, raw: '' } : p));
+  assert.strictEqual(say(rerolled), '一个巫师在沼泽里吞噬一条龙。');
+  assert.strictEqual(say(G.roll(G.shape(chinese, 1), null, new Set(), seq(0, 0, 0.9))), '狼的触角，像一个巫师。');
+  // A sentence that already ends with punctuation gets no stop.
+  assert.strictEqual(G.render([{ raw: '一只狼（黑白画面）' }], 'zh').sentence, '一只狼（黑白画面）');
+});
+
+test('Chinese validation: a measure word needs "mw", not a gender', () => {
+  assert.strictEqual(G.validateTheme(chinese), null);
+  const lists = { ...chinese.lists, being: [{ text: '狼', mw: '只' }, '龙'] };
+  assert.match(G.validateTheme({ ...chinese, lists }), /list "being", entry 2: no "mw" for \[\.mw@a\]/);
+  assert.match(G.validateTheme({ ...chinese, structures: ['一[.mw@z]{being}'] }), /@z agrees with no/);
+  // A named slot that something agrees with by gender still needs one.
+  assert.match(G.validateTheme({ ...chinese, structures: ['[un|une@a] {being#a}'] }), /no gender/);
 });
 
 test('agreement validation names what is missing', () => {

@@ -141,14 +141,51 @@ rest:
   `renderer/generator.js` (`elides()` tells which is which). When a theme uses
   a h aspiré word that the list does not know, add its start to the list.
 
+### Chinese: measure words
+
+Chinese has no gender, plural or conjugation, but a noun after a number takes
+a measure word (一只狼, 一条龙, 一座城堡). The measure word is a field of the
+noun entry, and `[.mw@a]` in a structure shows that field of the word in slot
+`a`:
+
+```json
+{
+  "format": "3ch-theme/2",
+  "id": "chimera-zh",
+  "name": "奇美拉",
+  "lang": "zh",
+  "source": "translated",
+  "structures": ["一[.mw@a]{adj}{being#a}在{place}里{vt}一[.mw@b]{being#b}"],
+  "lists": {
+    "being": [{ "text": "狼", "mw": "只" }, { "text": "龙", "mw": "条" }],
+    "adj": ["巨大的", "生锈的", { "text": "", "weight": 4 }],
+    "place": ["沼泽"],
+    "vt": ["吞噬"]
+  }
+}
+```
+
+- `[.field@a]` works with any field name. Every entry of the list in slot `a`
+  needs that field, and a slot read only this way needs no gender. Chimera
+  also gives each place the word that follows it after 在 (`"loc": "上"` for
+  屋顶, `"里"` for 厨房): `在{place#p}[.loc@p]`.
+- Like the French agreement, it is worked out at render time: reroll or lock
+  the noun and its measure word follows.
+- A Chinese theme (`"lang": "zh"`) is shown without spaces between words, and
+  ends with `。` (not after a closing `）`). `，` sticks to the word before it.
+- The bundled Chinese themes write an adjective with its `的` (`巨大的`), so
+  that an empty entry leaves no lone `的`. Where a theme also needs the
+  adjective as a predicate (Constructor, Darwin), every entry has a `bare`
+  form without it (`{adj.bare}`).
+
 `themes/chimera.json` is written by hand, not generated from `../Legacy`. Its
 lists were sorted from the legacy lists by role (`being`, `object`, `part`,
 `place`, `setting`, `adj`, `vt` for verbs with an object, `vi` for verbs
 without one), with the English typos fixed. The `vi` verbs are new: the legacy
 lists had only one.
 
-The bundled themes live in `themes/`. Each one exists in English and French
-(`chimera.json`, `chimera-fr.json`...). Your own themes go in the folder opened
+The bundled themes live in `themes/`. Each one exists in English, French and
+Chinese (`chimera.json`, `chimera-fr.json`, `chimera-zh.json`...). Your own themes go in the folder opened
 by **Themes folder** (`%APPDATA%\3CH\themes` on Windows,
 `~/Library/Application Support/3CH/themes` on macOS). A theme there with the
 same `id` as a bundled one replaces it.
@@ -159,6 +196,14 @@ as its English twin, which is how the language menu finds the same theme in the
 other language (`chimera` and `chimera-fr`). Rules the French themes follow:
 adjectives come after the noun and agree with it, a structure never writes
 `de les` before a verb (the fix-up would turn it into `des`), and `;` and `:` are not used.
+
+The six Chinese themes (`themes/<id>-zh.json`, `"lang": "zh"`) are Simplified
+Chinese, made the same way. Every noun has its measure word (`mw`), modifiers
+and place phrases come before the noun or the verb, adjectives carry their
+`的`, verbs have no aspect particle (the structures add `正在`), and the only
+punctuation is `，` (plus `（）` in the Hollywood shots). There are no Latin
+letters, except the names of the 2005 team in Urban (Viag, Rainart...), kept
+as in the other languages.
 
 ### Legacy themes
 
@@ -196,7 +241,9 @@ npm run logo       # same, plus the README header ../docs/logo.gif
 validates the theme, then prints `n` subjects (4 by default) for every
 structure, so you can read them. A French theme also gets the elision checks of
 the tests: a sentence with a missing elision or contraction is flagged with
-`!!`, and the script exits with an error. It ends with the words that start
+`!!`, and the script exits with an error. A Chinese theme is checked for
+Latin letters, spaces, half-width punctuation, `；` `：` and a stray `的`
+(`的的`, `的，`). The script ends with the words that start
 with an h, split into elided and h aspiré, so you can spot a wrong one, then
 duplicate entries, the number of structures and the count of combinations.
 
@@ -211,7 +258,7 @@ every push. A `v*` tag also publishes a GitHub Release, with the matching
 - `renderer/app.js`, `index.html`, `styles.css`: the interface
 - `renderer/i18n.js`: the interface strings per language (`data-i18n`
   attributes in `index.html`), the language list and the subject counts
-  ("12 billion", "12 milliards"), shared with the main process and the tests
+  ("12 billion", "12 milliards", "120亿"), shared with the main process and the tests
 - `renderer/timer.js`: speed painting countdown, shared with the tests
 - `renderer/voice.js`: robot voice DSP (vocoder, glitches), shared with the tests
 - `renderer/announcer.js`: what the timer voice says and when (lines in

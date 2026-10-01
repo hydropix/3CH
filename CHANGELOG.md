@@ -2,6 +2,31 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [2.6.0] - 2026-10-01
+
+This release also ships 2.5.0, which was not published on its own: about
+twice as many words in every theme, and words that almost never repeat
+within 50 subjects (see [CHANGELOG.md](CHANGELOG.md)).
+
+### Added
+- **Chinese (中文)**: a third language in the top bar, in Simplified Chinese.
+  The six themes exist in Chinese (奇美拉, 建造者, 达尔文, 奇幻, 好莱坞动作片,
+  都市), with as many words as in English and 35 to 101 sentence shapes. The
+  interface, the subject counts (418万亿) and the timer voice are translated.
+- Every Chinese noun comes with its measure word (一只狼, 一条龙, 一座城堡),
+  and the measure word follows the noun when you reroll or lock it.
+- If no system voice speaks the language of the subject (a Chinese subject on
+  a Windows without a Chinese voice), 3CH says so once instead of staying
+  silent. Windows: Settings → Time & language → Speech → Add voices.
+- For theme authors: `[.field@a]` shows a field of the word in slot `a` (the
+  measure word in Chinese), and `npm run sample` checks Chinese themes.
+
+### Changed
+- The robot voice picks the main voice of a language first (zh-CN before
+  zh-HK or zh-TW, fr-FR before fr-CA).
+- Subject counts such as 9.97 million now read "10 million", not "10.0
+  million".
+
 ## [2.5.0] - 2026-10-01
 
 ### Added

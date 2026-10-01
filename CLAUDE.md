@@ -20,7 +20,7 @@ app, which is kept byte for byte in `Legacy/`.
 ```bash
 npm install
 npm start
-npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (48 tests)
+npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (52 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # ../Legacy -> JSON; skips the hand-reworked themes
@@ -96,6 +96,24 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   (it would become "des"), no `;` or `:`, and a being with a complement makes
   the following adjective ambiguous ("un loup couvert d'écailles vert": which
   one is green?).
+- **Chinese** (2.6.0): six Simplified Chinese twins (`-zh`, `"source":
+  "translated"`), written by parallel subagents from a shared spec, then
+  proofread with `npm run sample`. A noun entry holds its measure word
+  (`{ "text": "狼", "mw": "只" }`) and `[.mw@a]` reads that field from slot a
+  at render time (any field name works; a slot read only that way needs no
+  gender; Chimera's places also have `loc`, 里 or 上, read as
+  `在{place#p}[.loc@p]`). `render(parts, 'zh')` joins without spaces and ends
+  with `。`. Entries are looked up by `text`, so two entries with the same text
+  cannot carry different fields. No Latin letters in Chinese themes, except
+  the 2005 team names in Urban (Viag, Rainart, BARoNTiERi, Vyle, Feerik), kept
+  on purpose; the sample script and the tests allow those.
+  Adjectives carry their `的` so an empty entry leaves no lone `的`; Darwin and
+  Constructor also need predicate adjectives, so their `adj` entries have a
+  `bare` form. Settings go before the verb, never at the end. The UI strings
+  are in `i18n.js` (`formatCombos` counts in 万 / 亿), the timer lines in
+  `announcer.js`. With no Chinese system voice, SAPI renders an empty WAV
+  (Hortense reads nothing): the app shows `noVoiceLang` once per language.
+  `speech.js` prefers the main culture (zh-CN before zh-HK / zh-TW).
 - **Robot voice** (auto on by default, `V` replays, `Shift`+`V` toggles auto):
   `speechSynthesis` cannot be routed into Web Audio, so the main process
   renders the system voice to a WAV (`src/speech.js`, one voice per language:

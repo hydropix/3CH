@@ -79,6 +79,7 @@
       if (typeof item === 'string') return { index, list: item, literal: false };
       if (item.list) return { index, list: item.list, form: item.form, tag: item.tag, agree: item.agree, literal: false };
       const slot = { index, list: null, literal: true, text: item.text, glue: Boolean(item.glue) };
+      if (item.field) return { ...slot, field: item.field, agree: item.agree };
       return item.variants ? { ...slot, variants: item.variants, agree: item.agree } : slot;
     });
   }
@@ -90,15 +91,18 @@
   // Agreement, for languages with genders: {being#a} names a slot, {adj@a}
   // shows the form of its word that agrees with slot a (gender and number),
   // and [un|une@a] is a fixed word, masculine or feminine after slot a.
+  // [.mw@a] shows a field of the entry in slot a: the measure word of a
+  // Chinese noun ("一[.mw@a]{being#a}" gives "一只狼", "一条龙").
   const NAME = '[^{}\\[\\].\\s#@|]+';
   const SLOT = new RegExp(`\\{(${NAME})(?:\\.(${NAME}))?(?:#(${NAME}))?(?:@(${NAME}))?\\}`, 'g');
   const VARIANT = new RegExp(`\\[([^\\[\\]{}|@]*)\\|([^\\[\\]{}|@]*)@(${NAME})\\]`, 'g');
-  const TOKEN = new RegExp(`${SLOT.source}|${VARIANT.source}`, 'g');
+  const FIELD = new RegExp(`\\[\\.(${NAME})@(${NAME})\\]`, 'g');
+  const TOKEN = new RegExp(`${SLOT.source}|${VARIANT.source}|${FIELD.source}`, 'g');
   function parseStructure(source) {
     const items = [];
     const literal = (chunk) => {
       let t = chunk.trim();
-      const punct = t.match(/^[,;:]+/);
+      const punct = t.match(/^[,;:，、；：]+/);
       if (punct) {
         items.push({ text: punct[0], glue: true });
         t = t.slice(punct[0].length).trim();
@@ -108,13 +112,15 @@
     let last = 0;
     for (const m of source.matchAll(TOKEN)) {
       literal(source.slice(last, m.index));
-      const [, list, form, tag, agree, masc, fem, variantAgree] = m;
+      const [, list, form, tag, agree, masc, fem, variantAgree, field, fieldAgree] = m;
       if (list) {
         const slot = { list };
         if (form) slot.form = form;
         if (tag) slot.tag = tag;
         if (agree) slot.agree = agree;
         items.push(Object.keys(slot).length > 1 ? slot : list);
+      } else if (field) {
+        items.push({ text: '', field, agree: fieldAgree });
       } else {
         items.push({ text: masc.trim(), variants: [masc.trim(), fem.trim()], agree: variantAgree });
       }
@@ -183,13 +189,14 @@
     return entryMaps.get(list).get(raw);
   }
   // A named slot ({being#a}) passes on the gender of its entry ("g": "m" or
-  // "f") and its number (plural when the slot shows the "pl" form).
+  // "f") and its number (plural when the slot shows the "pl" form), and the
+  // entry itself for [.field@a].
   function agreementOf(theme, parts) {
     const tags = new Map();
     for (const p of parts) {
       if (p.literal || !p.tag) continue;
       const entry = entryOf(theme.lists[p.list] ?? [], p.raw);
-      tags.set(p.tag, { f: entry?.g === 'f', pl: p.form === 'pl' });
+      tags.set(p.tag, { f: entry?.g === 'f', pl: p.form === 'pl', entry });
     }
     return tags;
   }
@@ -205,6 +212,10 @@
   function inflect(theme, parts) {
     const tags = parts.some((p) => p.agree) ? agreementOf(theme, parts) : null;
     return parts.map((p) => {
+      if (p.literal && p.field) {
+        const value = tags.get(p.agree)?.entry?.[p.field];
+        return { ...p, word: typeof value === 'string' ? value : '' };
+      }
       if (p.literal) return p.variants ? { ...p, word: p.variants[tags.get(p.agree)?.f ? 1 : 0] } : p;
       const entry = p.agree || p.form ? entryOf(theme.lists[p.list] ?? [], p.raw) : null;
       if (p.agree) return { ...p, word: agreedForm(entry, p.raw, tags.get(p.agree)) };
@@ -327,18 +338,23 @@
 
   // A language without its own fix-up shows the words as they are.
   const asWritten = (parts) => parts.map((p) => ({ ...p, display: (p.word ?? p.raw).split(' ').filter(Boolean).join(' ') }));
-  const FIXES = { en: fixArticles, fr: fixFrench };
+  // Chinese is written without spaces, and ends with a full-width stop.
+  const UNSPACED = new Set(['zh']);
+  const closeUp = (parts) => parts.map((p) => ({ ...p, display: (p.word ?? p.raw).replace(/\s+/g, '') }));
+  const FIXES = { en: fixArticles, fr: fixFrench, zh: closeUp };
+  const STOPS = { zh: '。' };
 
   function render(parts, lang = 'en') {
     const fixed = (FIXES[lang] ?? asWritten)(parts);
     const visible = fixed.filter((p) => p.display);
     const french = lang === 'fr';
+    const spaced = !UNSPACED.has(lang);
     let sentence = visible.reduce(
-      (s, p) => (s && !p.glue && !(french && elided(s)) ? `${s} ${p.display}` : s + p.display),
+      (s, p) => (s && spaced && !p.glue && !(french && elided(s)) ? `${s} ${p.display}` : s + p.display),
       ''
     );
     sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-    if (sentence && !/[.!?)]$/.test(sentence)) sentence += '.';
+    if (sentence && !/[.!?)。！？）]$/.test(sentence)) sentence += STOPS[lang] ?? '.';
     if (visible.length) {
       const first = visible[0];
       first.display = first.display.charAt(0).toUpperCase() + first.display.slice(1);
@@ -378,6 +394,9 @@
       if (tags.has(item.tag)) return `#${item.tag} names two slots`;
       tags.add(item.tag);
     }
+    // A named slot gives a gender, unless only [.field@a] reads it, and every
+    // field read that way.
+    const readers = (tag) => structure.filter((item) => item?.agree === tag);
     for (const item of structure) {
       const name = listOf(item);
       if (item?.agree && !tags.has(item.agree)) return `@${item.agree} agrees with no {slot#${item.agree}}`;
@@ -394,8 +413,15 @@
           if (missing !== -1) return `list "${name}", entry ${missing + 1}: no "${item.form}" form`;
         }
         if (item.tag) {
-          const missing = list.findIndex((e) => !hasGender(e));
-          if (missing !== -1) return `list "${name}", entry ${missing + 1}: no gender ("g": "m" or "f") for #${item.tag}`;
+          const users = readers(item.tag);
+          if (!users.length || users.some((u) => !u.field)) {
+            const missing = list.findIndex((e) => !hasGender(e));
+            if (missing !== -1) return `list "${name}", entry ${missing + 1}: no gender ("g": "m" or "f") for #${item.tag}`;
+          }
+          for (const field of new Set(users.filter((u) => u.field).map((u) => u.field))) {
+            const missing = list.findIndex((e) => typeof e !== 'object' || typeof e[field] !== 'string');
+            if (missing !== -1) return `list "${name}", entry ${missing + 1}: no "${field}" for [.${field}@${item.tag}]`;
+          }
         }
         if (item.agree) {
           const missing = list.findIndex((e) => typeof e === 'object' && AGREED_FORMS.some((f) => typeof e[f] !== 'string'));

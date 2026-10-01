@@ -2,6 +2,8 @@
 // Checks a theme and prints sample subjects from every structure, to proofread
 // a hand-written theme. French themes also get the elision checks of the
 // tests, and the list of words starting with "h" (elided or h aspiré).
+// Chinese themes are checked for Latin letters, spaces, half-width
+// punctuation, a stray 的 and a doubled word (被被).
 
 const fs = require('fs');
 const path = require('path');
@@ -23,6 +25,9 @@ if (problem) {
 
 const lang = theme.lang ?? 'en';
 const french = lang === 'fr';
+const chinese = lang === 'zh';
+// The names of the 2005 team stay in Latin letters in every language.
+const TEAM = /Viag|Rainart|BARoNTiERi|Vyle|Feerik/g;
 const LINT = [
   [/\s{2}|\s[,;:]|\n|[{}[\]|@#]/, 'spacing or leftover syntax'],
   ...(french
@@ -30,6 +35,15 @@ const LINT = [
         [/(^|[\s'])(le|la|de|que|ne|se) [aeiouàâéèêîôûœ]/i, 'missing elision'],
         [/(^|\s)(de|à) les?\s/i, 'missing contraction'],
         [/'\s/, 'space after an apostrophe'],
+      ]
+    : []),
+  ...(chinese
+    ? [
+        [/[A-Za-z]/, 'Latin letters'],
+        [/\s/, 'space'],
+        [/[,.;:!?()]|[；：]/, 'half-width punctuation, ； or ：'],
+        [/的的|的[，。]|，[，。]|^，/, 'stray 的 or comma'],
+        [/(被|在|和|与|是|把|从|向|用|像)\1/, 'doubled word (被被, 在在...)'],
       ]
     : []),
 ];
@@ -40,7 +54,8 @@ structures.forEach((source, i) => {
   console.log(`\n#${i + 1} ${source ?? JSON.stringify(theme.structure)}`);
   for (let n = 0; n < per; n++) {
     const { sentence } = G.render(G.inflect(theme, G.roll(G.shape(theme, i))), lang);
-    const issues = LINT.filter(([re]) => re.test(sentence)).map(([, why]) => why);
+    const checked = chinese ? sentence.replace(TEAM, '人') : sentence;
+    const issues = LINT.filter(([re]) => re.test(checked)).map(([, why]) => why);
     if (issues.length) bad++;
     console.log(`   ${issues.length ? `!! [${issues.join(', ')}] ` : ''}${sentence}`);
   }

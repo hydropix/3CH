@@ -55,16 +55,20 @@ Press **Space** and 3CH gives you a subject to paint:
 
 > *While a wild boar crashes to pieces, a nauseous old god dissects the tentacles of a penguin.*
 
-It also speaks French:
+It also speaks French and Chinese:
 
 > *Une mouche abyssale jaillit d'une idole sur la tombe d'un géant.*
 
-- **English and French**: pick the language in the top bar (**English** /
-  **Français**). It changes the themes, the interface and the voice at once,
-  and your choice is saved. The first time, 3CH follows the language of your
-  system. Switching keeps the same theme in the other language. In French,
-  adjectives and articles agree with the noun ("une plante carnivore
-  minuscule"), and "le arbre" becomes "l'arbre".
+> *一只橡皮鸭和一只海马在盐矿里互相用头撞对方。*
+
+- **English, French and Chinese**: pick the language in the top bar
+  (**English** / **Français** / **中文**). It changes the themes, the interface
+  and the voice at once, and your choice is saved. The first time, 3CH follows
+  the language of your system. Switching keeps the same theme in the other
+  language. In French, adjectives and articles agree with the noun ("une
+  plante carnivore minuscule"), and "le arbre" becomes "l'arbre". In Chinese
+  (Simplified), every noun gets its measure word (一只狼, 一条龙), and it
+  follows the noun when you reroll it.
 - **6 themes** in each language: Fantasy, Urban, Hollywood action, Darwin
   (creatures), Constructor (environments) and Chimera.
 - **Every roll changes the shape of the sentence**, not only the words: over
@@ -79,9 +83,11 @@ It also speaks French:
 - **A broken robot voice** reads the subject aloud: the system's own voice,
   vocoded, stuttering and glitching differently every time. **Speak** reads it,
   **Auto voice** (on by default) reads every new subject as soon as it is
-  rolled. It reads the subject in the language of its theme. For French
-  speech, install a French voice in Windows (Settings → Time & language →
-  Speech); without one, the default voice reads the French text.
+  rolled. It reads the subject in the language of its theme. For French or
+  Chinese speech, install a voice of that language in Windows (Settings →
+  Time & language → Speech → Add voices). Without one, the default voice reads
+  French text with an English accent, and stays silent on Chinese (3CH tells
+  you so once).
 - **Speed painting timer** (5 to 60 min, or any length up to 4 hours):
   - The time left shows in the taskbar.
   - A very soft tick on every minute, a beep for the last one, and a chime
@@ -117,7 +123,8 @@ A theme is a small JSON file: the sentence structure plus word lists, with
 optional weights, or several structures like the bundled themes. A theme
 says its language (`"lang": "fr"`) and shows up under that language in the
 top bar. Themes in a language with genders can link words so that adjectives
-and articles agree with the noun. Drop it in the folder opened by
+and articles agree with the noun, and Chinese themes give each noun its
+measure word. Drop it in the folder opened by
 **Themes folder**, or use **Import legacy theme** to convert a theme folder
 from the original 2005 app. See [app/README.md](app/README.md) for the format.
 

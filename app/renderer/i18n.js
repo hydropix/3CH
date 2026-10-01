@@ -10,6 +10,7 @@
   const LANGUAGES = [
     { code: 'en', name: 'English' },
     { code: 'fr', name: 'Français' },
+    { code: 'zh', name: '中文' },
   ];
 
   const s = (n) => (n === 1 ? '' : 's');
@@ -74,6 +75,7 @@
       importFailed: 'Import failed: {error}',
       imported: ({ count }) => `Imported ${count} theme${s(count)}`,
       noVoice: 'No voice: {error}',
+      noVoiceLang: 'No system voice speaks {language}: add one in the speech settings of your system.',
 
       sessionLength: 'Session length',
       customLength: 'Custom length, in minutes',
@@ -181,6 +183,7 @@
       importFailed: `L’import a échoué${NBSP}: {error}`,
       imported: ({ count }) => `${count} thème${fs(count)} importé${fs(count)}`,
       noVoice: `Pas de voix${NBSP}: {error}`,
+      noVoiceLang: `Aucune voix du système ne parle {language}${NBSP}: ajoutez-en une dans les réglages de voix du système.`,
 
       sessionLength: 'Durée de la séance',
       customLength: 'Durée personnalisée, en minutes',
@@ -231,6 +234,112 @@
       noLegacyFound: 'Aucun dossier contenant un structure.txt n’a été trouvé.',
       skippedFolders: ({ count }) => `${count} dossier${fs(count)} illisible${fs(count)} ignoré${fs(count)}.`,
     },
+
+    // Simplified Chinese: full-width punctuation, no plurals, and a space
+    // between Chinese and Latin text or digits ("99 种句式"), as Chinese UIs do.
+    zh: {
+      language: '语言',
+      languageTitle: '界面、主题和语音的语言',
+      importLegacy: '导入旧版主题',
+      importLegacyTitle: '转换旧版主题文件夹（structure.txt 和词表）',
+      themesFolder: '主题文件夹',
+      themesFolderTitle: '打开存放你自己的主题的文件夹',
+      themeTabs: '主题',
+      combosTitle: '这个主题能生成的不同题目数量',
+      possibleSubjects: () => '种可能的题目',
+      sentenceShapes: ({ count }) => `${count} 种句式`,
+      mine: '自定义',
+      stage: '题目',
+      hint: '点击词语可以重新抽取，锁定后它会在下次抽取时保留。',
+      hintMulti: '每次抽取也会换一种句式，锁定的词语会跟到新句子里。',
+      placeholder: '按空格键抽取一个题目',
+      noTheme: '没有找到主题。',
+      themesNotLoaded: '部分主题无法加载：{errors}',
+
+      generate: '生成',
+      keep: '保留',
+      copy: '复制',
+      speak: '朗读',
+      speakTitle: '用一个坏掉的机器人声音朗读题目（V）',
+      autoVoice: '自动朗读',
+      autoVoiceTitle: '每抽出一个新题目就立刻朗读（Shift+V）',
+      unlockAll: '全部解锁',
+      reshape: '换句式',
+      reshapeTitle: '换一种句式，保留放得进去的词语（S）',
+      lockShape: '锁定句式',
+      lockShapeTitle: '保留这种句式：“生成”只换词语',
+      kbdSpace: '空格',
+      kbdEnter: 'Enter',
+      kbdShift: 'Shift',
+      kbdEsc: 'Esc',
+
+      lockWord: '锁定这个词',
+      unlockWord: '解锁',
+      chipTitle: ({ locked, n }) =>
+        `${locked ? '已锁定' : '点击重新抽取'}${n ? `（${n}）` : ''} · 右键${locked ? '解锁' : '锁定'}`,
+      kept: '已保留',
+      copied: '已复制到剪贴板',
+      copiedAll: ({ count }) => `已复制 ${count} 个题目`,
+      exported: '已导出',
+      themeGone: '主题“{name}”已不可用',
+      themeChanged: '这个主题在那次抽取之后改动过',
+      remove: '移除',
+      bringBack: '恢复这个题目',
+      clearSelectedConfirm: ({ count }) => (count === 1 ? '移除选中的题目？' : `移除全部 ${count} 个选中的题目？`),
+      importFailed: '导入失败：{error}',
+      imported: ({ count }) => `已导入 ${count} 个主题`,
+      noVoice: '没有语音：{error}',
+      noVoiceLang: '系统里没有{language}语音：可以在系统设置的“语音”中添加。',
+
+      sessionLength: '时长',
+      customLength: '自定义时长，单位为分钟',
+      minutes: '分钟',
+      min: '分钟',
+      presetTitle: '{n} 分钟',
+      timerStart: '开始',
+      timerPause: '暂停',
+      timerResume: '继续',
+      timerRestart: '重新开始',
+      resetTimer: '重置计时器',
+      resetTimerTitle: '重置计时器（R）',
+      sound: '提示音和计时语音',
+      soundTitle: '开启或关闭提示音和计时语音',
+      mini: '迷你',
+      exitMini: '退出迷你',
+      miniTitle: '始终置顶的小窗口，画画时题目和时间一直在眼前（M）',
+      oneMinuteLeft: '还剩 1 分钟',
+      timesUp: '时间到',
+      timesUpToast: '时间到！放下画笔。',
+
+      history: '历史',
+      historyEmpty: '每次抽取都会记在这里，点击即可恢复。',
+      selected: '收藏',
+      selectedEmpty: '你保留的题目会出现在这里，关闭应用后也不会消失。',
+      clear: '清空',
+      copyAll: '全部复制',
+      exportTxt: '导出 .txt',
+      exportName: '3ch-题目-{date}.txt',
+
+      footerCredits: '原版 3CH kilogeneratormorphic v1.0（2005）· 制作：Hydropix、Vyle、Viag、Sparth、BARoNTiERi',
+      scReroll: '重抽词语',
+      scLock: '锁定',
+      scReshape: '换句式',
+      scTheme: '主题',
+      scLeaveMini: '退出迷你',
+
+      labelTrait: '特征',
+      labelDiet: '食性',
+      labelAdverb: '副词',
+      labelBodyPart: '身体部位',
+      labelSubject: '主体',
+      labelTarget: '目标',
+
+      importDialogTitle: '导入旧版 3CH 主题文件夹',
+      exportDialogTitle: '导出收藏的题目',
+      textFiles: '文本',
+      noLegacyFound: '没有找到包含 structure.txt 的文件夹。',
+      skippedFolders: ({ count }) => `跳过了 ${count} 个无法读取的文件夹。`,
+    },
   };
 
   // The string for `key` in `lang`, English when that language lacks it.
@@ -267,16 +376,32 @@
 
   // Big numbers in words. English uses the short scale ("12.3 billion" is
   // 12.3e9), French the long one ("12,3 milliards", and "billion" is 1e12).
+  // Chinese counts in groups of four digits: 万 (1e4), 亿 (1e8), 万亿 (1e12).
   const SCALES = {
     en: ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion'],
     fr: ['', 'mille', 'million', 'milliard', 'billion', 'billiard', 'trillion', 'trilliard'],
   };
-  const LOCALES = { en: 'en-US', fr: 'fr-FR' };
+  const LOCALES = { en: 'en-US', fr: 'fr-FR', zh: 'zh-CN' };
+  const MYRIADS = ['', '万', '亿', '万亿', '亿亿', '万亿亿'];
+
+  function myriads(big) {
+    if (big < 10000n) return Number(big).toLocaleString(LOCALES.zh);
+    let group = Math.min(Math.floor((big.toString().length - 1) / 4), MYRIADS.length - 1);
+    let value = Number(big) / 10 ** (group * 4);
+    if (Math.round(value) >= 10000 && group < MYRIADS.length - 1) {
+      group++;
+      value /= 10000;
+    }
+    const digits = Number(value.toFixed(1)) < 10 ? 1 : 0;
+    const shown = value.toLocaleString(LOCALES.zh, { minimumFractionDigits: digits, maximumFractionDigits: digits });
+    return shown + MYRIADS[group];
+  }
 
   // Under a million, the full number ("123,456", "123 456"); above, one
   // decimal under 10 and none above ("4.5 million", "12 milliards").
   function formatCombos(n, lang = 'en') {
     const big = BigInt(n);
+    if (lang === 'zh') return myriads(big);
     const scale = SCALES[lang] ?? SCALES.en;
     const locale = LOCALES[lang] ?? LOCALES.en;
     if (big < 1000000n) return Number(big).toLocaleString(locale);
@@ -287,7 +412,7 @@
       group++;
       value /= 1000;
     }
-    const digits = value < 10 ? 1 : 0;
+    const digits = Number(value.toFixed(1)) < 10 ? 1 : 0;
     const shown = value.toLocaleString(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping: true });
     // French scale words agree in number: "1,5 million", "2 millions".
     const word = lang === 'fr' && Number(value.toFixed(digits)) >= 2 ? `${scale[group]}s` : scale[group];
