@@ -1,6 +1,8 @@
 node_modules/
 dist/
 out/
+# Piper voices, fetched by `npm run voices` (about 190 MB)
+app/voices/
 .DS_Store
 Thumbs.db
 *.log

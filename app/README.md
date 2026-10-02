@@ -228,8 +228,9 @@ it leaves the reworked themes alone.
 
 ```bash
 npm install
+npm run voices     # fetch the Piper voices into voices/ (about 185 MB, once)
 npm start          # run the app
-npm test           # unit tests (generator, timer, voice, announcer, i18n, themes, legacy conversion)
+npm test           # unit tests (generator, timer, voice, announcer, i18n, themes, legacy conversion, piper)
 npm run dist:win   # Windows installer + portable exe in dist/
 npm run dist:mac   # universal macOS .dmg in dist/ (on a Mac)
 npm run sample -- themes/chimera-fr.json 4   # proofread a theme (see below)
@@ -263,8 +264,14 @@ every push. A `v*` tag also publishes a GitHub Release, with the matching
 - `renderer/voice.js`: robot voice DSP (a sung vocoder in a drawn key, glitches on the beat), shared with the tests
 - `renderer/announcer.js`: what the timer voice says and when (lines in
   every language, milestones, countdown), shared with the tests
-- `src/speech.js`: text to WAV with a system voice of the right language
-  (SAPI through one long-lived PowerShell process on Windows, `say` on macOS)
+- `src/speech.js`: text to WAV in the right language: the Piper voice when
+  there is one, else a system voice (SAPI through one long-lived PowerShell
+  process on Windows, `say` on macOS)
+- `src/piper.js`: the Piper voices (VITS models run by
+  [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)): which voice per
+  language, loading, rendering. `npm run voices` (`scripts/fetch-voices.js`)
+  fetches them into `voices/`, which is git-ignored and shipped by the builds.
+  Without it, 3CH uses the system voice
 - `src/legacy.js`: v1 → v2 theme conversion
 - `src/themes.js`: loads bundled and user themes
 - `scripts/`: legacy conversion, `sample-theme.js` to proofread a theme, and `make-logo.py` for the logo, the icons and

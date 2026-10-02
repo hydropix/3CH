@@ -19,8 +19,9 @@ app, which is kept byte for byte in `Legacy/`.
 
 ```bash
 npm install
+npm run voices           # Piper voices -> app/voices (git-ignored, ~185 MB); without them, system voice
 npm start
-npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser (53 tests)
+npm test                 # node:test: generator, timer, voice, announcer, i18n, themes, legacy parser, piper (55 tests)
 npm run dist:win         # dist/3CH-Setup.exe + dist/3CH-Portable.exe
 npm run dist:mac         # dist/3CH-mac.dmg (universal, needs a Mac)
 npm run convert-legacy   # ../Legacy -> JSON; skips the hand-reworked themes
@@ -46,7 +47,10 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   dependency on Windows, `npm ci` failed on Linux and macOS CI ("Missing:
   @electron/windows-sign... from lock file"). The fix is to regenerate
   `package-lock.json` from scratch: `npm install --package-lock-only` in an empty
-  folder that only holds `package.json`, then copy the lockfile back.
+  folder that only holds `package.json`, then copy the lockfile back. Then
+  install with `npm ci`, not `npm install`: on Windows, `npm install` prunes
+  `@electron/windows-sign` again. Check with `grep -c windows-sign
+  package-lock.json` (5 when right, 1 when pruned).
 - **The CSP (`style-src 'self'`) blocks inline `style` attributes.** Set styles
   through CSSOM (`el.style.setProperty`) instead. `el()` in `app.js` handles a
   `style` object that way.
@@ -130,9 +134,31 @@ publishes the release. The artifact names (`3CH-Setup.exe`, `3CH-Portable.exe`,
   for the consonants, since its own pitch is out of key. The countdown
   shares one style and walks down the scale to the root at 1.
   On Windows one PowerShell process stays alive, warmed up at launch: one
-  process per sentence cost ~1 s, a sentence now takes 20-80 ms. Only the latest request waits
+  process per sentence cost ~1 s, a sentence now takes 20-80 ms. That system
+  voice is now only the fallback (see **Piper voices**). Only the latest request waits
   (older ones resolve to null), and a new sentence cuts the voice off. The
   recording is cached per sentence; the glitches are redrawn every time.
+- **Piper voices** (2.8.0): `src/piper.js` renders the speech with one
+  shipped Piper voice per language (sherpa-onnx-node, VITS on ONNX Runtime,
+  ~100 ms a sentence once loaded, ~1 s to load; `warmUp` loads it). Voices
+  were picked for clean licences: `en_US-ljspeech-medium` (public domain),
+  `fr_FR-siwis-medium` (CC BY 4.0, credited in `CREDITS.md`),
+  `zh_CN-chaowen-medium` (CC0). Avoided: lessac (research licence), tom
+  (AGPL), huayan (unknown), ryan/hfc (non-commercial). Kokoro-82M was
+  tried too: better, but 0.7 to 2 s a sentence on CPU, one French voice.
+  `speech.js` falls back to SAPI / `say` when the addon, a file or the load
+  fails, or for a language with no Piper voice. Things that bit us: Electron
+  forbids external buffers (`enableExternalBuffer: false`, or generation
+  fails); sherpa-onnx *exits the process* on a missing model file instead of
+  throwing, so `config()` checks every file first; the Chinese voice has no
+  espeak, it reads characters through its own `lexicon.txt` plus number,
+  date and phone FSTs (`ruleFsts`). `npm run voices` keeps one
+  `espeak-ng-data` with only the en and fr dictionaries (18 MB to 1 MB).
+  The builds ship `voices/` as `resources/voices` (installer 106 to 292 MB)
+  and unpack the addon from the asar. The macOS universal build adds the
+  Intel addon in CI (npm only installs the runner's) and lists both in
+  `x64ArchFiles`; untested, an Intel Mac without it falls back to `say`.
+  eSpeak NG is GPL 3.0, bundled inside the sherpa-onnx library.
 - **Timer voice**: `renderer/announcer.js` holds the lines (original ones in
   the tone of a passive-aggressive lab AI; no Portal quotes or names) and the
   marks. A session draws its lines at start and renders them ahead

@@ -54,6 +54,24 @@ jobs:
           cache: npm
           cache-dependency-path: app/package-lock.json
       - run: npm ci
+      # The Piper voices (about 185 MB) are not in git: fetched once, cached.
+      - uses: actions/cache@v4
+        with:
+          path: app/voices
+          key: voices-${{ hashFiles('app/src/piper.js', 'app/scripts/fetch-voices.js') }}
+      - run: npm run voices
+      # npm only installs the speech addon of the runner (Apple Silicon); the
+      # universal build also needs the Intel one. Without it, Intel Macs fall
+      # back to the system voice.
+      - name: Add the Intel macOS speech addon
+        if: matrix.platform == 'mac'
+        shell: bash
+        run: |
+          version=$(node -p "require('sherpa-onnx-node/package.json').version")
+          npm pack "sherpa-onnx-darwin-x64@$version" --silent
+          mkdir -p node_modules/sherpa-onnx-darwin-x64
+          tar -xzf sherpa-onnx-darwin-x64-*.tgz -C node_modules/sherpa-onnx-darwin-x64 --strip-components=1
+          rm sherpa-onnx-darwin-x64-*.tgz
       - name: Package
         run: npx electron-builder --${{ matrix.platform }} --publish never
         env:

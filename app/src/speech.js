@@ -1,10 +1,12 @@
-// Text to WAV with the voices the system already has: SAPI on Windows, `say`
-// on macOS. The renderer turns the result into a robot.
+// Text to WAV: the Piper voice shipped for the language (src/piper.js), else
+// the voices the system already has: SAPI on Windows, `say` on macOS. The
+// renderer turns the result into a robot.
 
 const { spawn } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const piper = require('./piper');
 
 const TIMEOUT_MS = 15000;
 
@@ -160,7 +162,20 @@ async function pickMacVoice(lang) {
   return voice;
 }
 
+// Piper first; a voice that fails is dropped for the session and the system
+// voice takes over.
 async function render(text, lang) {
+  if (piper.available(lang)) {
+    try {
+      return await piper.render(text, lang);
+    } catch (err) {
+      console.warn(`Piper voice for "${lang}" failed, falling back to the system voice:`, err.message);
+    }
+  }
+  return renderSystem(text, lang);
+}
+
+async function renderSystem(text, lang) {
   if (process.platform === 'win32') {
     engine ??= startWindowsEngine(lang);
     const { child, ask } = engine;
@@ -212,11 +227,13 @@ async function pump() {
   }
 }
 
-// Starts the Windows engine ahead of the first sentence, and loads the voice
-// of `lang` once per engine.
+// Loads the Piper voice of `lang` ahead of the first sentence, or, without
+// one, starts the Windows engine and loads the system voice of `lang` once
+// per engine.
 function warmUp(lang) {
-  if (process.platform !== 'win32') return;
   lang = langOf(lang);
+  if (piper.available(lang)) return void piper.load(lang).catch(() => {});
+  if (process.platform !== 'win32') return;
   if (!engine) return void (engine = startWindowsEngine(lang));
   if (engine.warm.has(lang)) return;
   engine.warm.add(lang);

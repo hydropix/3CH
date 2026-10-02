@@ -2,6 +2,16 @@
 
 Each `## [x.y.z]` section is used as the GitHub release notes for tag `vx.y.z`.
 
+## [2.8.0] - 2026-10-02
+
+### Changed
+- **New voices, built in.** The robot now sings with voices that ship with
+  3CH (Piper), clearer than the old system voices, in English, French and
+  Chinese. Nothing to install, no internet needed. Chinese subjects are read
+  aloud even on a Windows without a Chinese voice.
+- If a built-in voice cannot run, 3CH falls back to the system voice.
+- The download is bigger (about 290 MB on Windows), since the voices come with it.
+
 ## [2.7.0] - 2026-10-01
 
 ### Changed

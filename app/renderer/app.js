@@ -704,8 +704,9 @@ function renderTimer(snap = timer.snapshot()) {
 
 // ---------- Robot voice ----------
 
-// The system voice renders each text once (a few tens of ms once the engine
-// is up); every playback then breaks it in a new way. Two voices share the
+// The main process renders each text once (about 100 ms with the Piper
+// voice, a few tens of ms with the system one once its engine is up); every
+// playback then breaks it in a new way. Two voices share the
 // speakers: the subject, and the timer, which always wins. A subject cut off
 // or held back by the timer is read once the timer is quiet. The subject is
 // read in the language of its theme.

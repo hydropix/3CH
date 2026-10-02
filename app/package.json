@@ -1,7 +1,7 @@
 {
   "name": "3ch",
   "productName": "3CH",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Random subject generator for concept art and speed painting, a modern rebuild of 3CH kilogeneratormorphic (2005).",
   "author": "Hydropix",
   "license": "MIT",
@@ -19,9 +19,13 @@
     "test": "node --test test/*.test.js",
     "icon": "python scripts/make-logo.py",
     "logo": "python scripts/make-logo.py gif",
+    "voices": "node scripts/fetch-voices.js",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac"
+  },
+  "dependencies": {
+    "sherpa-onnx-node": "^1.13.8"
   },
   "devDependencies": {
     "electron": "^44.4.5",
@@ -41,6 +45,9 @@
       "src/**",
       "renderer/**",
       "themes/**"
+    ],
+    "asarUnpack": [
+      "node_modules/sherpa-onnx-*/**"
     ],
     "publish": null,
     "win": {
@@ -79,7 +86,8 @@
       "category": "public.app-category.graphics-design",
       "identity": "-",
       "hardenedRuntime": false,
-      "notarize": false
+      "notarize": false,
+      "x64ArchFiles": "**/node_modules/sherpa-onnx-darwin-*/**"
     },
     "dmg": {
       "artifactName": "3CH-mac.${ext}"
@@ -92,6 +100,10 @@
       {
         "from": "../CREDITS.md",
         "to": "CREDITS.md"
+      },
+      {
+        "from": "voices",
+        "to": "voices"
       }
     ]
   }

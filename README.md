@@ -85,15 +85,14 @@ It also speaks French and Chinese:
   everything else changes.
 - **Keep** the subjects you like. They stay saved, and you can copy them or export
   them to a `.txt` file. The last 100 rolls are in the history.
-- **A broken robot voice** reads the subject aloud: the system's own voice,
-  vocoded and sung in a key and a tempo drawn anew every time, with glitches
-  on the beat. **Speak** reads it,
+- **A broken robot voice** reads the subject aloud: a voice that ships with
+  3CH, vocoded and sung in a key and a tempo drawn anew every time, with
+  glitches on the beat. **Speak** reads it,
   **Auto voice** (on by default) reads every new subject as soon as it is
-  rolled. It reads the subject in the language of its theme. For French or
-  Chinese speech, install a voice of that language in Windows (Settings →
-  Time & language → Speech → Add voices). Without one, the default voice reads
-  French text with an English accent, and stays silent on Chinese (3CH tells
-  you so once).
+  rolled. It reads the subject in the language of its theme: English, French
+  and Chinese all have their own voice, with nothing to install and no
+  internet needed. If that voice cannot run, 3CH falls back to the system
+  voice.
 - **Speed painting timer** (5 to 60 min, or any length up to 4 hours):
   - The time left shows in the taskbar.
   - A very soft tick on every minute, a beep for the last one, and a chime
